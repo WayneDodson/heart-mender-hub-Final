@@ -57,7 +57,7 @@ const enhancedExercises = [
       "Keep your posture upright, shoulders relaxed, and focus on the sensation of each movement.",
       "Continue this walking pattern for 5-10 minutes, maintaining awareness of each step."
     ],
-    imageUrl: "https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?q=80&w=800"
+    imageUrl: "/lovable-uploads/4abf69bf-3c0a-4d6b-ac1e-f50f3c842c94.png"
   },
   {
     title: "Heart-Centered Breathing",

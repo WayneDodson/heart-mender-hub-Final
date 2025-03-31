@@ -55,7 +55,7 @@ const ExercisesSection = ({ exercises }: ExercisesSectionProps) => {
       case 'yoga':
         return 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800'; // Different yoga pose
       case 'tai-chi':
-        return 'https://images.unsplash.com/photo-1620962178295-1865d3d8d9cb?q=80&w=800'; // Different tai chi pose
+        return '/lovable-uploads/4abf69bf-3c0a-4d6b-ac1e-f50f3c842c94.png'; // Updated Tai Chi image
       case 'meditation':
         return 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=800'; // Person meditating
       case 'emotional-healing':
