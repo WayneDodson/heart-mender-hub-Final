@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -18,31 +17,46 @@ const Resources = () => {
       category: "emotional-healing",
       readTime: "8 min read",
       content: `
-        <p>Divorce is undoubtedly one of life's most challenging transitions. The end of a marriage often triggers a profound grieving process similar to that experienced after a death. Elisabeth Kübler-Ross's model of the five stages of grief provides a helpful framework for understanding the emotional journey many people navigate after divorce.</p>
+        <p>Divorce is one of the most emotionally challenging experiences a person can go through. The end of a marriage is not just a legal separation; it involves deep emotional processing and personal transformation. Understanding the five stages of grief can help individuals navigate this difficult time and find a path toward healing.</p>
         
-        <h2>Stage 1: Denial</h2>
-        <p>In the initial stage, many people experience disbelief. Even if you initiated the divorce, there's often a period where the reality feels impossible to accept. You might catch yourself thinking, "This can't be happening" or "We'll work it out somehow." Denial serves as a psychological buffer, giving your mind time to gradually absorb the shock.</p>
-        <p><strong>How to move through it:</strong> Acknowledge that denial is normal but try to gently face reality. Writing in a journal about your feelings or speaking with a trusted friend can help you begin to accept your new circumstances.</p>
+        <h2>1. Denial</h2>
+        <p>At the onset, many individuals struggle to accept that their marriage is truly over. This stage is marked by shock, disbelief, and avoidance. People may tell themselves:</p>
+        <p><em>"This isn't happening. We just need time apart."</em></p>
+        <p><em>"Things will go back to the way they were."</em></p>
+        <p>Denial acts as a defense mechanism, allowing individuals to process the reality of divorce gradually. However, staying in denial too long can prevent progress toward healing.</p>
         
-        <h2>Stage 2: Anger</h2>
-        <p>As denial fades, intense anger often emerges. You might feel rage toward your ex-spouse, yourself, or even uninvolved parties. This anger stems from the pain of loss and the upheaval in your life. While uncomfortable, anger is a natural part of the healing process.</p>
-        <p><strong>How to move through it:</strong> Find healthy outlets for your anger, such as physical exercise, creative expression, or speaking with a therapist. Remember that while feeling angry is normal, acting destructively on that anger only creates more problems.</p>
+        <h2>2. Anger</h2>
+        <p>As the reality of the situation sets in, anger often follows. This stage can involve resentment toward an ex-spouse, oneself, or even external factors such as financial burdens or legal complications. Some common thoughts include:</p>
+        <p><em>"How could they do this to me?"</em></p>
+        <p><em>"I wasted so many years of my life!"</em></p>
+        <p>While anger is a natural response, it is crucial to manage it constructively. Engaging in therapy, journaling, or physical activities can help process this emotion in a healthy way.</p>
         
-        <h2>Stage 3: Bargaining</h2>
-        <p>During the bargaining stage, you might find yourself dwelling on "what-ifs" and "if-onlys." There's a tendency to ruminate on past mistakes and fantasize about how things could have been different. This stage often involves self-blame and a desperate hope that somehow the outcome could still change.</p>
-        <p><strong>How to move through it:</strong> Recognize that relationships end for complex reasons, rarely attributable to one person or incident. Practice self-compassion and begin to accept that looking backward prevents moving forward.</p>
+        <h2>3. Bargaining</h2>
+        <p>During this stage, individuals may try to negotiate with themselves, their ex-partner, or even a higher power to reverse the divorce. This can manifest as:</p>
+        <p><em>"If I change, maybe they will take me back."</em></p>
+        <p><em>"Maybe we can just live separately for a while and figure things out."</em></p>
+        <p>Bargaining can lead to feelings of guilt and self-doubt. It's important to recognize that while compromise is essential in relationships, accepting the finality of divorce is a necessary step toward healing.</p>
         
-        <h2>Stage 4: Depression</h2>
-        <p>As the reality of your loss sets in more deeply, feelings of sadness, emptiness, and hopelessness may emerge. You might experience changes in sleep patterns, appetite, or struggle with motivation. This is a natural response to loss and an important part of the grieving process.</p>
-        <p><strong>How to move through it:</strong> Take gentle care of yourself physically and emotionally. Maintain connections with supportive people. If depression becomes overwhelming or persistent, seek professional help from a therapist or counselor experienced in divorce recovery.</p>
+        <h2>4. Depression</h2>
+        <p>As hope for reconciliation fades, a deep sadness may take over. This stage can include feelings of loneliness, regret, and overwhelming despair. People might experience:</p>
+        <ul>
+          <li>Loss of interest in daily activities</li>
+          <li>Difficulty sleeping or eating</li>
+          <li>Emotional withdrawal from friends and family</li>
+        </ul>
+        <p>This is often the longest and most challenging phase. Seeking support from friends, therapy, or support groups can be invaluable in working through these emotions.</p>
         
-        <h2>Stage 5: Acceptance</h2>
-        <p>Acceptance doesn't mean you're "over it" or that you approve of what happened. Rather, it means you've come to terms with your new reality and are ready to build a new life. You might still feel sad occasionally, but these feelings no longer consume you.</p>
-        <p><strong>How to move through it:</strong> Begin creating new routines and traditions. Set small, achievable goals for yourself. Explore new interests or revisit old ones that brought you joy before your marriage.</p>
+        <h2>5. Acceptance</h2>
+        <p>The final stage of grief is acceptance, where individuals begin to embrace their new reality. This doesn't mean forgetting or being happy about the divorce, but rather finding peace with it. At this stage, individuals often:</p>
+        <ul>
+          <li>Focus on personal growth and new opportunities</li>
+          <li>Establish a new sense of independence</li>
+          <li>Develop healthy coping mechanisms for moving forward</li>
+        </ul>
+        <p>Acceptance brings a sense of closure and a renewed ability to build a fulfilling future.</p>
         
-        <h2>Important Reminders About Grief</h2>
-        <p>These stages aren't a linear checklist, and you might move back and forth between them. Everyone's grieving process is unique—there's no "right" timeline or way to grieve. Sometimes you might experience multiple stages simultaneously.</p>
-        <p>Healing happens gradually, and moments of regression are normal. With time, support, and self-compassion, you will find your way forward into a meaningful new chapter of life.</p>
+        <h2>Moving Forward</h2>
+        <p>Grief after divorce is not a linear process, and people may revisit certain stages before fully healing. It's important to be patient with oneself and seek support when needed. Healing is possible, and with time, individuals can rediscover happiness and purpose beyond their past relationships.</p>
       `
     },
     {
