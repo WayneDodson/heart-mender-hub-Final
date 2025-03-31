@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -128,7 +129,7 @@ const enhancedExercises = [
       "Reflect on how this connection to nature mirrors aspects of your inner self.",
       "Before leaving, express gratitude for this moment of connection."
     ],
-    imageUrl: "https://images.unsplash.com/photo-1464853886823-5271d9b0b80a?q=80&w=800"
+    imageUrl: "/lovable-uploads/ca23902e-8155-4263-990e-2a1fc2b46e04.png"
   }
 ];
 

@@ -61,18 +61,30 @@ const ExercisesSection = ({ exercises }: ExercisesSectionProps) => {
       case 'emotional-healing':
         return 'https://images.unsplash.com/photo-1517971071642-34a2d3ecc9cd?q=80&w=800'; // Journal and pen
       case 'self-discovery':
-        return 'https://images.unsplash.com/photo-1464853886823-5271d9b0b80a?q=80&w=800'; // Person in nature
+        return '/lovable-uploads/ca23902e-8155-4263-990e-2a1fc2b46e04.png'; // Person in nature
       default:
         return 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=800'; // Default image
     }
   };
 
-  // Determine if an image needs special cropping styles
+  // Determine if an image needs special styling
   const getImageStyles = (imagePath: string) => {
     if (imagePath.includes('4abf69bf-3c0a-4d6b-ac1e-f50f3c842c94.png')) {
-      return 'object-contain'; // Update to full size without scaling down
+      return 'object-contain'; // Tai Chi image special styling
+    }
+    if (imagePath.includes('ca23902e-8155-4263-990e-2a1fc2b46e04.png')) {
+      return 'object-contain w-full'; // Nature Connection image special styling
     }
     return 'object-cover'; // Default styling for other images
+  };
+
+  // Get container styles based on the image
+  const getContainerStyles = (imagePath: string) => {
+    if (imagePath.includes('ca23902e-8155-4263-990e-2a1fc2b46e04.png')) {
+      return 'rounded-lg overflow-hidden border border-msblue-100 max-w-full flex items-center justify-center bg-msblue-50';
+    }
+    
+    return 'rounded-lg overflow-hidden border border-msblue-100 w-auto h-auto flex items-center justify-center bg-msblue-50';
   };
 
   const handleStartExercise = (exercise: Exercise) => {
@@ -141,11 +153,11 @@ const ExercisesSection = ({ exercises }: ExercisesSectionProps) => {
               {/* Exercise Illustration */}
               {selectedExercise && (
                 <div className="flex justify-center mb-2">
-                  <div className="rounded-lg overflow-hidden border border-msblue-100 w-auto h-auto flex items-center justify-center bg-msblue-50">
+                  <div className={getContainerStyles(getImageForExercise(selectedExercise))}>
                     <img 
                       src={getImageForExercise(selectedExercise)}
                       alt={`${selectedExercise.title} illustration`}
-                      className={`max-w-full max-h-full ${getImageStyles(getImageForExercise(selectedExercise))}`}
+                      className={getImageStyles(getImageForExercise(selectedExercise))}
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
                         target.onerror = null;
