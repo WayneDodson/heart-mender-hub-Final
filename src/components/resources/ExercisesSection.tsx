@@ -1,10 +1,10 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from '@/components/ui/button';
-import { Flower, Sun, Heart, Leaf, CircleDot } from 'lucide-react';
+import { Flower, Sun, Heart, Leaf, CircleDot, Image } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 interface Exercise {
   title: string;
@@ -14,6 +14,7 @@ interface Exercise {
   steps?: string[];
   duration?: string;
   benefits?: string[];
+  imageUrl?: string;
 }
 
 interface ExercisesSectionProps {
@@ -28,9 +29,9 @@ const ExercisesSection = ({ exercises }: ExercisesSectionProps) => {
   const getIconForCategory = (category: string) => {
     switch (category) {
       case 'yoga':
-        return <Flower />; // Using Flower instead of Lotus
+        return <Flower />; 
       case 'tai-chi':
-        return <CircleDot />; // Using CircleDot instead of Circle
+        return <CircleDot />;
       case 'meditation':
         return <Sun />;
       case 'emotional-healing':
@@ -39,6 +40,30 @@ const ExercisesSection = ({ exercises }: ExercisesSectionProps) => {
         return <Leaf />;
       default:
         return null;
+    }
+  };
+
+  // Exercise illustration images 
+  const getImageForExercise = (exercise: Exercise) => {
+    // If exercise has a specific image URL, use that
+    if (exercise.imageUrl) {
+      return exercise.imageUrl;
+    }
+    
+    // Otherwise, assign default images based on exercise category
+    switch (exercise.category) {
+      case 'yoga':
+        return 'https://i.imgur.com/F6RQT9k.png'; // Anime character in yoga pose
+      case 'tai-chi':
+        return 'https://i.imgur.com/dHzWRBl.png'; // Anime character in tai-chi pose
+      case 'meditation':
+        return 'https://i.imgur.com/LQ9R1Z5.png'; // Anime character meditating
+      case 'emotional-healing':
+        return 'https://i.imgur.com/7tYocP2.png'; // Anime character journaling
+      case 'self-discovery':
+        return 'https://i.imgur.com/kJz5FpC.png'; // Anime character in nature
+      default:
+        return 'https://i.imgur.com/F6RQT9k.png'; // Default image
     }
   };
 
@@ -104,7 +129,25 @@ const ExercisesSection = ({ exercises }: ExercisesSectionProps) => {
           </DialogHeader>
           
           <ScrollArea className="max-h-[60vh] pr-4">
-            <div className="space-y-4">
+            <div className="space-y-6">
+              {/* Exercise Illustration */}
+              {selectedExercise && (
+                <div className="flex justify-center mb-2">
+                  <div className="rounded-lg overflow-hidden border border-healing-100 w-64 h-64 flex items-center justify-center bg-healing-50">
+                    <img 
+                      src={getImageForExercise(selectedExercise)}
+                      alt={`${selectedExercise.title} illustration`}
+                      className="max-w-full max-h-full object-cover"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.onerror = null;
+                        target.src = 'https://i.imgur.com/F6RQT9k.png'; // Fallback image
+                      }}
+                    />
+                  </div>
+                </div>
+              )}
+            
               <div>
                 <p className="text-gray-700">{selectedExercise?.description}</p>
               </div>

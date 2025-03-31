@@ -34,7 +34,8 @@ const enhancedExercises = [
       "Exhale, fold forward.",
       "Inhale, rise to standing and reach arms overhead.",
       "Exhale, return to prayer position at heart center."
-    ]
+    ],
+    imageUrl: "https://i.imgur.com/F6RQT9k.png" // Anime character in yoga pose
   },
   {
     title: "Tai Chi Walking Meditation",
@@ -58,7 +59,8 @@ const enhancedExercises = [
       "Coordinate your breathing with your steps - inhale as you lift, exhale as you place.",
       "Keep your posture upright, shoulders relaxed, and focus on the sensation of each movement.",
       "Continue this walking pattern for 5-10 minutes, maintaining awareness of each step."
-    ]
+    ],
+    imageUrl: "https://i.imgur.com/dHzWRBl.png" // Anime character in tai-chi pose
   },
   {
     title: "Heart-Centered Breathing",
@@ -80,7 +82,8 @@ const enhancedExercises = [
       "As you exhale, imagine releasing any tension or difficult emotions.",
       "With each breath, allow your heart to soften and open.",
       "Stay with this practice for 5-10 minutes, returning to heart-centered awareness whenever your mind wanders."
-    ]
+    ],
+    imageUrl: "https://i.imgur.com/LQ9R1Z5.png" // Anime character meditating
   },
   {
     title: "Emotional Release Journaling",
@@ -102,7 +105,8 @@ const enhancedExercises = [
       "Write a dialogue with the emotion, asking what it needs or what it's trying to tell you.",
       "Conclude by writing about one small step you can take toward healing or addressing what you've uncovered.",
       "Close your journal and take a few moments to ground yourself before returning to your day."
-    ]
+    ],
+    imageUrl: "https://i.imgur.com/7tYocP2.png" // Anime character journaling
   },
   {
     title: "Nature Connection Practice",
@@ -126,7 +130,8 @@ const enhancedExercises = [
       "Notice 1 taste (even if just the taste of the air).",
       "Reflect on how this connection to nature mirrors aspects of your inner self.",
       "Before leaving, express gratitude for this moment of connection."
-    ]
+    ],
+    imageUrl: "https://i.imgur.com/kJz5FpC.png" // Anime character in nature
   }
 ];
 
