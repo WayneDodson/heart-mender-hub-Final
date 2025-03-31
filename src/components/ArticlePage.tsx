@@ -5,6 +5,7 @@ import Footer from './Footer';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from './ui/button';
 import { useNavigate, useParams } from 'react-router-dom';
+import { articles } from '../data/articles';
 
 // Define article content type
 export type Article = {
@@ -19,12 +20,7 @@ export type Article = {
   publishDate?: string;
 };
 
-// Props type for the ArticlePage component
-interface ArticlePageProps {
-  articles: Article[];
-}
-
-const ArticlePage = ({ articles }: ArticlePageProps) => {
+const ArticlePage = () => {
   const { articleId } = useParams<{ articleId: string }>();
   const navigate = useNavigate();
   

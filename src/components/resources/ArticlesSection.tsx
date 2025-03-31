@@ -1,0 +1,41 @@
+
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from '@/components/ui/button';
+import { Article } from '../ArticlePage';
+
+interface ArticlesSectionProps {
+  articles: Article[];
+}
+
+const ArticlesSection = ({ articles }: ArticlesSectionProps) => {
+  return (
+    <div className="animate-fade-in">
+      <h2 className="text-2xl font-semibold mb-6 text-healing-800">Helpful Articles</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {articles.map((article, index) => (
+          <Card key={index} className="border border-healing-100 hover:shadow-md transition-shadow h-full">
+            <CardHeader>
+              <div className="text-sm font-medium text-healing-600 mb-1">
+                {article.category.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+              </div>
+              <CardTitle className="text-xl">{article.title}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription>{article.description}</CardDescription>
+            </CardContent>
+            <CardFooter className="flex justify-between items-center">
+              <div className="text-sm text-gray-500">{article.readTime}</div>
+              <Button variant="ghost" className="text-healing-600 hover:text-healing-700 hover:bg-healing-50">
+                <Link to={`/resources/article/${article.id}`}>Read More</Link>
+              </Button>
+            </CardFooter>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default ArticlesSection;
