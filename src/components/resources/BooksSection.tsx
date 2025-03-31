@@ -25,7 +25,7 @@ const BooksSection = ({ books }: BooksSectionProps) => {
               <div className="text-sm font-medium text-healing-600">by {book.author}</div>
             </CardHeader>
             <CardContent>
-              <CardDescription>{book.description}</CardDescription>
+              <CardDescription className="space-y-3">{book.description}</CardDescription>
             </CardContent>
             <CardFooter>
               <Button variant="outline" className="w-full">Find Book</Button>
@@ -34,7 +34,7 @@ const BooksSection = ({ books }: BooksSectionProps) => {
         ))}
       </div>
       <div className="mt-8 text-center">
-        <p className="text-gray-600">These books have helped many people navigate the emotional challenges of divorce and find healing.</p>
+        <p className="text-gray-600 leading-relaxed">These books have helped many people navigate the emotional challenges of divorce and find healing.</p>
       </div>
     </div>
   );

@@ -23,7 +23,7 @@ const ArticlesSection = ({ articles }: ArticlesSectionProps) => {
               <CardTitle className="text-xl">{article.title}</CardTitle>
             </CardHeader>
             <CardContent>
-              <CardDescription>{article.description}</CardDescription>
+              <CardDescription className="space-y-3">{article.description}</CardDescription>
             </CardContent>
             <CardFooter className="flex justify-between items-center">
               <div className="text-sm text-gray-500">{article.readTime}</div>

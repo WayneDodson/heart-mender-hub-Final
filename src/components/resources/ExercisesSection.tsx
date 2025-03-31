@@ -27,7 +27,7 @@ const ExercisesSection = ({ exercises }: ExercisesSectionProps) => {
               <CardTitle className="text-xl">{exercise.title}</CardTitle>
             </CardHeader>
             <CardContent>
-              <CardDescription>{exercise.description}</CardDescription>
+              <CardDescription className="space-y-3">{exercise.description}</CardDescription>
             </CardContent>
             <CardFooter>
               <Button className="w-full bg-healing-500 hover:bg-healing-600">Start Exercise</Button>
@@ -36,7 +36,7 @@ const ExercisesSection = ({ exercises }: ExercisesSectionProps) => {
         ))}
       </div>
       <div className="mt-8 text-center">
-        <p className="text-gray-600 mb-4">New exercises are added regularly to support different aspects of your healing journey.</p>
+        <p className="text-gray-600 leading-relaxed mb-4">New exercises are added regularly to support different aspects of your healing journey.</p>
       </div>
     </div>
   );

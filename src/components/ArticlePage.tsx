@@ -84,7 +84,7 @@ const ArticlePage = () => {
             </div>
           )}
           
-          <article className="prose prose-lg max-w-none">
+          <article className="prose prose-lg max-w-none space-y-6">
             {/* Display the article content as HTML */}
             <div dangerouslySetInnerHTML={{ __html: article.content }} />
           </article>
