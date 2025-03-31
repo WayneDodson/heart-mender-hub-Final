@@ -10,10 +10,10 @@ import { articles, exercises, bookRecommendations } from '../../data/articles';
 
 const ResourceTabs = () => {
   return (
-    <section className="py-12 px-4">
+    <section className="py-16 px-4">
       <div className="container mx-auto">
         <Tabs defaultValue="articles" className="max-w-5xl mx-auto">
-          <TabsList className="grid w-full grid-cols-4 mb-8">
+          <TabsList className="grid w-full grid-cols-4 mb-10">
             <TabsTrigger value="articles" className="flex items-center gap-2">
               <FileText className="h-4 w-4" /> Articles
             </TabsTrigger>
@@ -28,19 +28,19 @@ const ResourceTabs = () => {
             </TabsTrigger>
           </TabsList>
           
-          <TabsContent value="articles">
+          <TabsContent value="articles" className="mt-6">
             <ArticlesSection articles={articles} />
           </TabsContent>
           
-          <TabsContent value="exercises">
+          <TabsContent value="exercises" className="mt-6">
             <ExercisesSection exercises={exercises} />
           </TabsContent>
           
-          <TabsContent value="books">
+          <TabsContent value="books" className="mt-6">
             <BooksSection books={bookRecommendations} />
           </TabsContent>
           
-          <TabsContent value="videos">
+          <TabsContent value="videos" className="mt-6">
             <VideosSection />
           </TabsContent>
         </Tabs>
