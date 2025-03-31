@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from '@/components/ui/button';
 import { Flower, Sun, Heart, Leaf, CircleDot } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface Exercise {
   title: string;
@@ -83,7 +84,7 @@ const ExercisesSection = ({ exercises }: ExercisesSectionProps) => {
 
       {/* Exercise Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="sm:max-w-md max-h-[90vh]">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               {selectedExercise && (
@@ -102,42 +103,44 @@ const ExercisesSection = ({ exercises }: ExercisesSectionProps) => {
             </DialogDescription>
           </DialogHeader>
           
-          <div className="space-y-4">
-            <div>
-              <p className="text-gray-700">{selectedExercise?.description}</p>
+          <ScrollArea className="max-h-[60vh] pr-4">
+            <div className="space-y-4">
+              <div>
+                <p className="text-gray-700">{selectedExercise?.description}</p>
+              </div>
+              
+              {selectedExercise?.duration && (
+                <div>
+                  <h4 className="font-medium text-healing-700 mb-1">Duration</h4>
+                  <p className="text-gray-600">{selectedExercise.duration}</p>
+                </div>
+              )}
+              
+              {selectedExercise?.benefits && selectedExercise.benefits.length > 0 && (
+                <div>
+                  <h4 className="font-medium text-healing-700 mb-1">Benefits</h4>
+                  <ul className="list-disc pl-5 space-y-1">
+                    {selectedExercise.benefits.map((benefit, index) => (
+                      <li key={index} className="text-gray-600">{benefit}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              
+              {selectedExercise?.steps && selectedExercise.steps.length > 0 && (
+                <div>
+                  <h4 className="font-medium text-healing-700 mb-2">Steps</h4>
+                  <ol className="list-decimal pl-5 space-y-2">
+                    {selectedExercise.steps.map((step, index) => (
+                      <li key={index} className="text-gray-600">{step}</li>
+                    ))}
+                  </ol>
+                </div>
+              )}
             </div>
-            
-            {selectedExercise?.duration && (
-              <div>
-                <h4 className="font-medium text-healing-700 mb-1">Duration</h4>
-                <p className="text-gray-600">{selectedExercise.duration}</p>
-              </div>
-            )}
-            
-            {selectedExercise?.benefits && selectedExercise.benefits.length > 0 && (
-              <div>
-                <h4 className="font-medium text-healing-700 mb-1">Benefits</h4>
-                <ul className="list-disc pl-5 space-y-1">
-                  {selectedExercise.benefits.map((benefit, index) => (
-                    <li key={index} className="text-gray-600">{benefit}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-            
-            {selectedExercise?.steps && selectedExercise.steps.length > 0 && (
-              <div>
-                <h4 className="font-medium text-healing-700 mb-2">Steps</h4>
-                <ol className="list-decimal pl-5 space-y-2">
-                  {selectedExercise.steps.map((step, index) => (
-                    <li key={index} className="text-gray-600">{step}</li>
-                  ))}
-                </ol>
-              </div>
-            )}
-          </div>
+          </ScrollArea>
           
-          <DialogFooter>
+          <DialogFooter className="mt-4">
             <Button className="bg-healing-500 hover:bg-healing-600 w-full" onClick={() => setDialogOpen(false)}>
               Close
             </Button>
