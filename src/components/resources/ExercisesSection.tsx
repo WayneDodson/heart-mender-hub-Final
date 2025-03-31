@@ -46,16 +46,16 @@ const ExercisesSection = ({ exercises }: ExercisesSectionProps) => {
   // Exercise illustration images 
   const getImageForExercise = (exercise: Exercise) => {
     // If exercise has a specific image URL, use that
-    if (exercise.imageUrl && !exercise.imageUrl.includes('imgur.com')) {
+    if (exercise.imageUrl) {
       return exercise.imageUrl;
     }
     
     // Otherwise, assign default images based on exercise category
     switch (exercise.category) {
       case 'yoga':
-        return 'https://images.unsplash.com/photo-1588286840104-8457e3263907?q=80&w=800'; // Yoga pose
+        return 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800'; // Different yoga pose
       case 'tai-chi':
-        return 'https://images.unsplash.com/photo-1551489818-f9e9f1a53ee2?q=80&w=800'; // Tai chi pose
+        return 'https://images.unsplash.com/photo-1620962178295-1865d3d8d9cb?q=80&w=800'; // Different tai chi pose
       case 'meditation':
         return 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=800'; // Person meditating
       case 'emotional-healing':
@@ -74,16 +74,16 @@ const ExercisesSection = ({ exercises }: ExercisesSectionProps) => {
 
   return (
     <div className="animate-fade-in">
-      <h2 className="text-2xl font-semibold mb-6 text-healing-800">Healing Exercises</h2>
+      <h2 className="text-2xl font-semibold mb-6 text-msblue-800">Healing Exercises</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {exercises.map((exercise, index) => (
-          <Card key={index} className="border border-healing-100 hover:shadow-md transition-shadow">
+          <Card key={index} className="border border-msblue-100 hover:shadow-md transition-shadow">
             <CardHeader>
               <div className="flex items-center justify-between mb-2">
-                <div className="text-sm font-medium text-healing-600">
+                <div className="text-sm font-medium text-msblue-600">
                   {exercise.category.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
                 </div>
-                <div className="text-healing-500">
+                <div className="text-msblue-500">
                   {getIconForCategory(exercise.category)}
                 </div>
               </div>
@@ -94,7 +94,7 @@ const ExercisesSection = ({ exercises }: ExercisesSectionProps) => {
             </CardContent>
             <CardFooter>
               <Button 
-                className="w-full bg-healing-500 hover:bg-healing-600"
+                className="w-full bg-msblue-500 hover:bg-msblue-600"
                 onClick={() => handleStartExercise(exercise)}
               >
                 Start Exercise
@@ -114,14 +114,14 @@ const ExercisesSection = ({ exercises }: ExercisesSectionProps) => {
             <DialogTitle className="flex items-center gap-2">
               {selectedExercise && (
                 <>
-                  <span className="text-healing-500">{getIconForCategory(selectedExercise.category || '')}</span>
+                  <span className="text-msblue-500">{getIconForCategory(selectedExercise.category || '')}</span>
                   {selectedExercise.title}
                 </>
               )}
             </DialogTitle>
             <DialogDescription>
               {selectedExercise?.category && (
-                <span className="text-sm font-medium text-healing-600 block mb-2">
+                <span className="text-sm font-medium text-msblue-600 block mb-2">
                   {selectedExercise.category.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
                 </span>
               )}
@@ -133,7 +133,7 @@ const ExercisesSection = ({ exercises }: ExercisesSectionProps) => {
               {/* Exercise Illustration */}
               {selectedExercise && (
                 <div className="flex justify-center mb-2">
-                  <div className="rounded-lg overflow-hidden border border-healing-100 w-64 h-64 flex items-center justify-center bg-healing-50">
+                  <div className="rounded-lg overflow-hidden border border-msblue-100 w-64 h-64 flex items-center justify-center bg-msblue-50">
                     <img 
                       src={getImageForExercise(selectedExercise)}
                       alt={`${selectedExercise.title} illustration`}
@@ -154,14 +154,14 @@ const ExercisesSection = ({ exercises }: ExercisesSectionProps) => {
               
               {selectedExercise?.duration && (
                 <div>
-                  <h4 className="font-medium text-healing-700 mb-1">Duration</h4>
+                  <h4 className="font-medium text-msblue-700 mb-1">Duration</h4>
                   <p className="text-gray-600">{selectedExercise.duration}</p>
                 </div>
               )}
               
               {selectedExercise?.benefits && selectedExercise.benefits.length > 0 && (
                 <div>
-                  <h4 className="font-medium text-healing-700 mb-1">Benefits</h4>
+                  <h4 className="font-medium text-msblue-700 mb-1">Benefits</h4>
                   <ul className="list-disc pl-5 space-y-1">
                     {selectedExercise.benefits.map((benefit, index) => (
                       <li key={index} className="text-gray-600">{benefit}</li>
@@ -172,7 +172,7 @@ const ExercisesSection = ({ exercises }: ExercisesSectionProps) => {
               
               {selectedExercise?.steps && selectedExercise.steps.length > 0 && (
                 <div>
-                  <h4 className="font-medium text-healing-700 mb-2">Steps</h4>
+                  <h4 className="font-medium text-msblue-700 mb-2">Steps</h4>
                   <ol className="list-decimal pl-5 space-y-2">
                     {selectedExercise.steps.map((step, index) => (
                       <li key={index} className="text-gray-600">{step}</li>
@@ -184,7 +184,7 @@ const ExercisesSection = ({ exercises }: ExercisesSectionProps) => {
           </ScrollArea>
           
           <DialogFooter className="mt-4">
-            <Button className="bg-healing-500 hover:bg-healing-600 w-full" onClick={() => setDialogOpen(false)}>
+            <Button className="bg-msblue-500 hover:bg-msblue-600 w-full" onClick={() => setDialogOpen(false)}>
               Close
             </Button>
           </DialogFooter>

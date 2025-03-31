@@ -7,7 +7,7 @@ import BooksSection from './BooksSection';
 import VideosSection from './VideosSection';
 import { articles, bookRecommendations } from '../../data/articles';
 
-// Enhanced exercise data
+// Enhanced exercise data with different images for Yoga and Tai Chi
 const enhancedExercises = [
   {
     title: "Mindful Sun Salutation",
@@ -34,7 +34,7 @@ const enhancedExercises = [
       "Inhale, rise to standing and reach arms overhead.",
       "Exhale, return to prayer position at heart center."
     ],
-    imageUrl: "https://images.unsplash.com/photo-1588286840104-8457e3263907?q=80&w=800"
+    imageUrl: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800"
   },
   {
     title: "Tai Chi Walking Meditation",
@@ -59,7 +59,7 @@ const enhancedExercises = [
       "Keep your posture upright, shoulders relaxed, and focus on the sensation of each movement.",
       "Continue this walking pattern for 5-10 minutes, maintaining awareness of each step."
     ],
-    imageUrl: "https://images.unsplash.com/photo-1551489818-f9e9f1a53ee2?q=80&w=800"
+    imageUrl: "https://images.unsplash.com/photo-1620962178295-1865d3d8d9cb?q=80&w=800"
   },
   {
     title: "Heart-Centered Breathing",

@@ -75,6 +75,18 @@ export default {
 					800: '#5b21b6',
 					900: '#4c1d95',
 				},
+				msblue: {
+					50: '#f0f5ff',
+					100: '#e0ebff',
+					200: '#c2d8ff',
+					300: '#9fbeff',
+					400: '#789bfe',
+					500: '#0078d4', // Microsoft blue
+					600: '#0063b1',
+					700: '#004e8c',
+					800: '#003e70',
+					900: '#002950',
+				},
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
