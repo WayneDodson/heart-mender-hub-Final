@@ -2,7 +2,7 @@
 import React from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from '@/components/ui/button';
-import { Lotus, Sun, Heart, Leaf, Circle } from 'lucide-react';
+import { Flower, Sun, Heart, Leaf, CircleDot } from 'lucide-react';
 
 interface Exercise {
   title: string;
@@ -20,9 +20,9 @@ const ExercisesSection = ({ exercises }: ExercisesSectionProps) => {
   const getIconForCategory = (category: string) => {
     switch (category) {
       case 'yoga':
-        return <Lotus />;
+        return <Flower />; // Using Flower instead of Lotus
       case 'tai-chi':
-        return <Circle />;
+        return <CircleDot />; // Using CircleDot instead of Circle
       case 'meditation':
         return <Sun />;
       case 'emotional-healing':
