@@ -5,7 +5,7 @@ import Footer from '../components/Footer';
 import HeroSection from '../components/resources/HeroSection';
 import ResourceTabs from '../components/resources/ResourceTabs';
 import SelfCareSection from '../components/resources/SelfCareSection';
-import ExercisesSection from '../components/resources/ExercisesSection';
+import { AppleStyleDock } from '../components/AppleStyleDock';
 
 // Enhanced exercise data with Microsoft blue theme and different images for Yoga and Tai Chi
 const enhancedExercises = [
@@ -143,6 +143,7 @@ const Resources = () => {
         <HeroSection />
         <ResourceTabs />
         <SelfCareSection />
+        <AppleStyleDock />
       </main>
 
       <Footer />
