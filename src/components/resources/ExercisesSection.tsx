@@ -67,6 +67,14 @@ const ExercisesSection = ({ exercises }: ExercisesSectionProps) => {
     }
   };
 
+  // Determine if an image needs special cropping styles
+  const getImageStyles = (imagePath: string) => {
+    if (imagePath.includes('4abf69bf-3c0a-4d6b-ac1e-f50f3c842c94.png')) {
+      return 'object-contain scale-[0.85]'; // Apply special styling to the Tai Chi image
+    }
+    return 'object-cover'; // Default styling for other images
+  };
+
   const handleStartExercise = (exercise: Exercise) => {
     setSelectedExercise(exercise);
     setDialogOpen(true);
@@ -137,7 +145,7 @@ const ExercisesSection = ({ exercises }: ExercisesSectionProps) => {
                     <img 
                       src={getImageForExercise(selectedExercise)}
                       alt={`${selectedExercise.title} illustration`}
-                      className="max-w-full max-h-full object-cover"
+                      className={`max-w-full max-h-full ${getImageStyles(getImageForExercise(selectedExercise))}`}
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
                         target.onerror = null;
