@@ -1,4 +1,3 @@
-
 import { Article } from '../components/ArticlePage';
 
 export const articles: Article[] = [
@@ -488,29 +487,29 @@ export const articles: Article[] = [
 
 export const exercises = [
   {
-    title: "Gratitude Journal",
-    description: "Daily prompts to help you focus on the positive aspects of your new life.",
-    category: "emotional-healing"
+    title: "Gentle Yoga Flow for Emotional Release",
+    description: "A 20-minute gentle yoga sequence designed to release emotional tension held in the body. Focuses on heart-opening poses and deep breathing to process grief and anxiety.",
+    category: "yoga"
   },
   {
-    title: "Letter to Your Former Self",
-    description: "A writing exercise to acknowledge your growth and provide self-compassion.",
-    category: "self-discovery"
+    title: "Restorative Yoga for Stress Relief",
+    description: "A slow-paced practice using props to fully support your body in passive poses held for 5-10 minutes. Perfect for calming the nervous system and releasing deep tension.",
+    category: "yoga"
   },
   {
-    title: "Boundary Setting Workshop",
-    description: "Interactive guide to establishing healthy boundaries in your relationships.",
-    category: "relationships"
+    title: "Tai Chi 8-Form Sequence",
+    description: "Learn the fundamental 8-form sequence of Tai Chi movements. This practice promotes balance, mindfulness, and the smooth flow of energy throughout your body.",
+    category: "tai-chi"
   },
   {
-    title: "Future Visualization",
-    description: "Guided meditation to help you envision and create your desired future.",
-    category: "emotional-healing"
+    title: "Qigong Healing Sounds",
+    description: "Ancient Taoist practice combining specific sounds with gentle movements to release negative emotions and restore balance to your internal organs.",
+    category: "tai-chi"
   },
   {
-    title: "Values Reassessment",
-    description: "Exercise to identify what truly matters to you now and align your life accordingly.",
-    category: "self-discovery"
+    title: "Mindful Movement Meditation",
+    description: "A guided practice combining elements of yoga and tai chi for cultivating present-moment awareness while gently moving your body.",
+    category: "meditation"
   }
 ];
 

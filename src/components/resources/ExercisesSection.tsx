@@ -2,11 +2,13 @@
 import React from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from '@/components/ui/button';
+import { Lotus, Sun, Heart, Leaf, Circle } from 'lucide-react';
 
 interface Exercise {
   title: string;
   description: string;
   category: string;
+  icon?: React.ReactNode;
 }
 
 interface ExercisesSectionProps {
@@ -14,6 +16,24 @@ interface ExercisesSectionProps {
 }
 
 const ExercisesSection = ({ exercises }: ExercisesSectionProps) => {
+  // Map category to icon
+  const getIconForCategory = (category: string) => {
+    switch (category) {
+      case 'yoga':
+        return <Lotus />;
+      case 'tai-chi':
+        return <Circle />;
+      case 'meditation':
+        return <Sun />;
+      case 'emotional-healing':
+        return <Heart />;
+      case 'self-discovery':
+        return <Leaf />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className="animate-fade-in">
       <h2 className="text-2xl font-semibold mb-6 text-healing-800">Healing Exercises</h2>
@@ -21,8 +41,13 @@ const ExercisesSection = ({ exercises }: ExercisesSectionProps) => {
         {exercises.map((exercise, index) => (
           <Card key={index} className="border border-healing-100 hover:shadow-md transition-shadow">
             <CardHeader>
-              <div className="text-sm font-medium text-healing-600 mb-1">
-                {exercise.category.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+              <div className="flex items-center justify-between mb-2">
+                <div className="text-sm font-medium text-healing-600">
+                  {exercise.category.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                </div>
+                <div className="text-healing-500">
+                  {getIconForCategory(exercise.category)}
+                </div>
               </div>
               <CardTitle className="text-xl">{exercise.title}</CardTitle>
             </CardHeader>
