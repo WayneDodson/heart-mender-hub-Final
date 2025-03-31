@@ -74,7 +74,7 @@ export function AppleStyleDock() {
           >
             <DockLabel>{item.title}</DockLabel>
             <a href={item.href} className="w-full h-full flex items-center justify-center">
-              <DockIcon>{item.icon}</DockIcon>
+              {item.icon}
             </a>
           </DockItem>
         ))}
