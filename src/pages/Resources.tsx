@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -6,7 +7,7 @@ import ResourceTabs from '../components/resources/ResourceTabs';
 import SelfCareSection from '../components/resources/SelfCareSection';
 import ExercisesSection from '../components/resources/ExercisesSection';
 
-// Enhanced exercise data
+// Enhanced exercise data with Unsplash images
 const enhancedExercises = [
   {
     title: "Mindful Sun Salutation",
@@ -33,7 +34,7 @@ const enhancedExercises = [
       "Inhale, rise to standing and reach arms overhead.",
       "Exhale, return to prayer position at heart center."
     ],
-    imageUrl: "https://i.imgur.com/F6RQT9k.png" // Anime character in yoga pose
+    imageUrl: "https://images.unsplash.com/photo-1588286840104-8457e3263907?q=80&w=800"
   },
   {
     title: "Tai Chi Walking Meditation",
@@ -57,7 +58,8 @@ const enhancedExercises = [
       "Coordinate your breathing with your steps - inhale as you lift, exhale as you place.",
       "Keep your posture upright, shoulders relaxed, and focus on the sensation of each movement.",
       "Continue this walking pattern for 5-10 minutes, maintaining awareness of each step."
-    ]
+    ],
+    imageUrl: "https://images.unsplash.com/photo-1551489818-f9e9f1a53ee2?q=80&w=800"
   },
   {
     title: "Heart-Centered Breathing",
@@ -80,7 +82,7 @@ const enhancedExercises = [
       "With each breath, allow your heart to soften and open.",
       "Stay with this practice for 5-10 minutes, returning to heart-centered awareness whenever your mind wanders."
     ],
-    imageUrl: "https://i.imgur.com/LQ9R1Z5.png" // Anime character meditating
+    imageUrl: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=800"
   },
   {
     title: "Emotional Release Journaling",
@@ -103,7 +105,7 @@ const enhancedExercises = [
       "Conclude by writing about one small step you can take toward healing or addressing what you've uncovered.",
       "Close your journal and take a few moments to ground yourself before returning to your day."
     ],
-    imageUrl: "https://i.imgur.com/7tYocP2.png" // Anime character journaling
+    imageUrl: "https://images.unsplash.com/photo-1517971071642-34a2d3ecc9cd?q=80&w=800"
   },
   {
     title: "Nature Connection Practice",
@@ -128,7 +130,7 @@ const enhancedExercises = [
       "Reflect on how this connection to nature mirrors aspects of your inner self.",
       "Before leaving, express gratitude for this moment of connection."
     ],
-    imageUrl: "https://i.imgur.com/kJz5FpC.png" // Anime character in nature
+    imageUrl: "https://images.unsplash.com/photo-1464853886823-5271d9b0b80a?q=80&w=800"
   }
 ];
 

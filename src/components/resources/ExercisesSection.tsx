@@ -1,10 +1,10 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from '@/components/ui/button';
-import { Flower, Sun, Heart, Leaf, CircleDot, Image } from 'lucide-react';
+import { Flower, Sun, Heart, Leaf, CircleDot } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 interface Exercise {
   title: string;
@@ -46,24 +46,24 @@ const ExercisesSection = ({ exercises }: ExercisesSectionProps) => {
   // Exercise illustration images 
   const getImageForExercise = (exercise: Exercise) => {
     // If exercise has a specific image URL, use that
-    if (exercise.imageUrl) {
+    if (exercise.imageUrl && !exercise.imageUrl.includes('imgur.com')) {
       return exercise.imageUrl;
     }
     
     // Otherwise, assign default images based on exercise category
     switch (exercise.category) {
       case 'yoga':
-        return 'https://i.imgur.com/F6RQT9k.png'; // Anime character in yoga pose
+        return 'https://images.unsplash.com/photo-1588286840104-8457e3263907?q=80&w=800'; // Yoga pose
       case 'tai-chi':
-        return 'https://i.imgur.com/dHzWRBl.png'; // Anime character in tai-chi pose
+        return 'https://images.unsplash.com/photo-1551489818-f9e9f1a53ee2?q=80&w=800'; // Tai chi pose
       case 'meditation':
-        return 'https://i.imgur.com/LQ9R1Z5.png'; // Anime character meditating
+        return 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=800'; // Person meditating
       case 'emotional-healing':
-        return 'https://i.imgur.com/7tYocP2.png'; // Anime character journaling
+        return 'https://images.unsplash.com/photo-1517971071642-34a2d3ecc9cd?q=80&w=800'; // Journal and pen
       case 'self-discovery':
-        return 'https://i.imgur.com/kJz5FpC.png'; // Anime character in nature
+        return 'https://images.unsplash.com/photo-1464853886823-5271d9b0b80a?q=80&w=800'; // Person in nature
       default:
-        return 'https://i.imgur.com/F6RQT9k.png'; // Default image
+        return 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=800'; // Default image
     }
   };
 
@@ -141,7 +141,7 @@ const ExercisesSection = ({ exercises }: ExercisesSectionProps) => {
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
                         target.onerror = null;
-                        target.src = 'https://i.imgur.com/F6RQT9k.png'; // Fallback image
+                        target.src = 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=800'; // Fallback image
                       }}
                     />
                   </div>
