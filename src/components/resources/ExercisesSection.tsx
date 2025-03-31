@@ -70,7 +70,7 @@ const ExercisesSection = ({ exercises }: ExercisesSectionProps) => {
   // Determine if an image needs special cropping styles
   const getImageStyles = (imagePath: string) => {
     if (imagePath.includes('4abf69bf-3c0a-4d6b-ac1e-f50f3c842c94.png')) {
-      return 'object-contain scale-[0.85]'; // Apply special styling to the Tai Chi image
+      return 'object-contain'; // Update to full size without scaling down
     }
     return 'object-cover'; // Default styling for other images
   };
@@ -141,7 +141,7 @@ const ExercisesSection = ({ exercises }: ExercisesSectionProps) => {
               {/* Exercise Illustration */}
               {selectedExercise && (
                 <div className="flex justify-center mb-2">
-                  <div className="rounded-lg overflow-hidden border border-msblue-100 w-64 h-64 flex items-center justify-center bg-msblue-50">
+                  <div className="rounded-lg overflow-hidden border border-msblue-100 w-auto h-auto flex items-center justify-center bg-msblue-50">
                     <img 
                       src={getImageForExercise(selectedExercise)}
                       alt={`${selectedExercise.title} illustration`}
