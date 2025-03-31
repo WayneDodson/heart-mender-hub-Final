@@ -14,7 +14,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 270 15% 20%;
 
-    --primary: 210 100% 45%;
+    --primary: 210 100% 45%; /* Microsoft blue */
     --primary-foreground: 210 40% 98%;
 
     --secondary: 210 15% 95%;
@@ -31,7 +31,7 @@
 
     --border: 210 10% 90%;
     --input: 210 10% 90%;
-    --ring: 210 100% 45%;
+    --ring: 210 100% 45%; /* Microsoft blue */
 
     --radius: 0.75rem;
 
@@ -55,7 +55,7 @@
     --popover: 270 15% 18%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 210 100% 55%;
+    --primary: 210 100% 55%; /* Microsoft blue */
     --primary-foreground: 270 15% 15%;
 
     --secondary: 210 15% 25%;
@@ -72,7 +72,7 @@
 
     --border: 210 15% 25%;
     --input: 210 15% 25%;
-    --ring: 210 100% 55%;
+    --ring: 210 100% 55%; /* Microsoft blue */
 
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
