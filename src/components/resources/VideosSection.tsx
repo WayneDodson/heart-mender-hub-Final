@@ -47,12 +47,12 @@ const divorceSupportVideos: Video[] = [
     tags: ["relationship advice", "acceptance"]
   },
   {
-    title: "How To Deal With Divorce and Move Forward",
-    speaker: "Jay Shetty",
-    description: "Former monk Jay Shetty shares wisdom on processing grief, finding forgiveness, and creating a new vision for your life after divorce.",
-    youtubeId: "iNZB6HWPdpI",
-    duration: "18:32",
-    tags: ["mindfulness", "future planning"]
+    title: "Healing After Divorce - Rebuild Your Life",
+    speaker: "Amy Delamaide",
+    description: "Therapist Amy Delamaide shares practical insights for rebuilding your life after divorce and finding strength in your new chapter.",
+    youtubeId: "GcJVygChaxA",
+    duration: "19:38",
+    tags: ["rebuilding", "emotional healing"]
   },
   {
     title: "5 Rules If You Are Going Through A Divorce",
