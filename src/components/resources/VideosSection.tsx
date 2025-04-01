@@ -23,12 +23,12 @@ const divorceSupportVideos: Video[] = [
     tags: ["emotional healing", "self-care"]
   },
   {
-    title: "Getting Over a Breakup - Letting Go and Moving On",
-    speaker: "Tony Robbins",
-    description: "Tony Robbins shares powerful insights on transforming the pain of divorce into an opportunity for personal growth and renewal.",
-    youtubeId: "bW-jSa9_k3M",
-    duration: "15:21",
-    tags: ["personal growth", "healing"]
+    title: "How to Heal from Heartbreak - 6 Powerful Steps",
+    speaker: "Marisa Peer",
+    description: "World-renowned therapist Marisa Peer shares six powerful steps to help you heal from heartbreak and reclaim your emotional wellbeing after divorce.",
+    youtubeId: "R1jgDZrJBN4",
+    duration: "16:36",
+    tags: ["healing", "emotional recovery"]
   },
   {
     title: "Healing After Divorce - 4 Things To Remember",
@@ -58,7 +58,7 @@ const divorceSupportVideos: Video[] = [
     title: "5 Rules If You Are Going Through A Divorce",
     speaker: "Mel Robbins",
     description: "Mel Robbins provides five practical rules to help you make better decisions and protect your wellbeing during the divorce process.",
-    youtubeId: "hZVTyLmXZWY", // Updated to a working Mel Robbins video about divorce
+    youtubeId: "hZVTyLmXZWY",
     duration: "10:04",
     tags: ["practical advice", "self-protection"]
   }
