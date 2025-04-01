@@ -48,15 +48,6 @@ const CelebrityStories: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
           {celebrityStories.map((story) => (
             <Card key={story.id} className="overflow-hidden h-full flex flex-col">
-              {story.image && (
-                <div className="relative h-48 overflow-hidden">
-                  <img 
-                    src={story.image} 
-                    alt={story.name} 
-                    className="w-full h-full object-cover transition-transform hover:scale-105 duration-300"
-                  />
-                </div>
-              )}
               <CardHeader>
                 <CardTitle>{story.name}</CardTitle>
                 <CardDescription>{story.title}</CardDescription>
