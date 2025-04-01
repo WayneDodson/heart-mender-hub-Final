@@ -34,7 +34,7 @@ const StoryReviewAdmin = () => {
       const { data, error } = await supabase
         .from('stories')
         .select('*')
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: false }) as { data: Story[] | null, error: any };
       
       if (error) throw error;
       setStories(data || []);
@@ -55,7 +55,7 @@ const StoryReviewAdmin = () => {
       const { error } = await supabase
         .from('stories')
         .update({ status })
-        .eq('id', id);
+        .eq('id', id) as { error: any };
       
       if (error) throw error;
       

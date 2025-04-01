@@ -21,6 +21,19 @@ type ApprovedStory = {
   preview: string;
 };
 
+// Define a type that matches our database stories table
+type StoryRow = {
+  id: string;
+  title: string;
+  author_name: string;
+  author_age?: string;
+  category: string;
+  content: string;
+  status: 'pending' | 'approved' | 'rejected';
+  created_at: string;
+  email: string;
+}
+
 const Stories = () => {
   const { toast } = useToast();
   const [approvedStories, setApprovedStories] = useState<ApprovedStory[]>([]);
@@ -36,12 +49,18 @@ const Stories = () => {
         .from('stories')
         .select('*')
         .eq('status', 'approved')
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: false }) as { data: StoryRow[] | null, error: any };
       
       if (error) throw error;
       
       const storiesWithPreviews = data?.map(story => ({
-        ...story,
+        id: story.id,
+        title: story.title,
+        author_name: story.author_name,
+        author_age: story.author_age,
+        category: story.category,
+        content: story.content,
+        created_at: story.created_at,
         preview: story.content.substring(0, 120) + '...',
       })) || [];
       

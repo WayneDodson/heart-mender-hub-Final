@@ -16,6 +16,7 @@ import {
 } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { Database } from '@/integrations/supabase/types';
 
 const storySchema = z.object({
   title: z.string().min(5, { message: 'Title must be at least 5 characters' }).max(100),
@@ -27,6 +28,17 @@ const storySchema = z.object({
 });
 
 type StoryFormValues = z.infer<typeof storySchema>;
+
+// Define a type that matches the structure of our stories table
+type StoryInsert = {
+  title: string;
+  author_name: string;
+  author_age?: string;
+  email: string;
+  category: string;
+  content: string;
+  status: 'pending' | 'approved' | 'rejected';
+}
 
 const StorySubmissionForm = () => {
   const { toast } = useToast();
@@ -47,6 +59,7 @@ const StorySubmissionForm = () => {
   const onSubmit = async (data: StoryFormValues) => {
     setIsSubmitting(true);
     try {
+      // Use type assertion to work around the type issue
       const { error } = await supabase
         .from('stories')
         .insert({
@@ -57,7 +70,7 @@ const StorySubmissionForm = () => {
           category: data.category,
           content: data.content,
           status: 'pending'
-        });
+        } as StoryInsert);
 
       if (error) throw error;
 
