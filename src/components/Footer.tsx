@@ -1,13 +1,83 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Heart, Mail, Instagram, Facebook } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 const Footer = () => {
+  const { toast } = useToast();
+  const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const currentYear = new Date().getFullYear();
   
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+  };
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      toast({
+        title: "Invalid email",
+        description: "Please enter a valid email address.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    setIsSubmitting(true);
+    
+    try {
+      // Insert the email into the newsletter_subscribers table
+      const { error } = await supabase
+        .from('newsletter_subscribers')
+        .insert([{ email }]);
+        
+      if (error) {
+        console.error('Error subscribing to newsletter:', error);
+        
+        // Check if it's a duplicate email error
+        if (error.code === '23505') {
+          toast({
+            title: "Already subscribed",
+            description: "This email is already subscribed to our newsletter.",
+            duration: 5000,
+          });
+        } else {
+          toast({
+            title: "Subscription failed",
+            description: "There was an error subscribing to the newsletter. Please try again.",
+            variant: "destructive",
+            duration: 5000,
+          });
+        }
+      } else {
+        toast({
+          title: "Subscription successful",
+          description: "Thank you for subscribing to our newsletter!",
+          duration: 5000,
+        });
+        setEmail(''); // Clear the input
+      }
+    } catch (err) {
+      console.error('Unexpected error:', err);
+      toast({
+        title: "Subscription failed",
+        description: "There was an error subscribing to the newsletter. Please try again.",
+        variant: "destructive",
+        duration: 5000,
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
   
   return (
@@ -82,16 +152,24 @@ const Footer = () => {
             <p className="text-gray-600 mb-4">
               Subscribe to receive healing insights and updates.
             </p>
-            <div className="flex">
+            <form onSubmit={handleSubscribe} className="flex">
               <input 
                 type="email" 
                 placeholder="Your email" 
                 className="healing-input rounded-r-none"
+                value={email}
+                onChange={handleEmailChange}
+                required
+                disabled={isSubmitting}
               />
-              <button className="bg-healing-500 text-white px-4 py-2 rounded-r-lg hover:bg-healing-600 transition-colors">
-                Subscribe
+              <button 
+                type="submit"
+                className="bg-healing-500 text-white px-4 py-2 rounded-r-lg hover:bg-healing-600 transition-colors disabled:opacity-50"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? 'Subscribing...' : 'Subscribe'}
               </button>
-            </div>
+            </form>
           </div>
         </div>
         
