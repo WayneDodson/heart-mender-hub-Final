@@ -24,7 +24,7 @@ const celebrityStories: CelebrityStory[] = [
     name: "Michelle Obama",
     title: "Marriage Counseling and Open Communication",
     summary: "While not divorced, Michelle Obama has been open about the challenges in her marriage with Barack Obama. In her memoir 'Becoming', she revealed they sought marriage counseling during tough times. She emphasized how therapy helped them communicate better and understand each other's perspectives. Michelle advocates that seeking professional help isn't a sign of failure but a tool for growth. Her transparency about working through marital difficulties has helped normalize therapy and counseling for couples.",
-    image: "https://www.biography.com/.image/t_share/MTczNjEwODI2NTg5MDg3MTI4/michelle-obama-gettyimages-85246000.jpg"
+    image: "public/lovable-uploads/41fea336-d7ae-4f85-aa61-0e4c2bc6a055.png"
   },
   {
     id: "halle-berry",
