@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { Button } from "@/components/ui/button";
-import { Loader2, PenLine } from 'lucide-react';
+import { Loader2, PenLine, Users } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import StoryList from '../components/stories/StoryList';
 import { useStories } from '../hooks/useStories';
@@ -28,11 +28,17 @@ const Stories = () => {
               Real stories from people who have walked the path of divorce and healing. 
               Find inspiration, understanding, and hope in these shared experiences.
             </p>
-            <div className="mt-6">
+            <div className="mt-6 flex flex-wrap justify-center gap-4">
               <Button asChild className="bg-healing-600 hover:bg-healing-700">
                 <Link to="/submit-story" className="flex items-center">
                   <PenLine className="mr-2 h-4 w-4" />
                   Share Your Story
+                </Link>
+              </Button>
+              <Button asChild variant="outline" className="border-healing-600 text-healing-600 hover:bg-healing-50">
+                <Link to="/celebrity-stories" className="flex items-center">
+                  <Users className="mr-2 h-4 w-4" />
+                  Celebrity Journeys
                 </Link>
               </Button>
             </div>

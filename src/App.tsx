@@ -13,6 +13,7 @@ import StoryReviewAdmin from "./pages/StoryReviewAdmin";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import ArticlePage from "./components/ArticlePage";
+import CelebrityStoriesPage from "./pages/CelebrityStories";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +32,7 @@ const App = () => (
           <Route path="/submit-story" element={<SubmitStory />} />
           <Route path="/admin/stories" element={<StoryReviewAdmin />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/celebrity-stories" element={<CelebrityStoriesPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
@@ -51,11 +50,11 @@ const CommentSection: React.FC<CommentSectionProps> = ({ storyId }) => {
       // Using fetch directly with Supabase REST API instead of the client library
       // This bypasses TypeScript errors until the types are updated
       const res = await fetch(
-        `${supabase.supabaseUrl}/rest/v1/story_comments?story_id=eq.${storyId}&order=created_at.desc`,
+        `https://tnkvllqsonnutlxgcfxm.supabase.co/rest/v1/story_comments?story_id=eq.${storyId}&order=created_at.desc`,
         {
           headers: {
-            'apikey': supabase.supabaseKey,
-            'Authorization': `Bearer ${supabase.supabaseKey}`,
+            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRua3ZsbHFzb25udXRseGdjZnhtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM0NDA0NDAsImV4cCI6MjA1OTAxNjQ0MH0.Wm4JlkaNBnnQ3Z530buPw50rKtZloS0raG8nYo0ZCT0',
+            'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRua3ZsbHFzb25udXRseGdjZnhtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM0NDA0NDAsImV4cCI6MjA1OTAxNjQ0MH0.Wm4JlkaNBnnQ3Z530buPw50rKtZloS0raG8nYo0ZCT0`,
           },
         }
       );
@@ -75,12 +74,12 @@ const CommentSection: React.FC<CommentSectionProps> = ({ storyId }) => {
     mutationFn: async (values: CommentFormValues) => {
       // Using fetch directly with Supabase REST API
       const res = await fetch(
-        `${supabase.supabaseUrl}/rest/v1/story_comments`,
+        `https://tnkvllqsonnutlxgcfxm.supabase.co/rest/v1/story_comments`,
         {
           method: 'POST',
           headers: {
-            'apikey': supabase.supabaseKey,
-            'Authorization': `Bearer ${supabase.supabaseKey}`,
+            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRua3ZsbHFzb25udXRseGdjZnhtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM0NDA0NDAsImV4cCI6MjA1OTAxNjQ0MH0.Wm4JlkaNBnnQ3Z530buPw50rKtZloS0raG8nYo0ZCT0',
+            'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRua3ZsbHFzb25udXRseGdjZnhtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM0NDA0NDAsImV4cCI6MjA1OTAxNjQ0MH0.Wm4JlkaNBnnQ3Z530buPw50rKtZloS0raG8nYo0ZCT0`,
             'Content-Type': 'application/json',
             'Prefer': 'return=minimal',
           },
