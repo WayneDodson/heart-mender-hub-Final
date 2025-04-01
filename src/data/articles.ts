@@ -6,7 +6,7 @@ export const articles: Article[] = [
     title: "The 5 Stages of Grief After Divorce",
     description: "Understanding the emotional journey and how to move through each stage.",
     category: "emotional-healing",
-    readTime: "8 min read",
+    readTime: "5 min read",
     content: `
         <p>Divorce is one of the most emotionally challenging experiences a person can go through. The end of a marriage is not just a legal separation; it involves deep emotional processing and personal transformation. Understanding the five stages of grief can help individuals navigate this difficult time and find a path toward healing.</p>
         
@@ -55,7 +55,7 @@ export const articles: Article[] = [
     title: "Rediscovering Your Identity After Divorce",
     description: "Practical steps to reconnect with yourself and build a new life.",
     category: "self-discovery",
-    readTime: "10 min read",
+    readTime: "5 min read",
     content: `
         <p>One of the most challenging aspects of divorce is the identity shift that accompanies it. When a marriage ends, many people realize how much of their self-perception was tied to their role as a spouse. This creates an opportunity—though initially a painful one—to rediscover who you are as an individual.</p>
         
@@ -96,7 +96,7 @@ export const articles: Article[] = [
     title: "Co-Parenting After Separation: A Guide",
     description: "How to maintain healthy relationships for your children's wellbeing.",
     category: "relationships",
-    readTime: "12 min read",
+    readTime: "5 min read",
     content: `
         <p>When a marriage ends, but parenthood continues, co-parenting becomes one of the most important relationships in your life. Though challenging, successful co-parenting provides children with stability, security, and healthy models for relationships—even after divorce.</p>
         
@@ -162,7 +162,7 @@ export const articles: Article[] = [
     title: "Financial Recovery Post-Divorce",
     description: "Rebuilding your financial foundation and planning for your future.",
     category: "practical-advice",
-    readTime: "9 min read",
+    readTime: "5 min read",
     content: `
         <p>Divorce often brings significant financial challenges, from dividing assets to establishing a single-income household. However, with thoughtful planning and deliberate steps, financial recovery is absolutely achievable. This guide offers practical strategies to help you rebuild financial stability and confidence after divorce.</p>
         
@@ -277,7 +277,7 @@ export const articles: Article[] = [
     title: "Healing Rituals for Moving On",
     description: "Symbolic practices that can help you process grief and find closure.",
     category: "emotional-healing",
-    readTime: "7 min read",
+    readTime: "5 min read",
     content: `
         <p>The end of a marriage represents not just a legal change, but a profound emotional transition. Throughout human history, people have used rituals and symbolic actions to mark significant life changes. These practices can help process complex emotions, create meaningful closure, and signal a new beginning. This article explores healing rituals that can support your journey forward after divorce.</p>
         
@@ -359,7 +359,7 @@ export const articles: Article[] = [
     title: "When to Start Dating Again",
     description: "Signs you're ready to open your heart and what to expect.",
     category: "relationships",
-    readTime: "11 min read",
+    readTime: "5 min read",
     content: `
         <p>After divorce, the question of when—or whether—to date again looms large in many people's minds. Some feel eager to find connection quickly, while others worry they might never be ready. There's no universal timeline for post-divorce dating, but there are signs of readiness and strategies for approaching new relationships in a healthy way.</p>
         
