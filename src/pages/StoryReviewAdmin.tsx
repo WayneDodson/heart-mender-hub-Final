@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import { Loader2, BellAlert } from 'lucide-react';
+import { Loader2, Bell } from 'lucide-react';
 import StoryAdminCard from '../components/stories/StoryAdminCard';
 import { useStoryAdmin } from '../hooks/useStoryAdmin';
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
@@ -45,7 +45,7 @@ const StoryReviewAdmin = () => {
           
           {pendingStories.length > 0 && (
             <Alert className="mb-6 border-amber-200 bg-amber-50">
-              <BellAlert className="h-5 w-5 text-amber-600" />
+              <Bell className="h-5 w-5 text-amber-600" />
               <AlertTitle className="text-amber-800">Action Required</AlertTitle>
               <AlertDescription className="text-amber-700">
                 {`You have ${pendingStories.length} ${pendingStories.length === 1 ? 'story' : 'stories'} waiting for review.`}

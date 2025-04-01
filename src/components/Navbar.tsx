@@ -1,13 +1,13 @@
 
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, BellAlert } from 'lucide-react';
+import { Menu, X, Bell } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { usePendingStoriesCount } from '@/hooks/usePendingStoriesCount';
-import { useMobile } from '@/hooks/use-mobile';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Navbar: React.FC = () => {
-  const { isMobile } = useMobile();
+  const isMobile = useIsMobile();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const location = useLocation();
   const { pendingCount } = usePendingStoriesCount();
