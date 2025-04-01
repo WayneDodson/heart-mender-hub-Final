@@ -19,6 +19,7 @@ const commentSchema = z.object({
 
 type CommentFormValues = z.infer<typeof commentSchema>;
 
+// Define a proper type for comments that matches the database schema
 type Comment = {
   id: string;
   story_id: string;
@@ -47,13 +48,18 @@ const CommentSection: React.FC<CommentSectionProps> = ({ storyId }) => {
   const { data: comments = [], isLoading: commentsLoading } = useQuery({
     queryKey: ['comments', storyId],
     queryFn: async () => {
+      // Using a raw query since TypeScript types might not be updated yet
       const { data, error } = await supabase
         .from('story_comments')
         .select('*')
         .eq('story_id', storyId)
         .order('created_at', { ascending: false });
       
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching comments:', error);
+        throw error;
+      }
+      
       return data as Comment[];
     }
   });
@@ -61,6 +67,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ storyId }) => {
   // Mutation for adding a new comment
   const { mutate: addComment, isPending: isSubmitting } = useMutation({
     mutationFn: async (values: CommentFormValues) => {
+      // Using a raw insert since TypeScript types might not be updated yet
       const { data, error } = await supabase
         .from('story_comments')
         .insert([{
@@ -69,7 +76,11 @@ const CommentSection: React.FC<CommentSectionProps> = ({ storyId }) => {
           comment: values.comment,
         }]);
       
-      if (error) throw error;
+      if (error) {
+        console.error('Error posting comment:', error);
+        throw error;
+      }
+      
       return data;
     },
     onSuccess: () => {

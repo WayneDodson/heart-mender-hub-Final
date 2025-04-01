@@ -98,6 +98,7 @@ const StoryDetail = () => {
                 </div>
               </div>
               
+              {/* Add comment section below the story */}
               {id && <CommentSection storyId={id} />}
             </div>
           ) : (

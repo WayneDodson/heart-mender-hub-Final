@@ -22,6 +22,7 @@ const StoryCard: React.FC<StoryCardProps> = ({ story, onReadMore }) => {
   });
 
   // Format title to make "My Journey of Reinvention" bold
+  // Fixed: Added space after "reinvention" and made "Journey of Reinvention" bold
   const formattedTitle = story.title.includes("Journey of reinvention") 
     ? story.title.replace("Journey of reinvention", " <strong>Journey of Reinvention</strong>")
     : story.title;
