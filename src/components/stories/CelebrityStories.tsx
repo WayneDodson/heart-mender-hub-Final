@@ -31,7 +31,7 @@ const celebrityStories: CelebrityStory[] = [
     name: "Halle Berry",
     title: "Resilience Through Multiple Relationships",
     summary: "Halle Berry has been through several divorces and publicly difficult breakups. She has spoken about how each relationship taught her something valuable about herself. Berry focused on her daughter and her career after her divorces, finding purpose in motherhood and creative expression. She has been open about working through her relationship patterns through therapy and self-reflection. Her journey emphasizes resilience and the willingness to learn and grow from past relationships.",
-    image: "https://media1.popsugar-assets.com/files/thumbor/ScqcN9b0a2ZY59AC9YsawfFwb3U=/fit-in/792x1187/filters:format_auto():upscale()/2023/06/14/745/n/1922398/a49b14a0648a24faa1d687.80951466_.jpg"
+    image: "public/lovable-uploads/ae94175c-1b09-4d62-81c8-e2b6e33c5da3.png"
   }
 ];
 
