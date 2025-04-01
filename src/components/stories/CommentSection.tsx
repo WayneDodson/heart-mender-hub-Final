@@ -48,18 +48,24 @@ const CommentSection: React.FC<CommentSectionProps> = ({ storyId }) => {
   const { data: comments = [], isLoading: commentsLoading } = useQuery({
     queryKey: ['comments', storyId],
     queryFn: async () => {
-      // Using a raw query since TypeScript types might not be updated yet
-      const { data, error } = await supabase
-        .from('story_comments')
-        .select('*')
-        .eq('story_id', storyId)
-        .order('created_at', { ascending: false });
+      // Using fetch directly with Supabase REST API instead of the client library
+      // This bypasses TypeScript errors until the types are updated
+      const res = await fetch(
+        `${supabase.supabaseUrl}/rest/v1/story_comments?story_id=eq.${storyId}&order=created_at.desc`,
+        {
+          headers: {
+            'apikey': supabase.supabaseKey,
+            'Authorization': `Bearer ${supabase.supabaseKey}`,
+          },
+        }
+      );
       
-      if (error) {
-        console.error('Error fetching comments:', error);
-        throw error;
+      if (!res.ok) {
+        console.error('Error fetching comments:', res.statusText);
+        throw new Error('Error fetching comments');
       }
       
+      const data = await res.json();
       return data as Comment[];
     }
   });
@@ -67,21 +73,31 @@ const CommentSection: React.FC<CommentSectionProps> = ({ storyId }) => {
   // Mutation for adding a new comment
   const { mutate: addComment, isPending: isSubmitting } = useMutation({
     mutationFn: async (values: CommentFormValues) => {
-      // Using a raw insert since TypeScript types might not be updated yet
-      const { data, error } = await supabase
-        .from('story_comments')
-        .insert([{
-          story_id: storyId,
-          name: values.name,
-          comment: values.comment,
-        }]);
+      // Using fetch directly with Supabase REST API
+      const res = await fetch(
+        `${supabase.supabaseUrl}/rest/v1/story_comments`,
+        {
+          method: 'POST',
+          headers: {
+            'apikey': supabase.supabaseKey,
+            'Authorization': `Bearer ${supabase.supabaseKey}`,
+            'Content-Type': 'application/json',
+            'Prefer': 'return=minimal',
+          },
+          body: JSON.stringify({
+            story_id: storyId,
+            name: values.name,
+            comment: values.comment,
+          }),
+        }
+      );
       
-      if (error) {
-        console.error('Error posting comment:', error);
-        throw error;
+      if (!res.ok) {
+        console.error('Error posting comment:', res.statusText);
+        throw new Error('Error posting comment');
       }
       
-      return data;
+      return res;
     },
     onSuccess: () => {
       toast({
