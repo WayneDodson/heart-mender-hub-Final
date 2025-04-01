@@ -17,21 +17,21 @@ const celebrityStories: CelebrityStory[] = [
     name: "Maria Shriver",
     title: "Finding Strength Through Creative Expression",
     summary: "Maria Shriver navigated her divorce from Arnold Schwarzenegger by focusing on personal growth, healing, and self-discovery. She channeled her emotions into writing and released her first poetry book, 'I Am Maria', which explores themes of self-worth, resilience, and reinvention. Shriver prioritized forgiveness, allowing her to maintain a positive and supportive relationship with Schwarzenegger for the sake of their family. She embraced this chapter of her life as an opportunity for transformation, finding peace and fulfillment in her independence. Her journey highlights the importance of self-reflection, creativity, and emotional healing in overcoming life's challenges.",
-    image: "https://images.unsplash.com/photo-1607746882042-944635dfe10e?q=80&w=400"
+    image: "https://ca-times.brightspotcdn.com/dims4/default/191539e/2147483647/strip/true/crop/2400x3000+0+0/resize/1200x1500!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F0e%2F23%2F9bc1c93e4985952df1614d2ce807%2Fla-tr-shriver-portrait-3.JPG"
   },
   {
     id: "michelle-obama",
     name: "Michelle Obama",
     title: "Marriage Counseling and Open Communication",
     summary: "While not divorced, Michelle Obama has been open about the challenges in her marriage with Barack Obama. In her memoir 'Becoming', she revealed they sought marriage counseling during tough times. She emphasized how therapy helped them communicate better and understand each other's perspectives. Michelle advocates that seeking professional help isn't a sign of failure but a tool for growth. Her transparency about working through marital difficulties has helped normalize therapy and counseling for couples.",
-    image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=400"
+    image: "https://www.biography.com/.image/t_share/MTczNjEwODI2NTg5MDg3MTI4/michelle-obama-gettyimages-85246000.jpg"
   },
   {
     id: "halle-berry",
     name: "Halle Berry",
     title: "Resilience Through Multiple Relationships",
     summary: "Halle Berry has been through several divorces and publicly difficult breakups. She has spoken about how each relationship taught her something valuable about herself. Berry focused on her daughter and her career after her divorces, finding purpose in motherhood and creative expression. She has been open about working through her relationship patterns through therapy and self-reflection. Her journey emphasizes resilience and the willingness to learn and grow from past relationships.",
-    image: "https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?q=80&w=400"
+    image: "https://media1.popsugar-assets.com/files/thumbor/ScqcN9b0a2ZY59AC9YsawfFwb3U=/fit-in/792x1187/filters:format_auto():upscale()/2023/06/14/745/n/1922398/a49b14a0648a24faa1d687.80951466_.jpg"
   }
 ];
 
