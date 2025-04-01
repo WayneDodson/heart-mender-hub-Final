@@ -8,6 +8,7 @@ import { ArrowLeft, Loader2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { StoryRow } from '@/components/stories/types';
+import CommentSection from '@/components/stories/CommentSection';
 
 const StoryDetail = () => {
   const { id } = useParams();
@@ -79,21 +80,25 @@ const StoryDetail = () => {
               <Loader2 className="h-8 w-8 animate-spin text-healing-600" />
             </div>
           ) : story ? (
-            <div className="bg-white rounded-lg shadow-md p-8">
-              <div className="text-sm font-medium text-healing-600 mb-2">
-                {formattedCategory}
+            <div className="space-y-8">
+              <div className="bg-white rounded-lg shadow-md p-8">
+                <div className="text-sm font-medium text-healing-600 mb-2">
+                  {formattedCategory}
+                </div>
+                <h1 className="text-3xl font-bold text-healing-900 mb-3">{story.title}</h1>
+                <div className="text-sm text-gray-500 mb-6">
+                  By {story.author_name}{story.author_age ? `, ${story.author_age}` : ''} • {formattedDate}
+                </div>
+                <div className="prose prose-healing max-w-none">
+                  {story.content.split('\n').map((paragraph, index) => (
+                    <p key={index} className="mb-4 text-gray-700">
+                      {paragraph}
+                    </p>
+                  ))}
+                </div>
               </div>
-              <h1 className="text-3xl font-bold text-healing-900 mb-3">{story.title}</h1>
-              <div className="text-sm text-gray-500 mb-6">
-                By {story.author_name}{story.author_age ? `, ${story.author_age}` : ''} • {formattedDate}
-              </div>
-              <div className="prose prose-healing max-w-none">
-                {story.content.split('\n').map((paragraph, index) => (
-                  <p key={index} className="mb-4 text-gray-700">
-                    {paragraph}
-                  </p>
-                ))}
-              </div>
+              
+              {id && <CommentSection storyId={id} />}
             </div>
           ) : (
             <div className="text-center py-12">
