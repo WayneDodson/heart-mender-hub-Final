@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { StoryRow } from './types';
 import { ChevronDown, ChevronUp, Check, X } from 'lucide-react';
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 
 interface StoryAdminCardProps {
   story: StoryRow;
@@ -15,6 +17,7 @@ interface StoryAdminCardProps {
 const StoryAdminCard: React.FC<StoryAdminCardProps> = ({ story, onApprove, onReject }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isAuthorized, setIsAuthorized] = useState(false);
   
   const formattedDate = new Date(story.created_at).toLocaleDateString('en-US', {
     year: 'numeric',
@@ -97,25 +100,42 @@ const StoryAdminCard: React.FC<StoryAdminCardProps> = ({ story, onApprove, onRej
       </Collapsible>
       
       {story.status === 'pending' && (
-        <CardFooter className="flex justify-end space-x-2">
-          <Button 
-            variant="outline" 
-            onClick={handleReject}
-            disabled={isProcessing}
-            className="border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700"
-          >
-            <X className="h-4 w-4 mr-2" />
-            Reject
-          </Button>
-          <Button 
-            onClick={handleApprove}
-            disabled={isProcessing}
-            className="bg-green-600 hover:bg-green-700 text-white"
-          >
-            <Check className="h-4 w-4 mr-2" />
-            Approve
-          </Button>
-        </CardFooter>
+        <>
+          <div className="px-6 pb-3">
+            <div className="flex items-center space-x-2">
+              <Checkbox 
+                id={`authorize-${story.id}`} 
+                checked={isAuthorized}
+                onCheckedChange={(checked) => setIsAuthorized(checked as boolean)}
+              />
+              <Label
+                htmlFor={`authorize-${story.id}`}
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                I have reviewed this story and authorize it for publication
+              </Label>
+            </div>
+          </div>
+          <CardFooter className="flex justify-end space-x-2">
+            <Button 
+              variant="outline" 
+              onClick={handleReject}
+              disabled={isProcessing}
+              className="border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700"
+            >
+              <X className="h-4 w-4 mr-2" />
+              Reject
+            </Button>
+            <Button 
+              onClick={handleApprove}
+              disabled={isProcessing || !isAuthorized}
+              className="bg-green-600 hover:bg-green-700 text-white disabled:bg-green-300"
+            >
+              <Check className="h-4 w-4 mr-2" />
+              Approve
+            </Button>
+          </CardFooter>
+        </>
       )}
     </Card>
   );
