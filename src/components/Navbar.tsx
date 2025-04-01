@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Bell } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { usePendingStoriesCount } from '@/hooks/usePendingStoriesCount';
 import { useIsMobile } from '@/hooks/use-mobile';

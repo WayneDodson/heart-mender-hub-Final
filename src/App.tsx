@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
@@ -37,7 +38,7 @@ function App() {
   return (
     <div className={darkMode ? "dark" : ""}>
       <div className="min-h-screen">
-        <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+        <Navbar />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/resources" element={<Resources />} />
