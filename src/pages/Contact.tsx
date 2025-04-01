@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { Button } from "@/components/ui/button";
@@ -8,22 +8,68 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Mail, MessageCircle, Heart } from 'lucide-react';
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const Contact = () => {
   const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // In a real implementation, this would send the form data to your backend
-    toast({
-      title: "Message received",
-      description: "Thank you for reaching out. We'll respond to you soon.",
-      duration: 5000,
-    });
-    
-    // Reset form
-    e.currentTarget.reset();
+    setIsSubmitting(true);
+
+    // Get form data
+    const formData = new FormData(e.currentTarget);
+    const firstName = formData.get('first-name') as string;
+    const lastName = formData.get('last-name') as string;
+    const email = formData.get('email') as string;
+    const subject = formData.get('subject') as string;
+    const message = formData.get('message') as string;
+
+    try {
+      // Insert the form data into the contact_submissions table
+      const { error } = await supabase
+        .from('contact_submissions')
+        .insert([
+          {
+            first_name: firstName,
+            last_name: lastName,
+            email,
+            subject,
+            message,
+          }
+        ]);
+
+      if (error) {
+        console.error('Error submitting form:', error);
+        toast({
+          title: "Submission failed",
+          description: "There was an error submitting your message. Please try again.",
+          variant: "destructive",
+          duration: 5000,
+        });
+      } else {
+        toast({
+          title: "Message received",
+          description: "Thank you for reaching out. We'll respond to you soon.",
+          duration: 5000,
+        });
+        
+        // Reset form
+        e.currentTarget.reset();
+      }
+    } catch (err) {
+      console.error('Unexpected error:', err);
+      toast({
+        title: "Submission failed",
+        description: "There was an error submitting your message. Please try again.",
+        variant: "destructive",
+        duration: 5000,
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const faqItems = [
@@ -72,26 +118,63 @@ const Contact = () => {
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
                           <Label htmlFor="first-name">First Name</Label>
-                          <Input id="first-name" placeholder="Jane" className="healing-input" required />
+                          <Input 
+                            id="first-name" 
+                            name="first-name" 
+                            placeholder="Jane" 
+                            className="healing-input" 
+                            required 
+                          />
                         </div>
                         <div className="space-y-2">
                           <Label htmlFor="last-name">Last Name</Label>
-                          <Input id="last-name" placeholder="Doe" className="healing-input" required />
+                          <Input 
+                            id="last-name" 
+                            name="last-name" 
+                            placeholder="Doe" 
+                            className="healing-input" 
+                            required 
+                          />
                         </div>
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="email">Email</Label>
-                        <Input id="email" type="email" placeholder="jane@example.com" className="healing-input" required />
+                        <Input 
+                          id="email" 
+                          name="email" 
+                          type="email" 
+                          placeholder="jane@example.com" 
+                          className="healing-input" 
+                          required 
+                        />
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="subject">Subject</Label>
-                        <Input id="subject" placeholder="How can we help?" className="healing-input" required />
+                        <Input 
+                          id="subject" 
+                          name="subject" 
+                          placeholder="How can we help?" 
+                          className="healing-input" 
+                          required 
+                        />
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="message">Message</Label>
-                        <Textarea id="message" placeholder="Tell us how we can help you..." className="healing-input min-h-[120px]" required />
+                        <Textarea 
+                          id="message" 
+                          name="message" 
+                          placeholder="Tell us how we can help you..." 
+                          className="healing-input min-h-[120px]" 
+                          required 
+                        />
                       </div>
-                      <Button type="submit" className="w-full bg-healing-500 hover:bg-healing-600">Send Message</Button>
+                      <Button 
+                        type="submit" 
+                        className="w-full bg-healing-500 hover:bg-healing-600"
+                        disabled={isSubmitting}
+                      >
+                        {isSubmitting ? 'Sending...' : 'Send Message'}
+                      </Button>
                     </form>
                   </CardContent>
                 </Card>
