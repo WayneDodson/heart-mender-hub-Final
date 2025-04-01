@@ -58,7 +58,7 @@ const divorceSupportVideos: Video[] = [
     title: "5 Rules If You Are Going Through A Divorce",
     speaker: "Mel Robbins",
     description: "Mel Robbins provides five practical rules to help you make better decisions and protect your wellbeing during the divorce process.",
-    youtubeId: "xrGNzeQA5RE",
+    youtubeId: "hZVTyLmXZWY", // Updated to a working Mel Robbins video about divorce
     duration: "10:04",
     tags: ["practical advice", "self-protection"]
   }
