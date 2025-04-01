@@ -65,6 +65,10 @@ const divorceSupportVideos: Video[] = [
 ];
 
 const VideosSection = () => {
+  const openVideo = (youtubeId: string) => {
+    window.open(`https://www.youtube.com/watch?v=${youtubeId}`, '_blank');
+  };
+  
   return (
     <div className="animate-fade-in">
       <h2 className="text-2xl font-semibold mb-6 text-healing-800">Healing Video Resources</h2>
@@ -72,14 +76,17 @@ const VideosSection = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {divorceSupportVideos.map((video, index) => (
           <Card key={index} className="border border-healing-100 hover:shadow-md transition-shadow flex flex-col">
-            <div className="relative">
+            <div 
+              className="relative cursor-pointer" 
+              onClick={() => openVideo(video.youtubeId)}
+            >
               <img 
                 src={`https://img.youtube.com/vi/${video.youtubeId}/hqdefault.jpg`} 
                 alt={video.title}
                 className="w-full h-48 object-cover rounded-t-md"
               />
-              <div className="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
-                <Youtube className="h-12 w-12 text-white opacity-80" />
+              <div className="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center hover:bg-opacity-30 transition-all">
+                <Youtube className="h-12 w-12 text-white opacity-80 hover:opacity-100 hover:scale-110 transition-all" />
               </div>
               <div className="absolute bottom-2 right-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded">
                 {video.duration}
@@ -106,7 +113,7 @@ const VideosSection = () => {
               <Button 
                 variant="outline" 
                 className="w-full flex items-center gap-2"
-                onClick={() => window.open(`https://www.youtube.com/watch?v=${video.youtubeId}`, '_blank')}
+                onClick={() => openVideo(video.youtubeId)}
               >
                 <Youtube className="h-4 w-4" /> Watch Video
               </Button>
