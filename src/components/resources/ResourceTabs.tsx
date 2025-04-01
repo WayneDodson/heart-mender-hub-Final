@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BookOpen, FileText, HeartHandshake, Film, Lightbulb, Link, Users } from 'lucide-react';
@@ -8,8 +7,8 @@ import BooksSection from './BooksSection';
 import VideosSection from './VideosSection';
 import ExternalResources from './ExternalResources';
 import { articles, bookRecommendations } from '../../data/articles';
+import CelebrityStories from '../stories/CelebrityStories';
 
-// Enhanced exercise data with different images for Yoga and Tai Chi
 const enhancedExercises = [
   {
     title: "Mindful Sun Salutation",
@@ -138,7 +137,7 @@ const enhancedExercises = [
 
 const ResourceTabs = () => {
   return (
-    <section className="py-16 px-4">
+    <section className="py-16 px-4 bg-white">
       <div className="container mx-auto">
         <Tabs defaultValue="articles" className="max-w-5xl mx-auto">
           <TabsList className="grid w-full grid-cols-6 mb-10">
@@ -162,33 +161,29 @@ const ResourceTabs = () => {
             </TabsTrigger>
           </TabsList>
           
-          <TabsContent value="articles" className="mt-6">
+          <TabsContent value="articles" className="mt-6 bg-white">
             <ArticlesSection articles={articles} />
           </TabsContent>
           
-          <TabsContent value="exercises" className="mt-6">
+          <TabsContent value="exercises" className="mt-6 bg-white">
             <ExercisesSection exercises={enhancedExercises} />
           </TabsContent>
           
-          <TabsContent value="books" className="mt-6">
+          <TabsContent value="books" className="mt-6 bg-white">
             <BooksSection books={bookRecommendations} />
           </TabsContent>
           
-          <TabsContent value="videos" className="mt-6">
+          <TabsContent value="videos" className="mt-6 bg-white">
             <VideosSection />
           </TabsContent>
 
-          <TabsContent value="external" className="mt-6">
+          <TabsContent value="external" className="mt-6 bg-white">
             <ExternalResources />
           </TabsContent>
           
-          <TabsContent value="stories" className="mt-6">
+          <TabsContent value="stories" className="mt-6 bg-white">
             <div className="py-8">
-              <iframe 
-                src="/celebrity-stories" 
-                className="w-full min-h-[600px] border-0 rounded-lg overflow-hidden"
-                title="Celebrity Healing Stories"
-              />
+              <CelebrityStories />
             </div>
           </TabsContent>
         </Tabs>
