@@ -2,8 +2,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Heart, BookOpen, Users, Calendar } from 'lucide-react';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -48,8 +46,6 @@ const Index = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <Navbar />
-      
       <main className="flex-grow">
         {/* Hero Section */}
         <section className="relative bg-gradient-to-r from-msblue-100 to-msblue-200 py-20 px-4">
@@ -137,8 +133,6 @@ const Index = () => {
           </div>
         </section>
       </main>
-
-      <Footer />
     </div>
   );
 };
