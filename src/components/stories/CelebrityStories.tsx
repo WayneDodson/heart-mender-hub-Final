@@ -38,12 +38,6 @@ const CelebrityStories: React.FC = () => {
   return (
     <section className="py-12 px-4 bg-white">
       <div className="container mx-auto max-w-6xl">
-        <h2 className="text-3xl font-bold mb-8 text-healing-900">Celebrity Healing Journeys</h2>
-        <p className="text-lg text-gray-700 mb-10">
-          Even celebrities face the challenges of breakups and divorces. These public figures have shared their stories of healing and growth, 
-          offering insights that might help in your own journey.
-        </p>
-        
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
           {celebrityStories.map((story) => (
             <Card key={story.id} className="overflow-hidden h-full flex flex-col bg-white">

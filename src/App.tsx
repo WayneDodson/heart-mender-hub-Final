@@ -17,9 +17,7 @@ import NewsletterAdmin from "./pages/NewsletterAdmin";
 
 function App() {
   // Always keep light mode
-  const [darkMode, setDarkMode] = useState(false);
-
-  useEffect(() => {
+  React.useEffect(() => {
     // Always set light theme
     document.documentElement.setAttribute("data-theme", "light");
     localStorage.setItem("theme", "light");
