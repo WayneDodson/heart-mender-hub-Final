@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Youtube } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -37,6 +36,14 @@ const divorceSupportVideos: Video[] = [
     youtubeId: "E7TxEzMF3s8",
     duration: "15:27",
     tags: ["identity", "personal growth"]
+  },
+  {
+    title: "How To Get Over A Breakup (Tips For Moving On Quickly)",
+    speaker: "Matthew Hussey",
+    description: "Matthew Hussey provides practical strategies and mindset shifts to help you move forward after a relationship ends, focusing on personal growth and healing.",
+    youtubeId: "hIKFEkO3Qss",
+    duration: "11:28",
+    tags: ["moving on", "personal growth"]
   },
   {
     title: "Divorce Doesn't Mean You're a Failure",
