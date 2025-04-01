@@ -1,13 +1,72 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { MessageCircle, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
+
+type ApprovedStory = {
+  id: string;
+  title: string;
+  author_name: string;
+  author_age?: string;
+  category: string;
+  content: string;
+  created_at: string;
+  preview: string;
+};
 
 const Stories = () => {
+  const { toast } = useToast();
+  const [approvedStories, setApprovedStories] = useState<ApprovedStory[]>([]);
+  const [loading, setLoading] = useState(true);
+  
+  useEffect(() => {
+    fetchApprovedStories();
+  }, []);
+
+  const fetchApprovedStories = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('stories')
+        .select('*')
+        .eq('status', 'approved')
+        .order('created_at', { ascending: false });
+      
+      if (error) throw error;
+      
+      const storiesWithPreviews = data?.map(story => ({
+        ...story,
+        preview: story.content.substring(0, 120) + '...',
+      })) || [];
+      
+      setApprovedStories(storiesWithPreviews);
+    } catch (error) {
+      console.error('Error fetching approved stories:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to load community stories',
+        variant: 'destructive',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+  };
+
+  // Original hardcoded featured stories
   const featuredStories = [
     {
       title: "Finding Myself Again",
@@ -137,29 +196,38 @@ const Stories = () => {
           </div>
         </section>
         
-        {/* More Community Stories */}
+        {/* Community Stories */}
         <section className="py-12 px-4 bg-healing-50">
           <div className="container mx-auto max-w-5xl">
             <h2 className="text-3xl font-bold mb-8 text-healing-800">More from Our Community</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {communityStories.map((story, index) => (
-                <Card key={index} className="border border-healing-100 hover:shadow-md transition-shadow h-full">
-                  <CardHeader>
-                    <div className="text-sm font-medium text-healing-600 mb-1">
-                      {story.category.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
-                    </div>
-                    <CardTitle className="text-xl">{story.title}</CardTitle>
-                    <CardDescription className="mt-1">By {story.author} • {story.date}</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-700">{story.preview}</p>
-                  </CardContent>
-                  <CardFooter>
-                    <Button variant="ghost" className="text-healing-600 hover:text-healing-700 hover:bg-healing-50">Read Full Story</Button>
-                  </CardFooter>
-                </Card>
-              ))}
-            </div>
+            
+            {loading ? (
+              <div className="text-center py-8">Loading community stories...</div>
+            ) : approvedStories.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {approvedStories.map((story) => (
+                  <Card key={story.id} className="border border-healing-100 hover:shadow-md transition-shadow h-full">
+                    <CardHeader>
+                      <div className="text-sm font-medium text-healing-600 mb-1">
+                        {story.category.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                      </div>
+                      <CardTitle className="text-xl">{story.title}</CardTitle>
+                      <CardDescription className="mt-1">By {story.author_name}{story.author_age ? `, ${story.author_age}` : ''} • {formatDate(story.created_at)}</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-gray-700">{story.preview}</p>
+                    </CardContent>
+                    <CardFooter>
+                      <Button variant="ghost" className="text-healing-600 hover:text-healing-700 hover:bg-healing-50">Read Full Story</Button>
+                    </CardFooter>
+                  </Card>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-8 bg-white rounded-lg shadow-sm">
+                <p className="text-gray-600">No community stories have been published yet.</p>
+              </div>
+            )}
             
             <div className="mt-12 text-center">
               <h3 className="text-xl font-semibold mb-4 text-healing-800">Your Story Matters</h3>
@@ -167,9 +235,11 @@ const Stories = () => {
                 Sharing your experience can help others who are walking a similar path. 
                 Your journey might be exactly what someone else needs to hear right now.
               </p>
-              <Button className="bg-healing-600 hover:bg-healing-700 text-white font-medium px-6 py-3 rounded-full">
-                Share Your Story
-              </Button>
+              <Link to="/submit-story">
+                <Button className="bg-healing-600 hover:bg-healing-700 text-white font-medium px-6 py-3 rounded-full">
+                  Share Your Story
+                </Button>
+              </Link>
             </div>
           </div>
         </section>

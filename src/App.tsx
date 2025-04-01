@@ -7,6 +7,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Resources from "./pages/Resources";
 import Stories from "./pages/Stories";
+import SubmitStory from "./pages/SubmitStory";
+import StoryReviewAdmin from "./pages/StoryReviewAdmin";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import ArticlePage from "./components/ArticlePage";
@@ -24,6 +26,8 @@ const App = () => (
           <Route path="/resources" element={<Resources />} />
           <Route path="/resources/article/:articleId" element={<ArticlePage />} />
           <Route path="/stories" element={<Stories />} />
+          <Route path="/submit-story" element={<SubmitStory />} />
+          <Route path="/admin/stories" element={<StoryReviewAdmin />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
