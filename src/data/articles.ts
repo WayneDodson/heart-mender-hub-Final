@@ -517,16 +517,22 @@ export const bookRecommendations = [
   {
     title: "Conscious Uncoupling",
     author: "Katherine Woodward Thomas",
-    description: "5 steps to living happily even after divorce."
+    description: "5 steps to living happily even after divorce.",
+    amazonLink: "https://www.amazon.com/Conscious-Uncoupling-Living-Happily-After/dp/0553447017/",
+    extract: "Conscious Uncoupling provides a blueprint for separating from your partner in a way that leaves everyone whole, healthy, and capable of future love. The five-step process guides you through grief, acceptance, and into a new empowered future."
   },
   {
     title: "Rebuilding When Your Relationship Ends",
     author: "Bruce Fisher & Robert Alberti",
-    description: "A comprehensive guide to the emotional aspects of divorce recovery."
+    description: "A comprehensive guide to the emotional aspects of divorce recovery.",
+    amazonLink: "https://www.amazon.com/Rebuilding-Relationship-Divorce-Recovery-Workbook/dp/1886230692/",
+    extract: "Providing a proven 19-step process for rebuilding your life after divorce, this classic guide has helped over a million readers navigate the tumultuous path from heartbreak to healing, showing that there is light at the end of the tunnel."
   },
   {
     title: "The Journey from Abandonment to Healing",
     author: "Susan Anderson",
-    description: "Turn the end of a relationship into the beginning of your journey to self-discovery."
+    description: "Turn the end of a relationship into the beginning of your journey to self-discovery.",
+    amazonLink: "https://www.amazon.com/Journey-Abandonment-Healing-Relationship-Self-Acceptance/dp/0425273539/",
+    extract: "Blending scientific research with personal stories, this book offers a powerful program for overcoming the painful feelings of abandonment, helping you move from self-defeating patterns to a newfound sense of self-worth and healthier relationships."
   }
 ];
