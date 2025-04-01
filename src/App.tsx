@@ -1,43 +1,60 @@
-
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Routes, Route } from "react-router-dom";
+import "./App.css";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 import Index from "./pages/Index";
 import Resources from "./pages/Resources";
 import Stories from "./pages/Stories";
-import StoryDetail from "./pages/StoryDetail";
 import SubmitStory from "./pages/SubmitStory";
-import StoryReviewAdmin from "./pages/StoryReviewAdmin";
-import Contact from "./pages/Contact";
+import StoryDetail from "./pages/StoryDetail";
+import CelebrityStories from "./pages/CelebrityStories";
 import NotFound from "./pages/NotFound";
-import ArticlePage from "./components/ArticlePage";
-import CelebrityStoriesPage from "./pages/CelebrityStories";
+import Contact from "./pages/Contact";
+import StoryReviewAdmin from "./pages/StoryReviewAdmin";
+import { Toaster } from "./components/ui/toaster";
+import NewsletterAdmin from "./pages/NewsletterAdmin";
 
-const queryClient = new QueryClient();
+function App() {
+  const [darkMode, setDarkMode] = useState(false);
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
+  useEffect(() => {
+    // On page load set the theme based on local storage or default to dark
+    const storedTheme = localStorage.getItem("theme") || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    if (storedTheme) {
+      document.documentElement.setAttribute("data-theme", storedTheme);
+      setDarkMode(storedTheme === "dark");
+    }
+  }, []);
+
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+    const newTheme = darkMode ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", newTheme);
+    localStorage.setItem("theme", newTheme);
+  };
+
+  return (
+    <div className={darkMode ? "dark" : ""}>
+      <div className="min-h-screen">
+        <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/resources" element={<Resources />} />
-          <Route path="/resources/article/:articleId" element={<ArticlePage />} />
           <Route path="/stories" element={<Stories />} />
-          <Route path="/story/:id" element={<StoryDetail />} />
           <Route path="/submit-story" element={<SubmitStory />} />
-          <Route path="/admin/stories" element={<StoryReviewAdmin />} />
+          <Route path="/stories/:id" element={<StoryDetail />} />
+          <Route path="/celebrity-stories" element={<CelebrityStories />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/celebrity-stories" element={<CelebrityStoriesPage />} />
+          <Route path="/newsletter-admin" element={<NewsletterAdmin />} />
+          <Route path="/admin/stories" element={<StoryReviewAdmin />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+        <Footer />
+        <Toaster />
+      </div>
+    </div>
+  );
+}
 
 export default App;
