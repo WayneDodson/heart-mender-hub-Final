@@ -31,12 +31,12 @@ const divorceSupportVideos: Video[] = [
     tags: ["healing", "emotional recovery"]
   },
   {
-    title: "Healing After Divorce - 4 Things To Remember",
-    speaker: "Lisa Nichols",
-    description: "Lisa Nichols provides four essential principles to help you rebuild your life and regain your sense of self after divorce.",
-    youtubeId: "rWZlol0H4rQ", 
-    duration: "9:46",
-    tags: ["self-worth", "rebuilding"]
+    title: "Life After Divorce: Finding Your Identity Again",
+    speaker: "Alicia Scott",
+    description: "Divorce coach Alicia Scott shares her personal journey and practical insights to help you rediscover your identity and build a fulfilling life after divorce.",
+    youtubeId: "E7TxEzMF3s8",
+    duration: "15:27",
+    tags: ["identity", "personal growth"]
   },
   {
     title: "Divorce Doesn't Mean You're a Failure",
