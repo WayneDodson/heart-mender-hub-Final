@@ -61,8 +61,7 @@ const StoryDetail = () => {
     : '';
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <Navbar />
+    <>
       <main className="flex-grow py-12 px-4 bg-white">
         <div className="container mx-auto max-w-4xl">
           <Button 
@@ -107,8 +106,7 @@ const StoryDetail = () => {
           )}
         </div>
       </main>
-      <Footer />
-    </div>
+    </>
   );
 };
 
