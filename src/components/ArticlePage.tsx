@@ -85,8 +85,31 @@ const ArticlePage = () => {
           )}
           
           <article className="prose prose-lg max-w-none space-y-6">
-            {/* Display the article content as HTML */}
-            <div dangerouslySetInnerHTML={{ __html: article.content }} />
+            {/* Add custom styling for article content */}
+            <style dangerouslySetInnerHTML={{
+              __html: `
+                .article-content h2 {
+                  font-weight: 700;
+                  margin-top: 2rem;
+                  margin-bottom: 1rem;
+                  padding-bottom: 0.5rem;
+                  color: #2c5282;
+                  font-size: 1.5rem;
+                }
+                .article-content h3 {
+                  font-weight: 700;
+                  margin-top: 1.5rem;
+                  margin-bottom: 0.75rem;
+                  color: #2c5282;
+                  font-size: 1.25rem;
+                }
+              `
+            }} />
+            {/* Display the article content as HTML with added class for styling */}
+            <div 
+              className="article-content" 
+              dangerouslySetInnerHTML={{ __html: article.content }} 
+            />
           </article>
         </div>
       </main>
