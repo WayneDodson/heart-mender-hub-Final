@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Youtube } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -46,12 +47,12 @@ const divorceSupportVideos: Video[] = [
     tags: ["moving on", "personal growth"]
   },
   {
-    title: "Divorce Doesn't Mean You're a Failure",
-    speaker: "Esther Perel",
-    description: "Renowned relationship therapist Esther Perel discusses how to reframe divorce as a chapter of growth rather than a sign of failure.",
-    youtubeId: "koPQ2YjfQmk",
-    duration: "7:15",
-    tags: ["relationship advice", "acceptance"]
+    title: "How to Heal After Divorce or Breakup",
+    speaker: "Briana MacWilliam",
+    description: "Attachment theory specialist Briana MacWilliam shares insights on healing after divorce, understanding attachment patterns, and rebuilding your life.",
+    youtubeId: "DR5dx_ojZG0",
+    duration: "23:42",
+    tags: ["healing", "attachment theory"]
   },
   {
     title: "Healing After Divorce - Rebuild Your Life",
