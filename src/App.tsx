@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
@@ -17,26 +16,17 @@ import { Toaster } from "./components/ui/toaster";
 import NewsletterAdmin from "./pages/NewsletterAdmin";
 
 function App() {
+  // Always keep light mode
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
-    // On page load set the theme based on local storage or default to dark
-    const storedTheme = localStorage.getItem("theme") || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-    if (storedTheme) {
-      document.documentElement.setAttribute("data-theme", storedTheme);
-      setDarkMode(storedTheme === "dark");
-    }
+    // Always set light theme
+    document.documentElement.setAttribute("data-theme", "light");
+    localStorage.setItem("theme", "light");
   }, []);
 
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-    const newTheme = darkMode ? "light" : "dark";
-    document.documentElement.setAttribute("data-theme", newTheme);
-    localStorage.setItem("theme", newTheme);
-  };
-
   return (
-    <div className={darkMode ? "dark" : ""}>
+    <div className="light">
       <div className="min-h-screen">
         <Navbar />
         <Routes>

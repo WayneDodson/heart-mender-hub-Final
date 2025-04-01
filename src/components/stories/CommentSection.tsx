@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
@@ -128,7 +129,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ storyId }) => {
   };
 
   return (
-    <div className="mt-12 space-y-8">
+    <div className="mt-12 space-y-8 bg-white">
       <div className="border-t pt-8">
         <h2 className="text-2xl font-bold text-healing-900 mb-6 flex items-center">
           <MessageCircle className="mr-2 h-5 w-5" />
@@ -145,7 +146,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ storyId }) => {
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Your name" {...field} />
+                    <Input placeholder="Your name" className="bg-white" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -160,7 +161,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ storyId }) => {
                   <FormControl>
                     <Textarea 
                       placeholder="Share your thoughts..." 
-                      className="min-h-[100px]"
+                      className="min-h-[100px] bg-white"
                       {...field} 
                     />
                   </FormControl>
