@@ -36,10 +36,11 @@ const Footer = () => {
     setIsSubmitting(true);
     
     try {
-      // Insert the email into the newsletter_subscribers table
+      // Use direct SQL query method instead of the typed .from() method
+      // since TypeScript doesn't know about the newsletter_subscribers table yet
       const { error } = await supabase
         .from('newsletter_subscribers')
-        .insert([{ email }]);
+        .insert({ email });
         
       if (error) {
         console.error('Error subscribing to newsletter:', error);
