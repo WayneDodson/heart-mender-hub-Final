@@ -1,8 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Loader2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
@@ -62,9 +60,7 @@ const StoryDetail = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <Navbar />
-      
-      <main className="flex-grow py-12 px-4 bg-healing-50">
+      <main className="flex-grow py-12 px-4 bg-white">
         <div className="container mx-auto max-w-4xl">
           <Button 
             variant="ghost" 
@@ -108,8 +104,6 @@ const StoryDetail = () => {
           )}
         </div>
       </main>
-
-      <Footer />
     </div>
   );
 };

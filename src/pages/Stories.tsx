@@ -1,7 +1,5 @@
 
-import React, { useState } from 'react';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
+import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Loader2, PenLine, Users } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -13,14 +11,12 @@ const Stories = () => {
   const navigate = useNavigate();
   
   const handleReadMore = (id: string) => {
-    navigate(`/story/${id}`);
+    navigate(`/stories/${id}`);
   };
   
   return (
     <div className="flex flex-col min-h-screen">
-      <Navbar />
-      
-      <main className="flex-grow py-12 px-4 bg-healing-50">
+      <main className="flex-grow py-12 px-4 bg-white">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold mb-4 text-healing-900">Community Stories</h1>
@@ -54,8 +50,6 @@ const Stories = () => {
           
         </div>
       </main>
-
-      <Footer />
     </div>
   );
 };

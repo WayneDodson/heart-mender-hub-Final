@@ -21,14 +21,13 @@ const StoryCard: React.FC<StoryCardProps> = ({ story, onReadMore }) => {
     day: 'numeric',
   });
 
-  // Format title to make "My Journey of Reinvention" bold
-  // Fixed: Added space after "reinvention" and made "Journey of Reinvention" bold
+  // Format title to make "Journey of Reinvention" bold
   const formattedTitle = story.title.includes("Journey of reinvention") 
     ? story.title.replace("Journey of reinvention", " <strong>Journey of Reinvention</strong>")
     : story.title;
 
   return (
-    <Card className="h-full flex flex-col border border-healing-100 hover:shadow-md transition-shadow">
+    <Card className="h-full flex flex-col border border-healing-100 hover:shadow-md transition-shadow bg-white">
       <CardHeader>
         <div className="text-sm font-medium text-healing-600 mb-1">
           {formattedCategory}
