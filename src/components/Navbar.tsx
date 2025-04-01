@@ -1,54 +1,136 @@
 
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Menu, X, Heart } from 'lucide-react';
-import { Button } from "@/components/ui/button";
+import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { Menu, X, BellAlert } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { usePendingStoriesCount } from '@/hooks/usePendingStoriesCount';
+import { useMobile } from '@/hooks/use-mobile';
 
-const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
+const Navbar: React.FC = () => {
+  const { isMobile } = useMobile();
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const location = useLocation();
+  const { pendingCount } = usePendingStoriesCount();
 
   const toggleMenu = () => {
-    setIsOpen(!isOpen);
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
+
+  const links = [
+    { text: 'Home', path: '/' },
+    { text: 'Stories', path: '/stories' },
+    { text: 'Submit Story', path: '/submit-story' },
+    { text: 'Resources', path: '/resources' },
+    { text: 'Contact', path: '/contact' },
+  ];
+
+  const adminLinks = [
+    { 
+      text: 'Review Stories', 
+      path: '/admin/stories', 
+      hasBadge: pendingCount > 0,
+      badgeCount: pendingCount 
+    }
+  ];
+
+  const isActive = (path: string) => {
+    return location.pathname === path;
   };
 
   return (
-    <nav className="bg-white shadow-sm py-4 sticky top-0 z-50">
+    <div className="bg-healing-900 text-white">
       <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center">
-          <Link to="/" className="flex items-center space-x-2">
-            <Heart className="h-6 w-6 text-healing-500" />
-            <span className="font-bold text-xl text-healing-800">Heart Mender</span>
-          </Link>
-
-          {/* Desktop Menu */}
-          <div className="hidden md:flex space-x-8">
-            <Link to="/" className="text-gray-700 hover:text-healing-600 transition-colors">Home</Link>
-            <Link to="/resources" className="text-gray-700 hover:text-healing-600 transition-colors">Resources</Link>
-            <Link to="/stories" className="text-gray-700 hover:text-healing-600 transition-colors">Stories</Link>
-            <Link to="/contact" className="text-gray-700 hover:text-healing-600 transition-colors">Contact</Link>
+        <div className="flex justify-between items-center py-4">
+          <div className="flex items-center">
+            <Link to="/" className="text-xl font-bold">Healing Journeys</Link>
           </div>
-
-          {/* Mobile Menu Button */}
-          <div className="md:hidden">
-            <button onClick={toggleMenu} className="text-gray-700">
-              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </button>
-          </div>
+          
+          {isMobile ? (
+            <>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-white"
+                onClick={toggleMenu}
+                aria-label="Toggle menu"
+              >
+                {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              </Button>
+              
+              {isMenuOpen && (
+                <div className="absolute top-16 left-0 right-0 bg-healing-900 z-50 px-4 py-2 shadow-lg">
+                  <nav>
+                    <ul className="space-y-2">
+                      {links.map((link) => (
+                        <li key={link.path}>
+                          <Link
+                            to={link.path}
+                            className={`block py-2 ${isActive(link.path) ? 'text-healing-300 font-medium' : 'hover:text-healing-300'}`}
+                            onClick={closeMenu}
+                          >
+                            {link.text}
+                          </Link>
+                        </li>
+                      ))}
+                      {adminLinks.map((link) => (
+                        <li key={link.path}>
+                          <Link
+                            to={link.path}
+                            className={`block py-2 ${isActive(link.path) ? 'text-healing-300 font-medium' : 'hover:text-healing-300'} flex items-center`}
+                            onClick={closeMenu}
+                          >
+                            {link.text}
+                            {link.hasBadge && (
+                              <span className="ml-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                                {link.badgeCount}
+                              </span>
+                            )}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </nav>
+                </div>
+              )}
+            </>
+          ) : (
+            <nav>
+              <ul className="flex space-x-6">
+                {links.map((link) => (
+                  <li key={link.path}>
+                    <Link
+                      to={link.path}
+                      className={`${isActive(link.path) ? 'text-healing-300 font-medium' : 'hover:text-healing-300'}`}
+                    >
+                      {link.text}
+                    </Link>
+                  </li>
+                ))}
+                {adminLinks.map((link) => (
+                  <li key={link.path}>
+                    <Link
+                      to={link.path}
+                      className={`${isActive(link.path) ? 'text-healing-300 font-medium' : 'hover:text-healing-300'} flex items-center`}
+                    >
+                      {link.text}
+                      {link.hasBadge && (
+                        <span className="ml-1.5 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                          {link.badgeCount}
+                        </span>
+                      )}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          )}
         </div>
-
-        {/* Mobile Menu */}
-        {isOpen && (
-          <div className="md:hidden mt-4 animate-fade-in">
-            <div className="flex flex-col space-y-4 pb-4">
-              <Link to="/" className="text-gray-700 hover:text-healing-600 transition-colors" onClick={toggleMenu}>Home</Link>
-              <Link to="/resources" className="text-gray-700 hover:text-healing-600 transition-colors" onClick={toggleMenu}>Resources</Link>
-              <Link to="/stories" className="text-gray-700 hover:text-healing-600 transition-colors" onClick={toggleMenu}>Stories</Link>
-              <Link to="/contact" className="text-gray-700 hover:text-healing-600 transition-colors" onClick={toggleMenu}>Contact</Link>
-            </div>
-          </div>
-        )}
       </div>
-    </nav>
+    </div>
   );
 };
 
