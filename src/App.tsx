@@ -14,6 +14,7 @@ import Contact from "./pages/Contact";
 import StoryReviewAdmin from "./pages/StoryReviewAdmin";
 import { Toaster } from "./components/ui/toaster";
 import NewsletterAdmin from "./pages/NewsletterAdmin";
+import ArticlePage from "./components/ArticlePage";
 
 function App() {
   // Always keep light mode
@@ -30,6 +31,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/resources" element={<Resources />} />
+          <Route path="/resources/article/:articleId" element={<ArticlePage />} />
           <Route path="/stories" element={<Stories />} />
           <Route path="/submit-story" element={<SubmitStory />} />
           <Route path="/stories/:id" element={<StoryDetail />} />

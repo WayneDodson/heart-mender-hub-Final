@@ -27,9 +27,11 @@ const ArticlesSection = ({ articles }: ArticlesSectionProps) => {
             </CardContent>
             <CardFooter className="flex justify-between items-center">
               <div className="text-sm text-gray-500">{article.readTime}</div>
-              <Button variant="ghost" className="text-healing-600 hover:text-healing-700 hover:bg-healing-50">
-                <Link to={`/resources/article/${article.id}`}>Read More</Link>
-              </Button>
+              <Link to={`/resources/article/${article.id}`}>
+                <Button variant="ghost" className="text-healing-600 hover:text-healing-700 hover:bg-healing-50">
+                  Read More
+                </Button>
+              </Link>
             </CardFooter>
           </Card>
         ))}
