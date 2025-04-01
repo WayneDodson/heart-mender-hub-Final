@@ -4,19 +4,16 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { Button } from "@/components/ui/button";
 import { Loader2, PenLine } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import StoryList from '../components/stories/StoryList';
 import { useStories } from '../hooks/useStories';
 
 const Stories = () => {
   const { approvedStories, isLoading } = useStories();
+  const navigate = useNavigate();
   
   const handleReadMore = (id: string) => {
-    // For now, just log the ID. In a future implementation, this would navigate to a story detail page
-    console.log("Navigate to story:", id);
-    
-    // Scroll to the top to simulate navigation
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    navigate(`/story/${id}`);
   };
   
   return (
