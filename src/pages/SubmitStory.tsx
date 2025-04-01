@@ -2,7 +2,7 @@
 import React from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import StorySubmissionForm from '../components/StorySubmissionForm';
+import StorySubmissionForm from '../components/stories/StorySubmissionForm';
 
 const SubmitStory = () => {
   return (
