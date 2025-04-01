@@ -61,14 +61,6 @@ const divorceSupportVideos: Video[] = [
     youtubeId: "GcJVygChaxA",
     duration: "19:38",
     tags: ["rebuilding", "emotional healing"]
-  },
-  {
-    title: "5 Rules If You Are Going Through A Divorce",
-    speaker: "Mel Robbins",
-    description: "Mel Robbins provides five practical rules to help you make better decisions and protect your wellbeing during the divorce process.",
-    youtubeId: "hZVTyLmXZWY",
-    duration: "10:04",
-    tags: ["practical advice", "self-protection"]
   }
 ];
 
