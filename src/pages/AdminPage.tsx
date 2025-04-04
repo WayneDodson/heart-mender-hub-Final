@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import StoryReviewAdmin from './StoryReviewAdmin';
 import AdminLogin from '../components/admin/AdminLogin';
 import { useAdminAuth } from '../hooks/useAdminAuth';
@@ -10,6 +10,14 @@ import { useToast } from '@/hooks/use-toast';
 const AdminPage = () => {
   const { isAdmin, isLoading, loginAdmin, logoutAdmin } = useAdminAuth();
   const { toast } = useToast();
+
+  // Set document title for better SEO
+  useEffect(() => {
+    document.title = "Admin Login - Heart Mender";
+    return () => {
+      document.title = "Heart Mender - Healing After Divorce";
+    };
+  }, []);
 
   const handleLogout = () => {
     logoutAdmin();

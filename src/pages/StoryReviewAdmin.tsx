@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Loader2, Bell } from 'lucide-react';
 import StoryAdminCard from '../components/stories/StoryAdminCard';
 import { useStoryAdmin } from '../hooks/useStoryAdmin';
@@ -11,16 +11,8 @@ const StoryReviewAdmin = () => {
   const { toast } = useToast();
   const pendingStories = stories.filter(story => story.status === 'pending');
   
-  useEffect(() => {
-    // Show a toast notification when the component mounts if there are pending stories
-    if (pendingStories.length > 0) {
-      toast({
-        title: "Stories need review",
-        description: `You have ${pendingStories.length} ${pendingStories.length === 1 ? 'story' : 'stories'} waiting for review.`,
-        duration: 5000,
-      });
-    }
-  }, []);
+  // Remove useEffect with toast notification to prevent 
+  // "Review Stories" from being too prominent in indexing
   
   const handleApprove = async (id: string) => {
     await updateStoryStatus(id, 'approved');
@@ -34,7 +26,7 @@ const StoryReviewAdmin = () => {
     <div className="flex-grow py-12 px-4 bg-healing-50">
       <div className="container mx-auto max-w-4xl">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-healing-900">Story Review Dashboard</h1>
+          <h1 className="text-3xl font-bold text-healing-900">Story Management</h1>
           <p className="text-gray-600 mt-2">Review and manage submitted stories.</p>
         </div>
         
