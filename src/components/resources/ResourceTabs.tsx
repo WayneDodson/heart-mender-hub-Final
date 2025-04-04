@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BookOpen, FileText, HeartHandshake, Film, Lightbulb, Link, Users } from 'lucide-react';
@@ -8,6 +9,7 @@ import VideosSection from './VideosSection';
 import ExternalResources from './ExternalResources';
 import { articles, bookRecommendations } from '../../data/articles';
 import CelebrityStories from '../stories/CelebrityStories';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const enhancedExercises = [
   {
@@ -136,28 +138,30 @@ const enhancedExercises = [
 ];
 
 const ResourceTabs = () => {
+  const isMobile = useIsMobile();
+  
   return (
     <section className="py-16 px-4 bg-white">
       <div className="container mx-auto">
         <Tabs defaultValue="articles" className="max-w-5xl mx-auto">
-          <TabsList className="grid w-full grid-cols-6 mb-10">
+          <TabsList className={`grid w-full ${isMobile ? 'grid-cols-3' : 'grid-cols-6'} mb-10`}>
             <TabsTrigger value="articles" className="flex items-center gap-2">
-              <FileText className="h-4 w-4" /> Articles
+              <FileText className="h-4 w-4" /> {!isMobile && "Articles"}
             </TabsTrigger>
             <TabsTrigger value="exercises" className="flex items-center gap-2">
-              <Lightbulb className="h-4 w-4" /> Exercises
+              <Lightbulb className="h-4 w-4" /> {!isMobile && "Exercises"}
             </TabsTrigger>
             <TabsTrigger value="books" className="flex items-center gap-2">
-              <BookOpen className="h-4 w-4" /> Books
+              <BookOpen className="h-4 w-4" /> {!isMobile && "Books"}
             </TabsTrigger>
             <TabsTrigger value="videos" className="flex items-center gap-2">
-              <Film className="h-4 w-4" /> Videos
+              <Film className="h-4 w-4" /> {!isMobile && "Videos"}
             </TabsTrigger>
             <TabsTrigger value="external" className="flex items-center gap-2">
-              <Link className="h-4 w-4" /> Resources
+              <Link className="h-4 w-4" /> {!isMobile && "Resources"}
             </TabsTrigger>
             <TabsTrigger value="stories" className="flex items-center gap-2">
-              <Users className="h-4 w-4" /> Celebrity Stories
+              <Users className="h-4 w-4" /> {!isMobile && "Celebrity Stories"}
             </TabsTrigger>
           </TabsList>
           
