@@ -1,6 +1,4 @@
 
-import "core-js/stable"; // Polyfills for older browsers
-import "regenerator-runtime/runtime"; // For async/await support in older browsers
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
