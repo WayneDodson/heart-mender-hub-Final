@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
@@ -15,6 +16,7 @@ import StoryReviewAdmin from "./pages/StoryReviewAdmin";
 import { Toaster } from "./components/ui/toaster";
 import NewsletterAdmin from "./pages/NewsletterAdmin";
 import ArticlePage from "./components/ArticlePage";
+import Community from "./pages/Community";
 
 function App() {
   // Always keep light mode
@@ -37,6 +39,7 @@ function App() {
           <Route path="/stories/:id" element={<StoryDetail />} />
           <Route path="/celebrity-stories" element={<CelebrityStories />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/community" element={<Community />} />
           <Route path="/newsletter-admin" element={<NewsletterAdmin />} />
           <Route path="/admin/stories" element={<StoryReviewAdmin />} />
           <Route path="*" element={<NotFound />} />
