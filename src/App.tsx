@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
@@ -12,7 +11,7 @@ import StoryDetail from "./pages/StoryDetail";
 import CelebrityStories from "./pages/CelebrityStories";
 import NotFound from "./pages/NotFound";
 import Contact from "./pages/Contact";
-import StoryReviewAdmin from "./pages/StoryReviewAdmin";
+import AdminPage from "./pages/AdminPage";
 import { Toaster } from "./components/ui/toaster";
 import NewsletterAdmin from "./pages/NewsletterAdmin";
 import ArticlePage from "./components/ArticlePage";
@@ -41,7 +40,8 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/community" element={<Community />} />
           <Route path="/newsletter-admin" element={<NewsletterAdmin />} />
-          <Route path="/admin/stories" element={<StoryReviewAdmin />} />
+          <Route path="/admin" element={<AdminPage />} />
+          <Route path="/admin/stories" element={<AdminPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />

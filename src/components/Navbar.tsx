@@ -1,16 +1,18 @@
 
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { usePendingStoriesCount } from '@/hooks/usePendingStoriesCount';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useAdminAuth } from '@/hooks/useAdminAuth';
 
 const Navbar: React.FC = () => {
   const isMobile = useIsMobile();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const location = useLocation();
   const { pendingCount } = usePendingStoriesCount();
+  const { isAdmin } = useAdminAuth();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -29,14 +31,16 @@ const Navbar: React.FC = () => {
     { text: 'Contact', path: '/contact' },
   ];
 
-  const adminLinks = [
+  // Only show this if user is admin
+  const adminLinks = isAdmin ? [
     { 
       text: 'Review Stories', 
-      path: '/admin/stories', 
+      path: '/admin', 
       hasBadge: pendingCount > 0,
-      badgeCount: pendingCount 
+      badgeCount: pendingCount,
+      icon: <Shield className="h-4 w-4 mr-1" />
     }
-  ];
+  ] : [];
 
   const isActive = (path: string) => {
     return location.pathname === path;
@@ -84,6 +88,7 @@ const Navbar: React.FC = () => {
                             className={`block py-2 ${isActive(link.path) ? 'text-healing-300 font-medium' : 'hover:text-healing-300'} flex items-center`}
                             onClick={closeMenu}
                           >
+                            {link.icon}
                             {link.text}
                             {link.hasBadge && (
                               <span className="ml-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
@@ -117,6 +122,7 @@ const Navbar: React.FC = () => {
                       to={link.path}
                       className={`${isActive(link.path) ? 'text-healing-300 font-medium' : 'hover:text-healing-300'} flex items-center`}
                     >
+                      {link.icon}
                       {link.text}
                       {link.hasBadge && (
                         <span className="ml-1.5 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
