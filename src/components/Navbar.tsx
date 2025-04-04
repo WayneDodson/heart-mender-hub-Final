@@ -31,7 +31,7 @@ const Navbar: React.FC = () => {
     { text: 'Contact', path: '/contact' },
   ];
 
-  // Only show this if user is admin
+  // Only show admin links if user is logged in as admin
   const adminLinks = isAdmin ? [
     { 
       text: 'Review Stories', 
@@ -81,7 +81,9 @@ const Navbar: React.FC = () => {
                           </Link>
                         </li>
                       ))}
-                      {adminLinks.map((link) => (
+                      
+                      {/* Only render admin links if isAdmin is true */}
+                      {isAdmin && adminLinks.map((link) => (
                         <li key={link.path}>
                           <Link
                             to={link.path}
@@ -98,6 +100,7 @@ const Navbar: React.FC = () => {
                           </Link>
                         </li>
                       ))}
+                      
                       <li>
                         {isAdmin ? (
                           <Link
@@ -140,7 +143,7 @@ const Navbar: React.FC = () => {
                     </Link>
                   </li>
                 ))}
-                {adminLinks.map((link) => (
+                {isAdmin && adminLinks.map((link) => (
                   <li key={link.path}>
                     <Link
                       to={link.path}
