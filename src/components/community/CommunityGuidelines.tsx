@@ -35,9 +35,11 @@ const CommunityGuidelines: React.FC<CommunityGuidelinesProps> = ({ onAgree }) =>
           space for everyone, please read and agree to our community guidelines before participating:
         </p>
         
-        <ul className="list-disc pl-6 space-y-2 mb-6">
+        <ul className="list-disc space-y-2 mb-6">
           {guidelines.map((guideline, index) => (
-            <li key={index} className="text-gray-700">{guideline}</li>
+            <li key={index} className="text-gray-700 ml-6 pl-1 text-left">
+              {guideline}
+            </li>
           ))}
         </ul>
         
