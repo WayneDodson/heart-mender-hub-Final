@@ -5,22 +5,15 @@ import { Textarea } from "@/components/ui/textarea";
 import { Send } from "lucide-react";
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { CommunityMessage } from './types';
 
 interface CategoryChatProps {
   categoryId: string;
   categoryName: string;
 }
 
-interface ChatMessage {
-  id: string;
-  created_at: string;
-  user_name: string;
-  message: string;
-  category_id: string;
-}
-
 const CategoryChat: React.FC<CategoryChatProps> = ({ categoryId, categoryName }) => {
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [messages, setMessages] = useState<CommunityMessage[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const [userName, setUserName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -42,7 +35,7 @@ const CategoryChat: React.FC<CategoryChatProps> = ({ categoryId, categoryName })
         table: 'community_messages',
         filter: `category_id=eq.${categoryId}`
       }, (payload) => {
-        const newMessage = payload.new as ChatMessage;
+        const newMessage = payload.new as CommunityMessage;
         setMessages(current => [...current, newMessage]);
       })
       .subscribe();
@@ -65,7 +58,7 @@ const CategoryChat: React.FC<CategoryChatProps> = ({ categoryId, categoryName })
         .order('created_at', { ascending: true });
         
       if (error) throw error;
-      setMessages(data as ChatMessage[]);
+      setMessages(data as CommunityMessage[]);
     } catch (error: any) {
       console.error('Error fetching messages:', error.message);
       toast({

@@ -9,6 +9,30 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      community_messages: {
+        Row: {
+          category_id: string
+          created_at: string
+          id: string
+          message: string
+          user_name: string
+        }
+        Insert: {
+          category_id: string
+          created_at?: string
+          id?: string
+          message: string
+          user_name: string
+        }
+        Update: {
+          category_id?: string
+          created_at?: string
+          id?: string
+          message?: string
+          user_name?: string
+        }
+        Relationships: []
+      }
       contact_submissions: {
         Row: {
           created_at: string
