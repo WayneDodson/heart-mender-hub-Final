@@ -27,11 +27,38 @@ import NewsletterAdmin from "./pages/NewsletterAdmin";
 function App() {
   // Browser compatibility check
   useEffect(() => {
-    // Check if the browser supports modern features
-    const isModernBrowser = 'fetch' in window && 'assign' in Object;
+    // More comprehensive browser feature detection
+    const isModernBrowser = (
+      'fetch' in window && 
+      'assign' in Object && 
+      'forEach' in Array.prototype &&
+      'querySelector' in document
+    );
     
     if (!isModernBrowser) {
       console.warn('You are using an outdated browser. Some features may not work correctly.');
+      // Add a small delay to ensure the message is visible
+      setTimeout(() => {
+        try {
+          // Try to show a more visible warning for older browsers
+          const appRoot = document.getElementById('root');
+          if (appRoot) {
+            const warningDiv = document.createElement('div');
+            warningDiv.style.padding = '10px';
+            warningDiv.style.backgroundColor = '#fff3cd';
+            warningDiv.style.color = '#856404';
+            warningDiv.style.border = '1px solid #ffeeba';
+            warningDiv.style.borderRadius = '4px';
+            warningDiv.style.margin = '10px 0';
+            warningDiv.style.textAlign = 'center';
+            warningDiv.textContent = 'You are using an outdated browser. Some features may not work correctly.';
+            appRoot.prepend(warningDiv);
+          }
+        } catch (e) {
+          // If DOM manipulation fails, just continue silently
+          console.error('Failed to add browser warning:', e);
+        }
+      }, 1000);
     }
     
     // Always set light theme
