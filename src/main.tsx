@@ -1,4 +1,6 @@
 
+import "core-js/stable"; // Polyfills for older browsers
+import "regenerator-runtime/runtime"; // For async/await support in older browsers
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
@@ -17,7 +19,11 @@ const queryClient = new QueryClient({
   },
 });
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
+// For older browsers that might not support certain features
+const rootElement = document.getElementById("root");
+if (!rootElement) throw new Error("Failed to find the root element");
+
+ReactDOM.createRoot(rootElement).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>

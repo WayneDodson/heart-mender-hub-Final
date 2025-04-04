@@ -25,8 +25,15 @@ import AdminPage from "./pages/AdminPage";
 import NewsletterAdmin from "./pages/NewsletterAdmin";
 
 function App() {
-  // Always keep light mode
-  React.useEffect(() => {
+  // Browser compatibility check
+  useEffect(() => {
+    // Check if the browser supports modern features
+    const isModernBrowser = 'fetch' in window && 'assign' in Object;
+    
+    if (!isModernBrowser) {
+      console.warn('You are using an outdated browser. Some features may not work correctly.');
+    }
+    
     // Always set light theme
     document.documentElement.setAttribute("data-theme", "light");
     localStorage.setItem("theme", "light");
