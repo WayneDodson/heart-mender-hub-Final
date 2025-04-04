@@ -1,21 +1,28 @@
-import React from "react";
+
+import React, { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
+
+// Layout components
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import { Toaster } from "./components/ui/toaster";
+
+// Public pages
 import Index from "./pages/Index";
 import Resources from "./pages/Resources";
 import Stories from "./pages/Stories";
 import SubmitStory from "./pages/SubmitStory";
 import StoryDetail from "./pages/StoryDetail";
 import CelebrityStories from "./pages/CelebrityStories";
-import NotFound from "./pages/NotFound";
 import Contact from "./pages/Contact";
-import AdminPage from "./pages/AdminPage";
-import { Toaster } from "./components/ui/toaster";
-import NewsletterAdmin from "./pages/NewsletterAdmin";
-import ArticlePage from "./components/ArticlePage";
 import Community from "./pages/Community";
+import ArticlePage from "./components/ArticlePage";
+import NotFound from "./pages/NotFound";
+
+// Admin pages
+import AdminPage from "./pages/AdminPage";
+import NewsletterAdmin from "./pages/NewsletterAdmin";
 
 function App() {
   // Always keep light mode
@@ -30,6 +37,7 @@ function App() {
       <div className="min-h-screen">
         <Navbar />
         <Routes>
+          {/* Public routes */}
           <Route path="/" element={<Index />} />
           <Route path="/resources" element={<Resources />} />
           <Route path="/resources/article/:articleId" element={<ArticlePage />} />
@@ -39,9 +47,13 @@ function App() {
           <Route path="/celebrity-stories" element={<CelebrityStories />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/community" element={<Community />} />
-          <Route path="/newsletter-admin" element={<NewsletterAdmin />} />
+          
+          {/* Admin routes */}
           <Route path="/admin" element={<AdminPage />} />
           <Route path="/admin/stories" element={<AdminPage />} />
+          <Route path="/newsletter-admin" element={<NewsletterAdmin />} />
+          
+          {/* Catch-all route */}
           <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />

@@ -1,4 +1,6 @@
 
+# Heart Mender - Healing After Divorce
+# Global settings
 User-agent: *
 Allow: /
 Disallow: /admin
@@ -11,4 +13,8 @@ Allow: /resources
 Allow: /contact
 Allow: /community
 
+# Crawl delay for slow bots
+Crawl-delay: 10
+
+# Sitemap location
 Sitemap: https://www.heartmenderhub.com/sitemap.xml
