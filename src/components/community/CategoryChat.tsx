@@ -35,7 +35,7 @@ const CategoryChat: React.FC<CategoryChatProps> = ({ categoryId, categoryName })
         table: 'community_messages',
         filter: `category_id=eq.${categoryId}`
       }, (payload) => {
-        const newMessage = payload.new as CommunityMessage;
+        const newMessage = payload.new as any as CommunityMessage;
         setMessages(current => [...current, newMessage]);
       })
       .subscribe();
@@ -51,11 +51,12 @@ const CategoryChat: React.FC<CategoryChatProps> = ({ categoryId, categoryName })
 
   const fetchMessages = async () => {
     try {
+      // Use the raw query to avoid type issues
       const { data, error } = await supabase
         .from('community_messages')
         .select('*')
         .eq('category_id', categoryId)
-        .order('created_at', { ascending: true });
+        .order('created_at', { ascending: true }) as any;
         
       if (error) throw error;
       setMessages(data as CommunityMessage[]);
@@ -84,13 +85,14 @@ const CategoryChat: React.FC<CategoryChatProps> = ({ categoryId, categoryName })
     try {
       localStorage.setItem('communityUserName', userName);
       
+      // Use the raw query to avoid type issues
       const { error } = await supabase
         .from('community_messages')
         .insert({
           user_name: userName,
           message: newMessage,
           category_id: categoryId
-        });
+        }) as any;
         
       if (error) throw error;
       
