@@ -10,7 +10,7 @@ import { Lock, LogIn } from "lucide-react";
 
 // In a real application, this would be stored securely server-side
 // and validated through a proper authentication system
-const ADMIN_PASSWORD = "admin123";
+const ADMIN_PASSWORD = "Jenny123";
 
 interface AdminLoginProps {
   onLoginSuccess: () => void;
@@ -73,9 +73,6 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess }) => {
                 required
                 autoFocus
               />
-              <p className="text-xs text-muted-foreground">
-                Password hint: The default password is "admin123"
-              </p>
             </div>
           </CardContent>
           <CardFooter>
