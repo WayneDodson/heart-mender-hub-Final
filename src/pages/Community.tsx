@@ -3,25 +3,61 @@ import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Plus } from 'lucide-react';
 import CommunityGuidelines from '@/components/community/CommunityGuidelines';
 import CategoryChat from '@/components/community/CategoryChat';
+import CreateCategoryForm from '@/components/community/CreateCategoryForm';
+
+interface Category {
+  id: string;
+  name: string;
+  description: string;
+}
 
 const Community = () => {
   const [agreedToGuidelines, setAgreedToGuidelines] = useState<boolean>(
     localStorage.getItem('agreedToCommunityGuidelines') === 'true'
   );
   
-  const categories = [
+  // Using local storage to persist custom categories
+  const savedCategories = localStorage.getItem('customCommunityCategories');
+  const initialCustomCategories = savedCategories ? JSON.parse(savedCategories) : [];
+
+  const defaultCategories: Category[] = [
     { id: 'emotional-support', name: 'Emotional Support', description: 'Share feelings and get support during difficult emotional times' },
     { id: 'co-parenting', name: 'Co-Parenting', description: 'Discuss strategies for effective co-parenting after divorce' },
     { id: 'legal-advice', name: 'Legal Questions', description: 'Ask questions about legal aspects of divorce and separation' },
     { id: 'moving-forward', name: 'Moving Forward', description: 'Share experiences about rebuilding life after divorce' },
     { id: 'self-care', name: 'Self-Care', description: 'Discuss self-care practices that helped during your healing journey' }
   ];
+  
+  const [categories, setCategories] = useState<Category[]>([
+    ...defaultCategories,
+    ...initialCustomCategories
+  ]);
+  
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const [activeCategory, setActiveCategory] = useState<string>(categories[0]?.id || '');
 
   const onAgreeToGuidelines = () => {
     localStorage.setItem('agreedToCommunityGuidelines', 'true');
     setAgreedToGuidelines(true);
+  };
+
+  const handleAddCategory = (newCategory: Category) => {
+    const updatedCategories = [...categories, newCategory];
+    setCategories(updatedCategories);
+    
+    // Save custom categories to localStorage
+    const customCategories = updatedCategories.filter(
+      cat => !defaultCategories.some(defaultCat => defaultCat.id === cat.id)
+    );
+    localStorage.setItem('customCommunityCategories', JSON.stringify(customCategories));
+    
+    // Close dialog and set active category to the new one
+    setIsCreateDialogOpen(false);
+    setActiveCategory(newCategory.id);
   };
 
   return (
@@ -38,7 +74,18 @@ const Community = () => {
               and connect with others on similar healing journeys.
             </p>
             
-            <Tabs defaultValue={categories[0].id} className="w-full">
+            <div className="flex justify-between items-center mb-2">
+              <h2 className="text-xl font-semibold text-msblue-700">Discussion Areas</h2>
+              <Button 
+                onClick={() => setIsCreateDialogOpen(true)} 
+                className="bg-msblue-600 hover:bg-msblue-700"
+                size="sm"
+              >
+                <Plus className="h-4 w-4 mr-1" /> New Area
+              </Button>
+            </div>
+            
+            <Tabs value={activeCategory} onValueChange={setActiveCategory} className="w-full">
               <TabsList className="w-full justify-start overflow-x-auto flex-nowrap mb-4">
                 {categories.map(category => (
                   <TabsTrigger 
@@ -63,6 +110,18 @@ const Community = () => {
                 </TabsContent>
               ))}
             </Tabs>
+            
+            <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Create New Discussion Area</DialogTitle>
+                </DialogHeader>
+                <CreateCategoryForm 
+                  onCategoryCreated={handleAddCategory}
+                  onCancel={() => setIsCreateDialogOpen(false)}
+                />
+              </DialogContent>
+            </Dialog>
           </div>
         )}
       </div>
