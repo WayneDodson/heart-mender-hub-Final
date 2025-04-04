@@ -1,12 +1,12 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { Lock } from "lucide-react";
+import { Lock, LogIn } from "lucide-react";
 
 // In a real application, this would be stored securely server-side
 // and validated through a proper authentication system
@@ -49,7 +49,7 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess }) => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Lock className="h-5 w-5 text-healing-700" />
-            Admin Access
+            Administrator Login
           </CardTitle>
           <CardDescription>
             Enter the administrator password to access restricted features.
@@ -71,11 +71,18 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess }) => {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter admin password"
                 required
+                autoFocus
               />
+              <p className="text-xs text-muted-foreground">
+                Password hint: The default password is "admin123"
+              </p>
             </div>
           </CardContent>
           <CardFooter>
-            <Button type="submit" className="w-full">Login as Administrator</Button>
+            <Button type="submit" className="w-full flex items-center gap-2">
+              <LogIn className="h-4 w-4" />
+              Login as Administrator
+            </Button>
           </CardFooter>
         </form>
       </Card>

@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Shield } from 'lucide-react';
+import { Menu, X, Shield, LogIn, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { usePendingStoriesCount } from '@/hooks/usePendingStoriesCount';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -12,7 +12,7 @@ const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const location = useLocation();
   const { pendingCount } = usePendingStoriesCount();
-  const { isAdmin } = useAdminAuth();
+  const { isAdmin, logoutAdmin } = useAdminAuth();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -98,6 +98,30 @@ const Navbar: React.FC = () => {
                           </Link>
                         </li>
                       ))}
+                      <li>
+                        {isAdmin ? (
+                          <Link
+                            to="/"
+                            className="block py-2 hover:text-healing-300 flex items-center"
+                            onClick={() => {
+                              logoutAdmin();
+                              closeMenu();
+                            }}
+                          >
+                            <LogOut className="h-4 w-4 mr-1" />
+                            Logout
+                          </Link>
+                        ) : (
+                          <Link
+                            to="/admin"
+                            className="block py-2 hover:text-healing-300 flex items-center"
+                            onClick={closeMenu}
+                          >
+                            <LogIn className="h-4 w-4 mr-1" />
+                            Admin Login
+                          </Link>
+                        )}
+                      </li>
                     </ul>
                   </nav>
                 </div>
@@ -132,6 +156,27 @@ const Navbar: React.FC = () => {
                     </Link>
                   </li>
                 ))}
+                <li>
+                  {isAdmin ? (
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="text-white p-0 h-auto hover:bg-transparent hover:text-healing-300 flex items-center"
+                      onClick={logoutAdmin}
+                    >
+                      <LogOut className="h-4 w-4 mr-1" />
+                      Logout
+                    </Button>
+                  ) : (
+                    <Link
+                      to="/admin"
+                      className="hover:text-healing-300 flex items-center"
+                    >
+                      <LogIn className="h-4 w-4 mr-1" />
+                      Admin Login
+                    </Link>
+                  )}
+                </li>
               </ul>
             </nav>
           )}
