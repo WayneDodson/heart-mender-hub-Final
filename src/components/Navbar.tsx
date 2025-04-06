@@ -46,6 +46,32 @@ const Navbar: React.FC = () => {
     return location.pathname === path;
   };
 
+  const renderAdminLink = () => {
+    if (isAdmin) {
+      return (
+        <Button 
+          variant="ghost" 
+          size="sm" 
+          className="text-white p-0 h-auto hover:bg-transparent hover:text-healing-300 flex items-center"
+          onClick={logoutAdmin}
+        >
+          <LogOut className="h-4 w-4 mr-1" />
+          Logout
+        </Button>
+      );
+    } else {
+      return (
+        <Link
+          to="/admin"
+          className="hover:text-healing-300 flex items-center"
+        >
+          <LogIn className="h-4 w-4 mr-1" />
+          Admin Login
+        </Link>
+      );
+    }
+  };
+
   return (
     <div className="bg-healing-900 text-white">
       <div className="container mx-auto px-4">
@@ -101,6 +127,7 @@ const Navbar: React.FC = () => {
                         </li>
                       ))}
                       
+                      {/* Always render admin login/logout regardless of browser */}
                       <li>
                         {isAdmin ? (
                           <Link
@@ -160,25 +187,7 @@ const Navbar: React.FC = () => {
                   </li>
                 ))}
                 <li>
-                  {isAdmin ? (
-                    <Button 
-                      variant="ghost" 
-                      size="sm" 
-                      className="text-white p-0 h-auto hover:bg-transparent hover:text-healing-300 flex items-center"
-                      onClick={logoutAdmin}
-                    >
-                      <LogOut className="h-4 w-4 mr-1" />
-                      Logout
-                    </Button>
-                  ) : (
-                    <Link
-                      to="/admin"
-                      className="hover:text-healing-300 flex items-center"
-                    >
-                      <LogIn className="h-4 w-4 mr-1" />
-                      Admin Login
-                    </Link>
-                  )}
+                  {renderAdminLink()}
                 </li>
               </ul>
             </nav>
