@@ -1,31 +1,36 @@
-
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Heart, BookOpen, Users, Calendar } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 const Index = () => {
+  const navigate = useNavigate();
+  
   const features = [
     {
       icon: <Heart className="h-10 w-10 text-msblue-500" />,
       title: "Emotional Support",
-      description: "Tools and guidance to help you process your feelings and find inner peace after divorce."
+      description: "Tools and guidance to help you process your feelings and find inner peace after divorce.",
+      link: "/resources?tab=exercises"
     },
     {
       icon: <BookOpen className="h-10 w-10 text-msblue-500" />,
-      title: "Healing Resources",
-      description: "Curated content, exercises, and insights to support your healing journey."
+      title: "Healing Resources", 
+      description: "Curated content, exercises, and insights to support your healing journey.",
+      link: "/resources?tab=articles"
     },
     {
       icon: <Users className="h-10 w-10 text-msblue-500" />,
       title: "Community Stories",
-      description: "Read real stories from others who have walked this path and found happiness again."
+      description: "Read real stories from others who have walked this path and found happiness again.",
+      link: "/resources?tab=stories"
     },
     {
       icon: <Calendar className="h-10 w-10 text-msblue-500" />,
       title: "Future Events",
-      description: "Soon to come: Weekly meetings and sessions with specialists to assist your recovery."
+      description: "Soon to come: Weekly meetings and sessions with specialists to assist your recovery.",
+      link: "/resources?tab=external"
     }
   ];
 
@@ -43,6 +48,10 @@ const Index = () => {
       author: "Elena, 39"
     }
   ];
+
+  const handleCardClick = (link) => {
+    navigate(link);
+  };
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -79,7 +88,11 @@ const Index = () => {
             <h2 className="text-3xl font-bold text-center mb-12 text-msblue-800">How We Support Your Healing</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {features.map((feature, index) => (
-                <Card key={index} className="border border-msblue-100 shadow hover:shadow-md transition-shadow">
+                <Card 
+                  key={index} 
+                  className="border border-msblue-100 shadow hover:shadow-md transition-shadow cursor-pointer" 
+                  onClick={() => handleCardClick(feature.link)}
+                >
                   <CardHeader>
                     <div className="mb-4">{feature.icon}</div>
                     <CardTitle className="text-xl font-semibold">{feature.title}</CardTitle>
