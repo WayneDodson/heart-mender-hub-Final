@@ -19,6 +19,7 @@ import Contact from "./pages/Contact";
 import Community from "./pages/Community";
 import ArticlePage from "./components/ArticlePage";
 import NotFound from "./pages/NotFound";
+import CalendarPage from "./pages/Calendar";
 
 // Admin pages
 import AdminPage from "./pages/AdminPage";
@@ -81,6 +82,7 @@ function App() {
           <Route path="/celebrity-stories" element={<CelebrityStories />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/community" element={<Community />} />
+          <Route path="/calendar" element={<CalendarPage />} />
           
           {/* Admin routes */}
           <Route path="/admin" element={<AdminPage />} />

@@ -29,8 +29,8 @@ const Index = () => {
     {
       icon: <Calendar className="h-10 w-10 text-msblue-500" />,
       title: "Future Events",
-      description: "Soon to come: Weekly meetings and sessions with specialists to assist your recovery.",
-      link: "/resources?tab=external"
+      description: "Weekly meetings and sessions with specialists to assist your recovery journey.",
+      link: "/calendar"
     }
   ];
 
