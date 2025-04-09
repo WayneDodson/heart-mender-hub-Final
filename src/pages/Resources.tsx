@@ -16,7 +16,7 @@ const Resources = () => {
         // Add a small delay to ensure the DOM is fully rendered
         setTimeout(() => {
           tabsSection.scrollIntoView({ behavior: 'smooth' });
-        }, 100);
+        }, 300); // Increased timeout for better compatibility
       }
     }
   }, [location.search]);

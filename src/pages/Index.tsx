@@ -50,7 +50,7 @@ const Index = () => {
   ];
 
   const handleCardClick = (link) => {
-    navigate(link);
+    window.location.href = link;
   };
 
   return (

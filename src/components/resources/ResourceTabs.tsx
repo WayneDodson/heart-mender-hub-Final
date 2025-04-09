@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BookOpen, FileText, HeartHandshake, Film, Lightbulb, Link, Users } from 'lucide-react';
 import ArticlesSection from './ArticlesSection';
@@ -141,6 +141,7 @@ const enhancedExercises = [
 const ResourceTabs = () => {
   const isMobile = useIsMobile();
   const location = useLocation();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('articles');
   
   useEffect(() => {
@@ -153,11 +154,23 @@ const ResourceTabs = () => {
       setActiveTab(tabParam);
     }
   }, [location.search]);
+
+  // Handle tab change with URL update
+  const handleTabChange = (value) => {
+    setActiveTab(value);
+    
+    // Update URL with the selected tab
+    const searchParams = new URLSearchParams(location.search);
+    searchParams.set('tab', value);
+    
+    // Update URL without refreshing the page
+    navigate(`/resources?${searchParams.toString()}`, { replace: true });
+  };
   
   return (
     <section className="py-16 px-4 bg-white" id="resource-tabs">
       <div className="container mx-auto">
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="max-w-5xl mx-auto">
+        <Tabs value={activeTab} onValueChange={handleTabChange} className="max-w-5xl mx-auto">
           <TabsList className={`grid w-full ${isMobile ? 'grid-cols-3' : 'grid-cols-6'} mb-10`}>
             <TabsTrigger value="articles" className="flex items-center gap-2">
               <FileText className="h-4 w-4" /> {!isMobile && "Articles"}
