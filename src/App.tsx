@@ -33,7 +33,9 @@ function App() {
       'fetch' in window && 
       'assign' in Object && 
       'forEach' in Array.prototype &&
-      'querySelector' in document
+      'querySelector' in document &&
+      'addEventListener' in window &&
+      'localStorage' in window
     );
     
     if (!isModernBrowser) {
@@ -67,31 +69,44 @@ function App() {
     localStorage.setItem("theme", "light");
   }, []);
 
+  // Use feature detection before rendering router
+  const isRouterSupported = 'history' in window && 'pushState' in window.history;
+
   return (
     <div className="light">
       <div className="min-h-screen">
         <Navbar />
-        <Routes>
-          {/* Public routes */}
-          <Route path="/" element={<Index />} />
-          <Route path="/resources" element={<Resources />} />
-          <Route path="/resources/article/:articleId" element={<ArticlePage />} />
-          <Route path="/stories" element={<Stories />} />
-          <Route path="/submit-story" element={<SubmitStory />} />
-          <Route path="/stories/:id" element={<StoryDetail />} />
-          <Route path="/celebrity-stories" element={<CelebrityStories />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/community" element={<Community />} />
-          <Route path="/calendar" element={<CalendarPage />} />
-          
-          {/* Admin routes */}
-          <Route path="/admin" element={<AdminPage />} />
-          <Route path="/admin/stories" element={<AdminPage />} />
-          <Route path="/newsletter-admin" element={<NewsletterAdmin />} />
-          
-          {/* Catch-all route */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        {isRouterSupported ? (
+          <Routes>
+            {/* Public routes */}
+            <Route path="/" element={<Index />} />
+            <Route path="/resources" element={<Resources />} />
+            <Route path="/resources/article/:articleId" element={<ArticlePage />} />
+            <Route path="/stories" element={<Stories />} />
+            <Route path="/submit-story" element={<SubmitStory />} />
+            <Route path="/stories/:id" element={<StoryDetail />} />
+            <Route path="/celebrity-stories" element={<CelebrityStories />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/community" element={<Community />} />
+            <Route path="/calendar" element={<CalendarPage />} />
+            
+            {/* Admin routes */}
+            <Route path="/admin" element={<AdminPage />} />
+            <Route path="/admin/stories" element={<AdminPage />} />
+            <Route path="/newsletter-admin" element={<NewsletterAdmin />} />
+            
+            {/* Catch-all route */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        ) : (
+          <div className="p-4 text-center">
+            <h2 className="text-xl font-semibold">Browser Not Supported</h2>
+            <p>Your browser doesn't support modern navigation features. Please update to a newer browser.</p>
+            <div className="mt-4">
+              <Index />
+            </div>
+          </div>
+        )}
         <Footer />
         <Toaster />
       </div>
