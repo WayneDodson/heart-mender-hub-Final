@@ -17,21 +17,11 @@ export function useIsMobile(): boolean {
     // Check on initial load
     checkIsMobile();
     
-    // Use the most cross-browser compatible event listener pattern
-    if (typeof window.addEventListener === 'function') {
-      window.addEventListener('resize', checkIsMobile);
-      
-      // Cleanup
-      return () => window.removeEventListener('resize', checkIsMobile);
-    } else if (typeof window.attachEvent === 'function') {
-      // For older IE
-      window.attachEvent('onresize', checkIsMobile);
-      
-      // Cleanup
-      return () => window.detachEvent('onresize', checkIsMobile);
-    }
+    // Modern event listener approach - removed attachEvent/detachEvent which are no longer supported
+    window.addEventListener('resize', checkIsMobile);
     
-    return undefined;
+    // Cleanup
+    return () => window.removeEventListener('resize', checkIsMobile);
   }, []);
 
   return isMobile;
