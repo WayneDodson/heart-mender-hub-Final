@@ -6,7 +6,7 @@ export function useIsMobile(): boolean {
 
   useEffect(() => {
     const checkIsMobile = () => {
-      // Use both screen width and user agent (for better cross-browser support)
+      // Use screen width for mobile detection
       const windowWidth = window.innerWidth || 
                           document.documentElement.clientWidth || 
                           document.body.clientWidth;
@@ -17,7 +17,7 @@ export function useIsMobile(): boolean {
     // Check on initial load
     checkIsMobile();
     
-    // Modern event listener approach - removed attachEvent/detachEvent which are no longer supported
+    // Modern event listener approach
     window.addEventListener('resize', checkIsMobile);
     
     // Cleanup
