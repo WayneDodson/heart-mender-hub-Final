@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -155,7 +154,6 @@ const ResourceTabs = () => {
     }
   }, [location.search]);
 
-  // Handle tab change with URL update
   const handleTabChange = (value) => {
     setActiveTab(value);
     
@@ -168,55 +166,81 @@ const ResourceTabs = () => {
   };
   
   return (
-    <section className="py-16 px-4 bg-white" id="resource-tabs">
-      <div className="container mx-auto">
-        <Tabs value={activeTab} onValueChange={handleTabChange} className="max-w-5xl mx-auto">
-          <TabsList className={`grid w-full ${isMobile ? 'grid-cols-3' : 'grid-cols-6'} mb-10`}>
-            <TabsTrigger value="articles" className="flex items-center gap-2">
-              <FileText className="h-4 w-4" /> {!isMobile && "Articles"}
+    <section className="py-4 md:py-16 px-2 md:px-4 bg-white" id="resource-tabs">
+      <div className="container mx-auto max-w-5xl">
+        <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
+          <TabsList className={`grid w-full ${isMobile ? 'grid-cols-2 gap-2' : 'grid-cols-6'} mb-6 p-1 bg-gray-100/80`}>
+            <TabsTrigger 
+              value="articles" 
+              className="flex items-center gap-2 py-3 px-4 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all"
+            >
+              <FileText className="h-4 w-4" /> 
+              <span className={isMobile ? "text-sm" : "text-base"}>Articles</span>
             </TabsTrigger>
-            <TabsTrigger value="exercises" className="flex items-center gap-2">
-              <Lightbulb className="h-4 w-4" /> {!isMobile && "Exercises"}
+            <TabsTrigger 
+              value="exercises"
+              className="flex items-center gap-2 py-3 px-4 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all"
+            >
+              <Lightbulb className="h-4 w-4" />
+              <span className={isMobile ? "text-sm" : "text-base"}>Exercises</span>
             </TabsTrigger>
-            <TabsTrigger value="books" className="flex items-center gap-2">
-              <BookOpen className="h-4 w-4" /> {!isMobile && "Books"}
+            <TabsTrigger 
+              value="books"
+              className="flex items-center gap-2 py-3 px-4 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all"
+            >
+              <BookOpen className="h-4 w-4" />
+              <span className={isMobile ? "text-sm" : "text-base"}>Books</span>
             </TabsTrigger>
-            <TabsTrigger value="videos" className="flex items-center gap-2">
-              <Film className="h-4 w-4" /> {!isMobile && "Videos"}
+            <TabsTrigger 
+              value="videos"
+              className="flex items-center gap-2 py-3 px-4 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all"
+            >
+              <Film className="h-4 w-4" />
+              <span className={isMobile ? "text-sm" : "text-base"}>Videos</span>
             </TabsTrigger>
-            <TabsTrigger value="external" className="flex items-center gap-2">
-              <Link className="h-4 w-4" /> {!isMobile && "Resources"}
+            <TabsTrigger 
+              value="external"
+              className="flex items-center gap-2 py-3 px-4 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all"
+            >
+              <Link className="h-4 w-4" />
+              <span className={isMobile ? "text-sm" : "text-base"}>Resources</span>
             </TabsTrigger>
-            <TabsTrigger value="stories" className="flex items-center gap-2">
-              <Users className="h-4 w-4" /> {!isMobile && "Celebrity Stories"}
+            <TabsTrigger 
+              value="stories"
+              className="flex items-center gap-2 py-3 px-4 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all"
+            >
+              <HeartHandshake className="h-4 w-4" />
+              <span className={isMobile ? "text-sm" : "text-base"}>Stories</span>
             </TabsTrigger>
           </TabsList>
           
-          <TabsContent value="articles" className="mt-6 bg-white">
-            <ArticlesSection articles={articles} />
-          </TabsContent>
-          
-          <TabsContent value="exercises" className="mt-6 bg-white">
-            <ExercisesSection exercises={enhancedExercises} />
-          </TabsContent>
-          
-          <TabsContent value="books" className="mt-6 bg-white">
-            <BooksSection books={bookRecommendations} />
-          </TabsContent>
-          
-          <TabsContent value="videos" className="mt-6 bg-white">
-            <VideosSection />
-          </TabsContent>
+          <div className="px-2 md:px-0">
+            <TabsContent value="articles" className="mt-4 md:mt-6">
+              <ArticlesSection articles={articles} />
+            </TabsContent>
+            
+            <TabsContent value="exercises" className="mt-4 md:mt-6">
+              <ExercisesSection exercises={enhancedExercises} />
+            </TabsContent>
+            
+            <TabsContent value="books" className="mt-4 md:mt-6">
+              <BooksSection books={bookRecommendations} />
+            </TabsContent>
+            
+            <TabsContent value="videos" className="mt-4 md:mt-6">
+              <VideosSection />
+            </TabsContent>
 
-          <TabsContent value="external" className="mt-6 bg-white">
-            <ExternalResources />
-          </TabsContent>
-          
-          <TabsContent value="stories" className="mt-6 bg-white">
-            <div className="py-8">
-              <CelebrityStories />
-            </div>
-          </TabsContent>
+            <TabsContent value="external" className="mt-4 md:mt-6">
+              <ExternalResources />
+            </TabsContent>
+            
+            <TabsContent value="stories" className="mt-4 md:mt-6">
+              <div className="py-4">
+                <CelebrityStories />
+              </div>
+            </TabsContent>
+          </div>
         </Tabs>
       </div>
     </section>
