@@ -8,9 +8,8 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { useToast } from "@/hooks/use-toast";
 import { Lock, LogIn } from "lucide-react";
 
-// In a real application, this would be stored securely server-side
-// and validated through a proper authentication system
-const ADMIN_PASSWORD = "Jenny123";
+// Updated admin password as requested
+const ADMIN_PASSWORD = "1'mLearning!";
 
 interface AdminLoginProps {
   onLoginSuccess: () => void;
