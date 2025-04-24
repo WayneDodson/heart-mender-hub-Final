@@ -1,10 +1,10 @@
+
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Shield, LogIn, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { usePendingStoriesCount } from '@/hooks/usePendingStoriesCount';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { useAdminAuth } from '@/hooks/useAdminAuth';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -13,8 +13,7 @@ const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const location = useLocation();
   const { pendingCount } = usePendingStoriesCount();
-  const { isAdmin, logoutAdmin } = useAdminAuth();
-  const { user } = useAuth();
+  const { user, isAdmin, checkUserRole } = useAuth();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -32,6 +31,7 @@ const Navbar: React.FC = () => {
     { text: 'Contact', path: '/contact' },
   ];
 
+  // Only show admin links if user has admin privileges
   const adminLinks = isAdmin ? [
     { 
       text: 'Review Stories', 
@@ -43,9 +43,17 @@ const Navbar: React.FC = () => {
   ] : [];
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
-    if (isAdmin) {
-      logoutAdmin();
+    try {
+      // Sign out from Supabase
+      await supabase.auth.signOut();
+      
+      // Also logout from admin if authenticated
+      if (isAdmin) {
+        localStorage.removeItem("isAdminAuthenticated");
+        await checkUserRole();
+      }
+    } catch (error) {
+      console.error("Error during logout:", error);
     }
   };
 

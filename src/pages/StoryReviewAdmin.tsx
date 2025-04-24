@@ -1,26 +1,93 @@
 
-import React from 'react';
-import { Loader2, Bell } from 'lucide-react';
+import React, { useEffect } from 'react';
+import { Loader2, Bell, ShieldAlert } from 'lucide-react';
 import StoryAdminCard from '../components/stories/StoryAdminCard';
 import { useStoryAdmin } from '../hooks/useStoryAdmin';
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { useToast } from '@/hooks/use-toast';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
 
 const StoryReviewAdmin = () => {
-  const { stories, isLoading, updateStoryStatus } = useStoryAdmin();
+  const { stories, isLoading, updateStoryStatus, error } = useStoryAdmin();
   const { toast } = useToast();
-  const pendingStories = stories.filter(story => story.status === 'pending');
+  const { isAdmin, checkUserRole } = useAuth();
+  const navigate = useNavigate();
   
-  // Remove useEffect with toast notification to prevent 
-  // "Review Stories" from being too prominent in indexing
+  const pendingStories = stories.filter(story => story.status === 'pending');
+
+  // Check admin status when component mounts
+  useEffect(() => {
+    const verifyAdminAccess = async () => {
+      try {
+        const hasAdminAccess = await checkUserRole();
+        if (!hasAdminAccess) {
+          toast({
+            title: "Access Denied",
+            description: "You need to login as admin to review stories.",
+            variant: "destructive",
+            duration: 5000,
+          });
+          navigate('/admin');
+        }
+      } catch (error) {
+        console.error("Error verifying admin access:", error);
+      }
+    };
+    
+    verifyAdminAccess();
+  }, []);
   
   const handleApprove = async (id: string) => {
-    await updateStoryStatus(id, 'approved');
+    try {
+      await updateStoryStatus(id, 'approved');
+      toast({
+        title: "Story Approved",
+        description: "The story has been published successfully.",
+        duration: 3000,
+      });
+    } catch (error) {
+      toast({
+        title: "Approval Failed",
+        description: "Could not approve the story. Please try again.",
+        variant: "destructive",
+      });
+      console.error("Error approving story:", error);
+    }
   };
   
   const handleReject = async (id: string) => {
-    await updateStoryStatus(id, 'rejected');
+    try {
+      await updateStoryStatus(id, 'rejected');
+      toast({
+        title: "Story Rejected",
+        description: "The story has been rejected successfully.",
+        duration: 3000,
+      });
+    } catch (error) {
+      toast({
+        title: "Rejection Failed",
+        description: "Could not reject the story. Please try again.",
+        variant: "destructive",
+      });
+      console.error("Error rejecting story:", error);
+    }
   };
+  
+  // Redirect if not admin
+  if (!isAdmin) {
+    return (
+      <div className="container mx-auto max-w-4xl py-8 px-4">
+        <Alert variant="destructive" className="mb-8">
+          <ShieldAlert className="h-5 w-5" />
+          <AlertTitle>Admin Access Required</AlertTitle>
+          <AlertDescription>
+            You need administrator privileges to manage stories.
+          </AlertDescription>
+        </Alert>
+      </div>
+    );
+  }
   
   return (
     <div className="flex-grow py-12 px-4 bg-healing-50">
@@ -29,6 +96,16 @@ const StoryReviewAdmin = () => {
           <h1 className="text-3xl font-bold text-healing-900">Story Management</h1>
           <p className="text-gray-600 mt-2">Review and manage submitted stories.</p>
         </div>
+        
+        {error && (
+          <Alert variant="destructive" className="mb-6">
+            <ShieldAlert className="h-5 w-5" />
+            <AlertTitle>Error Loading Stories</AlertTitle>
+            <AlertDescription>
+              {error || "There was a problem loading stories. Please try refreshing the page."}
+            </AlertDescription>
+          </Alert>
+        )}
         
         {pendingStories.length > 0 && (
           <Alert className="mb-6 border-amber-200 bg-amber-50">
