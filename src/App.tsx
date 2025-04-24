@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
 import { AuthProvider } from "./contexts/AuthContext";
@@ -27,43 +27,60 @@ import AdminPage from "./pages/AdminPage";
 import NewsletterAdmin from "./pages/NewsletterAdmin";
 
 function App() {
-  // Browser compatibility check
+  const [isBrowserSupported, setIsBrowserSupported] = useState(true);
+
+  // Enhanced browser compatibility check
   useEffect(() => {
-    // More comprehensive browser feature detection
-    const isModernBrowser = (
-      'fetch' in window && 
-      'assign' in Object && 
-      'forEach' in Array.prototype &&
-      'querySelector' in document &&
-      'addEventListener' in window &&
-      'localStorage' in window
-    );
-    
-    if (!isModernBrowser) {
-      console.warn('You are using an outdated browser. Some features may not work correctly.');
-      // Add a small delay to ensure the message is visible
-      setTimeout(() => {
-        try {
-          // Try to show a more visible warning for older browsers
-          const appRoot = document.getElementById('root');
-          if (appRoot) {
-            const warningDiv = document.createElement('div');
-            warningDiv.style.padding = '10px';
-            warningDiv.style.backgroundColor = '#fff3cd';
-            warningDiv.style.color = '#856404';
-            warningDiv.style.border = '1px solid #ffeeba';
-            warningDiv.style.borderRadius = '4px';
-            warningDiv.style.margin = '10px 0';
-            warningDiv.style.textAlign = 'center';
-            warningDiv.textContent = 'You are using an outdated browser. Some features may not work correctly.';
-            appRoot.prepend(warningDiv);
-          }
-        } catch (e) {
-          // If DOM manipulation fails, just continue silently
-          console.error('Failed to add browser warning:', e);
-        }
-      }, 1000);
-    }
+    const checkBrowserCompatibility = () => {
+      const requiredFeatures = [
+        'fetch' in window,
+        'Promise' in window,
+        'assign' in Object,
+        'forEach' in Array.prototype,
+        'querySelector' in document,
+        'addEventListener' in window,
+        'localStorage' in window,
+        'JSON' in window,
+        'map' in Array.prototype,
+        'filter' in Array.prototype
+      ];
+
+      const isModernBrowser = requiredFeatures.every(feature => feature);
+      
+      setIsBrowserSupported(isModernBrowser);
+
+      if (!isModernBrowser) {
+        console.warn('Your browser is outdated. Some features may not work correctly.');
+        
+        // Create a more informative browser warning
+        const createBrowserWarning = () => {
+          const warningDiv = document.createElement('div');
+          warningDiv.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #ffcc00;
+            color: black;
+            text-align: center;
+            padding: 15px;
+            z-index: 1000;
+            font-size: 16px;
+          `;
+          warningDiv.innerHTML = `
+            You are using an outdated browser. 
+            <a href="https://browsehappy.com/" style="color: blue; text-decoration: underline;">
+              Please upgrade for a better experience.
+            </a>
+          `;
+          document.body.prepend(warningDiv);
+        };
+
+        createBrowserWarning();
+      }
+    };
+
+    checkBrowserCompatibility();
     
     // Always set light theme
     document.documentElement.setAttribute("data-theme", "light");
@@ -75,10 +92,10 @@ function App() {
 
   return (
     <AuthProvider>
-      <div className="light">
-        <div className="min-h-screen">
-          <Navbar />
-          {isRouterSupported ? (
+      <div className="light min-h-screen w-full">
+        <Navbar />
+        {isBrowserSupported ? (
+          isRouterSupported ? (
             <Routes>
               {/* Public routes */}
               <Route path="/" element={<Index />} />
@@ -109,10 +126,24 @@ function App() {
                 <Index />
               </div>
             </div>
-          )}
-          <Footer />
-          <Toaster />
-        </div>
+          )
+        ) : (
+          <div className="p-4 text-center w-full">
+            <h2 className="text-2xl font-bold mb-4">Browser Not Supported</h2>
+            <p className="mb-4">
+              Your browser is too old to run this application. 
+              Please update to a modern browser like Chrome, Firefox, Safari, or Edge.
+            </p>
+            <a 
+              href="https://browsehappy.com/" 
+              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            >
+              Upgrade Browser
+            </a>
+          </div>
+        )}
+        <Footer />
+        <Toaster />
       </div>
     </AuthProvider>
   );
