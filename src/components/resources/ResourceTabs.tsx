@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -162,77 +163,77 @@ const ResourceTabs = () => {
   };
   
   return (
-    <section className="py-4 md:py-16 px-2 md:px-4 bg-white" id="resource-tabs">
-      <div className="container mx-auto max-w-5xl">
+    <section className="min-h-screen w-full bg-white">
+      <div className="w-full">
         <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-          <TabsList className={`grid w-full ${isMobile ? 'grid-cols-2 gap-2' : 'md:grid-cols-6'} mb-6 p-1 bg-gray-100/80`}>
+          <TabsList className={`w-full grid ${isMobile ? 'grid-cols-2 gap-1' : 'md:grid-cols-6'} bg-gray-100/80 rounded-none`}>
             <TabsTrigger 
               value="articles" 
-              className="flex items-center gap-1.5 py-2 px-3 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all text-sm md:text-base"
+              className="w-full flex items-center gap-1.5 py-2 px-3 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all text-sm md:text-base"
             >
               <FileText className="h-4 w-4" /> 
               <span className="truncate">Articles</span>
             </TabsTrigger>
             <TabsTrigger 
               value="exercises"
-              className="flex items-center gap-1.5 py-2 px-3 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all text-sm md:text-base"
+              className="w-full flex items-center gap-1.5 py-2 px-3 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all text-sm md:text-base"
             >
               <Lightbulb className="h-4 w-4" />
               <span className="truncate">Exercises</span>
             </TabsTrigger>
             <TabsTrigger 
               value="books"
-              className="flex items-center gap-1.5 py-2 px-3 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all text-sm md:text-base"
+              className="w-full flex items-center gap-1.5 py-2 px-3 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all text-sm md:text-base"
             >
               <BookOpen className="h-4 w-4" />
               <span className="truncate">Books</span>
             </TabsTrigger>
             <TabsTrigger 
               value="videos"
-              className="flex items-center gap-1.5 py-2 px-3 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all text-sm md:text-base"
+              className="w-full flex items-center gap-1.5 py-2 px-3 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all text-sm md:text-base"
             >
               <Film className="h-4 w-4" />
               <span className="truncate">Videos</span>
             </TabsTrigger>
             <TabsTrigger 
               value="external"
-              className="flex items-center gap-1.5 py-2 px-3 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all text-sm md:text-base"
+              className="w-full flex items-center gap-1.5 py-2 px-3 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all text-sm md:text-base"
             >
               <Link className="h-4 w-4" />
               <span className="truncate">Resources</span>
             </TabsTrigger>
             <TabsTrigger 
               value="stories"
-              className="flex items-center gap-1.5 py-2 px-3 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all text-sm md:text-base"
+              className="w-full flex items-center gap-1.5 py-2 px-3 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all text-sm md:text-base"
             >
               <HeartHandshake className="h-4 w-4" />
               <span className="truncate">Stories</span>
             </TabsTrigger>
           </TabsList>
           
-          <div className="px-2 md:px-0">
-            <TabsContent value="articles" className="mt-4 md:mt-6">
+          <div className="w-full">
+            <TabsContent value="articles" className="mt-0 w-full">
               <ArticlesSection articles={articles} />
             </TabsContent>
             
-            <TabsContent value="exercises" className="mt-4 md:mt-6">
+            <TabsContent value="exercises" className="mt-0 w-full">
               <ExercisesSection exercises={enhancedExercises} />
             </TabsContent>
             
-            <TabsContent value="books" className="mt-4 md:mt-6">
+            <TabsContent value="books" className="mt-0 w-full">
               <BooksSection books={bookRecommendations} />
             </TabsContent>
             
-            <TabsContent value="videos" className="mt-4 md:mt-6">
+            <TabsContent value="videos" className="mt-0 w-full">
               <VideosSection />
             </TabsContent>
 
-            <TabsContent value="external" className="mt-4 md:mt-6">
+            <TabsContent value="external" className="mt-0 w-full">
               <ExternalResources />
             </TabsContent>
             
-            <TabsContent value="stories" className="mt-4 md:mt-6">
-              <div className="py-4">
+            <TabsContent value="stories" className="mt-0 w-full">
+              <div className="w-full">
                 <CelebrityStories />
               </div>
             </TabsContent>
