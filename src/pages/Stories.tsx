@@ -5,13 +5,23 @@ import { Loader2, PenLine, Users } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import StoryList from '../components/stories/StoryList';
 import { useStories } from '../hooks/useStories';
+import { useAuth } from '../contexts/AuthContext';
 
 const Stories = () => {
   const { approvedStories, isLoading } = useStories();
+  const { user } = useAuth();
   const navigate = useNavigate();
   
   const handleReadMore = (id: string) => {
     navigate(`/stories/${id}`);
+  };
+
+  const handleSubmitStoryClick = () => {
+    if (!user) {
+      navigate('/auth');
+    } else {
+      navigate('/submit-story');
+    }
   };
   
   return (
@@ -24,11 +34,12 @@ const Stories = () => {
             Find inspiration, understanding, and hope in these shared experiences.
           </p>
           <div className="mt-6 flex flex-wrap justify-center gap-4">
-            <Button asChild className="bg-healing-600 hover:bg-healing-700">
-              <Link to="/submit-story" className="flex items-center">
-                <PenLine className="mr-2 h-4 w-4" />
-                Share Your Story
-              </Link>
+            <Button 
+              onClick={handleSubmitStoryClick}
+              className="bg-healing-600 hover:bg-healing-700 flex items-center"
+            >
+              <PenLine className="mr-2 h-4 w-4" />
+              {user ? 'Share Your Story' : 'Sign in to Share Your Story'}
             </Button>
             <Button asChild variant="outline" className="border-healing-600 text-healing-600 hover:bg-healing-50">
               <Link to="/celebrity-stories" className="flex items-center">

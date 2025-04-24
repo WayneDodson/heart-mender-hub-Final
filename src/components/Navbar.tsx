@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Shield, LogIn, LogOut } from 'lucide-react';
@@ -6,6 +5,8 @@ import { Button } from '@/components/ui/button';
 import { usePendingStoriesCount } from '@/hooks/usePendingStoriesCount';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useAdminAuth } from '@/hooks/useAdminAuth';
+import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
 
 const Navbar: React.FC = () => {
   const isMobile = useIsMobile();
@@ -13,6 +14,7 @@ const Navbar: React.FC = () => {
   const location = useLocation();
   const { pendingCount } = usePendingStoriesCount();
   const { isAdmin, logoutAdmin } = useAdminAuth();
+  const { user } = useAuth();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -25,13 +27,11 @@ const Navbar: React.FC = () => {
   const links = [
     { text: 'Home', path: '/' },
     { text: 'Stories', path: '/stories' },
-    { text: 'Submit Story', path: '/submit-story' },
     { text: 'Community', path: '/community' },
     { text: 'Resources', path: '/resources' },
     { text: 'Contact', path: '/contact' },
   ];
 
-  // Only show admin links if user is logged in as admin
   const adminLinks = isAdmin ? [
     { 
       text: 'Review Stories', 
@@ -42,35 +42,36 @@ const Navbar: React.FC = () => {
     }
   ] : [];
 
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    if (isAdmin) {
+      logoutAdmin();
+    }
+  };
+
   const isActive = (path: string) => {
     return location.pathname === path;
   };
 
-  const renderAdminLink = () => {
-    if (isAdmin) {
-      return (
-        <Button 
-          variant="ghost" 
-          size="sm" 
-          className="text-white p-0 h-auto hover:bg-transparent hover:text-healing-300 flex items-center"
-          onClick={logoutAdmin}
-        >
-          <LogOut className="h-4 w-4 mr-1" />
-          Logout
-        </Button>
-      );
-    } else {
-      return (
-        <Link
-          to="/admin"
-          className="hover:text-healing-300 flex items-center"
-        >
-          <LogIn className="h-4 w-4 mr-1" />
-          Admin Login
-        </Link>
-      );
-    }
-  };
+  const authLink = user ? (
+    <Button 
+      variant="ghost" 
+      size="sm" 
+      className="text-white p-0 h-auto hover:bg-transparent hover:text-healing-300 flex items-center"
+      onClick={handleLogout}
+    >
+      <LogOut className="h-4 w-4 mr-1" />
+      Sign Out
+    </Button>
+  ) : (
+    <Link
+      to="/auth"
+      className="hover:text-healing-300 flex items-center"
+    >
+      <LogIn className="h-4 w-4 mr-1" />
+      Sign In
+    </Link>
+  );
 
   return (
     <div className="bg-healing-900 text-white">
@@ -108,7 +109,6 @@ const Navbar: React.FC = () => {
                         </li>
                       ))}
                       
-                      {/* Only render admin links if isAdmin is true */}
                       {isAdmin && adminLinks.map((link) => (
                         <li key={link.path}>
                           <Link
@@ -127,30 +127,8 @@ const Navbar: React.FC = () => {
                         </li>
                       ))}
                       
-                      {/* Always render admin login/logout regardless of browser */}
                       <li>
-                        {isAdmin ? (
-                          <Link
-                            to="/"
-                            className="block py-2 hover:text-healing-300 flex items-center"
-                            onClick={() => {
-                              logoutAdmin();
-                              closeMenu();
-                            }}
-                          >
-                            <LogOut className="h-4 w-4 mr-1" />
-                            Logout
-                          </Link>
-                        ) : (
-                          <Link
-                            to="/admin"
-                            className="block py-2 hover:text-healing-300 flex items-center"
-                            onClick={closeMenu}
-                          >
-                            <LogIn className="h-4 w-4 mr-1" />
-                            Admin Login
-                          </Link>
-                        )}
+                        {authLink}
                       </li>
                     </ul>
                   </nav>
@@ -187,7 +165,7 @@ const Navbar: React.FC = () => {
                   </li>
                 ))}
                 <li>
-                  {renderAdminLink()}
+                  {authLink}
                 </li>
               </ul>
             </nav>
