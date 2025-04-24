@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { BookOpen, FileText, HeartHandshake, Film, Lightbulb, Link, Users } from 'lucide-react';
+import { BookOpen, FileText, HeartHandshake, Film, Lightbulb, Link } from 'lucide-react';
 import ArticlesSection from './ArticlesSection';
 import ExercisesSection from './ExercisesSection';
 import BooksSection from './BooksSection';
@@ -144,11 +144,9 @@ const ResourceTabs = () => {
   const [activeTab, setActiveTab] = useState('articles');
   
   useEffect(() => {
-    // Parse the tab from URL query parameters
     const searchParams = new URLSearchParams(location.search);
     const tabParam = searchParams.get('tab');
     
-    // Set active tab if valid
     if (tabParam && ['articles', 'exercises', 'books', 'videos', 'external', 'stories'].includes(tabParam)) {
       setActiveTab(tabParam);
     }
@@ -157,11 +155,9 @@ const ResourceTabs = () => {
   const handleTabChange = (value) => {
     setActiveTab(value);
     
-    // Update URL with the selected tab
     const searchParams = new URLSearchParams(location.search);
     searchParams.set('tab', value);
     
-    // Update URL without refreshing the page
     navigate(`/resources?${searchParams.toString()}`, { replace: true });
   };
   
@@ -169,48 +165,48 @@ const ResourceTabs = () => {
     <section className="py-4 md:py-16 px-2 md:px-4 bg-white" id="resource-tabs">
       <div className="container mx-auto max-w-5xl">
         <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-          <TabsList className={`grid w-full ${isMobile ? 'grid-cols-2 gap-2' : 'grid-cols-6'} mb-6 p-1 bg-gray-100/80`}>
+          <TabsList className={`grid w-full ${isMobile ? 'grid-cols-2 gap-2' : 'md:grid-cols-6'} mb-6 p-1 bg-gray-100/80`}>
             <TabsTrigger 
               value="articles" 
-              className="flex items-center gap-2 py-3 px-4 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all"
+              className="flex items-center gap-1.5 py-2 px-3 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all text-sm md:text-base"
             >
               <FileText className="h-4 w-4" /> 
-              <span className={isMobile ? "text-sm" : "text-base"}>Articles</span>
+              <span className="truncate">Articles</span>
             </TabsTrigger>
             <TabsTrigger 
               value="exercises"
-              className="flex items-center gap-2 py-3 px-4 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all"
+              className="flex items-center gap-1.5 py-2 px-3 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all text-sm md:text-base"
             >
               <Lightbulb className="h-4 w-4" />
-              <span className={isMobile ? "text-sm" : "text-base"}>Exercises</span>
+              <span className="truncate">Exercises</span>
             </TabsTrigger>
             <TabsTrigger 
               value="books"
-              className="flex items-center gap-2 py-3 px-4 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all"
+              className="flex items-center gap-1.5 py-2 px-3 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all text-sm md:text-base"
             >
               <BookOpen className="h-4 w-4" />
-              <span className={isMobile ? "text-sm" : "text-base"}>Books</span>
+              <span className="truncate">Books</span>
             </TabsTrigger>
             <TabsTrigger 
               value="videos"
-              className="flex items-center gap-2 py-3 px-4 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all"
+              className="flex items-center gap-1.5 py-2 px-3 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all text-sm md:text-base"
             >
               <Film className="h-4 w-4" />
-              <span className={isMobile ? "text-sm" : "text-base"}>Videos</span>
+              <span className="truncate">Videos</span>
             </TabsTrigger>
             <TabsTrigger 
               value="external"
-              className="flex items-center gap-2 py-3 px-4 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all"
+              className="flex items-center gap-1.5 py-2 px-3 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all text-sm md:text-base"
             >
               <Link className="h-4 w-4" />
-              <span className={isMobile ? "text-sm" : "text-base"}>Resources</span>
+              <span className="truncate">Resources</span>
             </TabsTrigger>
             <TabsTrigger 
               value="stories"
-              className="flex items-center gap-2 py-3 px-4 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all"
+              className="flex items-center gap-1.5 py-2 px-3 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all text-sm md:text-base"
             >
               <HeartHandshake className="h-4 w-4" />
-              <span className={isMobile ? "text-sm" : "text-base"}>Stories</span>
+              <span className="truncate">Stories</span>
             </TabsTrigger>
           </TabsList>
           
