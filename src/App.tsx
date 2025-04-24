@@ -20,6 +20,7 @@ import Community from "./pages/Community";
 import ArticlePage from "./components/ArticlePage";
 import NotFound from "./pages/NotFound";
 import CalendarPage from "./pages/Calendar";
+import Auth from "./pages/Auth";
 
 // Admin pages
 import AdminPage from "./pages/AdminPage";
