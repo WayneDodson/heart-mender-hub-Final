@@ -44,60 +44,43 @@ const CommentSection: React.FC<CommentSectionProps> = ({ storyId }) => {
     },
   });
 
-  // Fetch comments for this story
+  // Fetch comments for this story using Supabase client instead of direct API calls
   const { data: comments = [], isLoading: commentsLoading } = useQuery({
     queryKey: ['comments', storyId],
     queryFn: async () => {
-      // Using fetch directly with Supabase REST API instead of the client library
-      // This bypasses TypeScript errors until the types are updated
-      const res = await fetch(
-        `https://tnkvllqsonnutlxgcfxm.supabase.co/rest/v1/story_comments?story_id=eq.${storyId}&order=created_at.desc`,
-        {
-          headers: {
-            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRua3ZsbHFzb25udXRseGdjZnhtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM0NDA0NDAsImV4cCI6MjA1OTAxNjQ0MH0.Wm4JlkaNBnnQ3Z530buPw50rKtZloS0raG8nYo0ZCT0',
-            'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRua3ZsbHFzb25udXRseGdjZnhtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM0NDA0NDAsImV4cCI6MjA1OTAxNjQ0MH0.Wm4JlkaNBnnQ3Z530buPw50rKtZloS0raG8nYo0ZCT0`,
-          },
-        }
-      );
+      const { data, error } = await supabase
+        .from('story_comments')
+        .select('*')
+        .eq('story_id', storyId)
+        .order('created_at', { ascending: false });
       
-      if (!res.ok) {
-        console.error('Error fetching comments:', res.statusText);
+      if (error) {
+        console.error('Error fetching comments:', error);
         throw new Error('Error fetching comments');
       }
       
-      const data = await res.json();
-      return data as Comment[];
+      return (data as Comment[]) || [];
     }
   });
 
-  // Mutation for adding a new comment
+  // Mutation for adding a new comment using Supabase client
   const { mutate: addComment, isPending: isSubmitting } = useMutation({
     mutationFn: async (values: CommentFormValues) => {
-      // Using fetch directly with Supabase REST API
-      const res = await fetch(
-        `https://tnkvllqsonnutlxgcfxm.supabase.co/rest/v1/story_comments`,
-        {
-          method: 'POST',
-          headers: {
-            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRua3ZsbHFzb25udXRseGdjZnhtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM0NDA0NDAsImV4cCI6MjA1OTAxNjQ0MH0.Wm4JlkaNBnnQ3Z530buPw50rKtZloS0raG8nYo0ZCT0',
-            'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRua3ZsbHFzb25udXRseGdjZnhtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM0NDA0NDAsImV4cCI6MjA1OTAxNjQ0MH0.Wm4JlkaNBnnQ3Z530buPw50rKtZloS0raG8nYo0ZCT0`,
-            'Content-Type': 'application/json',
-            'Prefer': 'return=minimal',
-          },
-          body: JSON.stringify({
-            story_id: storyId,
-            name: values.name,
-            comment: values.comment,
-          }),
-        }
-      );
+      const { data, error } = await supabase
+        .from('story_comments')
+        .insert({
+          story_id: storyId,
+          name: values.name,
+          comment: values.comment,
+        })
+        .select();
       
-      if (!res.ok) {
-        console.error('Error posting comment:', res.statusText);
+      if (error) {
+        console.error('Error posting comment:', error);
         throw new Error('Error posting comment');
       }
       
-      return res;
+      return data;
     },
     onSuccess: () => {
       toast({
