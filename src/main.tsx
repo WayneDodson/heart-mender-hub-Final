@@ -8,6 +8,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import App from "./App.tsx";
 import "./index.css";
 
+// Add version timestamp to help with cache-busting
+console.log("App version:", new Date().toISOString());
+
 // Create a client with better configuration
 const queryClient = new QueryClient({
   defaultOptions: {
