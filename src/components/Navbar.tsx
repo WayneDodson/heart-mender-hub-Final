@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Shield, LogIn, LogOut } from 'lucide-react';
+import { Menu, X, Shield, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { usePendingStoriesCount } from '@/hooks/usePendingStoriesCount';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -61,26 +61,6 @@ const Navbar: React.FC = () => {
     return location.pathname === path;
   };
 
-  const authLink = user ? (
-    <Button 
-      variant="ghost" 
-      size="sm" 
-      className="text-white p-0 h-auto hover:bg-transparent hover:text-healing-300 flex items-center"
-      onClick={handleLogout}
-    >
-      <LogOut className="h-4 w-4 mr-1" />
-      Sign Out
-    </Button>
-  ) : (
-    <Link
-      to="/auth"
-      className="hover:text-healing-300 flex items-center"
-    >
-      <LogIn className="h-4 w-4 mr-1" />
-      Sign In
-    </Link>
-  );
-
   return (
     <div className="bg-healing-900 text-white">
       <div className="container mx-auto px-4">
@@ -136,7 +116,15 @@ const Navbar: React.FC = () => {
                       ))}
                       
                       <li>
-                        {authLink}
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="text-white p-0 h-auto hover:bg-transparent hover:text-healing-300 flex items-center w-full justify-start"
+                          onClick={handleLogout}
+                        >
+                          <LogOut className="h-4 w-4 mr-1" />
+                          Sign Out
+                        </Button>
                       </li>
                     </ul>
                   </nav>
@@ -173,7 +161,15 @@ const Navbar: React.FC = () => {
                   </li>
                 ))}
                 <li>
-                  {authLink}
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="text-white p-0 h-auto hover:bg-transparent hover:text-healing-300 flex items-center"
+                    onClick={handleLogout}
+                  >
+                    <LogOut className="h-4 w-4 mr-1" />
+                    Sign Out
+                  </Button>
                 </li>
               </ul>
             </nav>
@@ -185,3 +181,4 @@ const Navbar: React.FC = () => {
 };
 
 export default Navbar;
+
