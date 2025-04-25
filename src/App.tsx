@@ -1,14 +1,15 @@
+
 import React, { useEffect, useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import "./App.css";
-import { AuthProvider } from "./contexts/AuthContext";
+import { AuthProvider, useAuth } from "./contexts/AuthContext";
 
 // Layout components
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { Toaster } from "./components/ui/toaster";
 
-// Public pages
+// Pages
 import Index from "./pages/Index";
 import Resources from "./pages/Resources";
 import Stories from "./pages/Stories";
@@ -21,10 +22,19 @@ import ArticlePage from "./components/ArticlePage";
 import NotFound from "./pages/NotFound";
 import CalendarPage from "./pages/Calendar";
 import Auth from "./pages/Auth";
-
-// Admin pages
 import AdminPage from "./pages/AdminPage";
 import NewsletterAdmin from "./pages/NewsletterAdmin";
+
+// Protected Route component
+const ProtectedRoute = ({ children }) => {
+  const { user } = useAuth();
+  
+  if (!user) {
+    return <Navigate to="/" replace />;
+  }
+  
+  return children;
+};
 
 function App() {
   const [isBrowserSupported, setIsBrowserSupported] = useState(true);
@@ -99,21 +109,71 @@ function App() {
             <Routes>
               {/* Public routes */}
               <Route path="/" element={<Index />} />
-              <Route path="/resources" element={<Resources />} />
-              <Route path="/resources/article/:articleId" element={<ArticlePage />} />
-              <Route path="/stories" element={<Stories />} />
-              <Route path="/submit-story" element={<SubmitStory />} />
-              <Route path="/stories/:id" element={<StoryDetail />} />
-              <Route path="/celebrity-stories" element={<CelebrityStories />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/community" element={<Community />} />
-              <Route path="/calendar" element={<CalendarPage />} />
               <Route path="/auth" element={<Auth />} />
               
+              {/* Protected routes */}
+              <Route path="/resources" element={
+                <ProtectedRoute>
+                  <Resources />
+                </ProtectedRoute>
+              } />
+              <Route path="/resources/article/:articleId" element={
+                <ProtectedRoute>
+                  <ArticlePage />
+                </ProtectedRoute>
+              } />
+              <Route path="/stories" element={
+                <ProtectedRoute>
+                  <Stories />
+                </ProtectedRoute>
+              } />
+              <Route path="/submit-story" element={
+                <ProtectedRoute>
+                  <SubmitStory />
+                </ProtectedRoute>
+              } />
+              <Route path="/stories/:id" element={
+                <ProtectedRoute>
+                  <StoryDetail />
+                </ProtectedRoute>
+              } />
+              <Route path="/celebrity-stories" element={
+                <ProtectedRoute>
+                  <CelebrityStories />
+                </ProtectedRoute>
+              } />
+              <Route path="/contact" element={
+                <ProtectedRoute>
+                  <Contact />
+                </ProtectedRoute>
+              } />
+              <Route path="/community" element={
+                <ProtectedRoute>
+                  <Community />
+                </ProtectedRoute>
+              } />
+              <Route path="/calendar" element={
+                <ProtectedRoute>
+                  <CalendarPage />
+                </ProtectedRoute>
+              } />
+              
               {/* Admin routes */}
-              <Route path="/admin" element={<AdminPage />} />
-              <Route path="/admin/stories" element={<AdminPage />} />
-              <Route path="/newsletter-admin" element={<NewsletterAdmin />} />
+              <Route path="/admin" element={
+                <ProtectedRoute>
+                  <AdminPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/stories" element={
+                <ProtectedRoute>
+                  <AdminPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/newsletter-admin" element={
+                <ProtectedRoute>
+                  <NewsletterAdmin />
+                </ProtectedRoute>
+              } />
               
               {/* Catch-all route */}
               <Route path="*" element={<NotFound />} />
