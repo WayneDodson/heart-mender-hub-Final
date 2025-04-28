@@ -24,6 +24,12 @@ export default defineConfig(({ mode }) => ({
     target: 'es2015', // Compatible with most browsers
     outDir: 'dist',
     sourcemap: true,
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: mode === 'production',
+      },
+    },
     rollupOptions: {
       output: {
         manualChunks: {
@@ -38,5 +44,10 @@ export default defineConfig(({ mode }) => ({
         }
       }
     }
-  }
+  },
+  optimizeDeps: {
+    esbuildOptions: {
+      target: 'es2015',
+    },
+  },
 }));

@@ -11,6 +11,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { MessageCircle, Loader2 } from 'lucide-react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useDeviceDetection } from '@/hooks/use-mobile';
 
 const commentSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters' }),
@@ -35,6 +36,7 @@ interface CommentSectionProps {
 const CommentSection: React.FC<CommentSectionProps> = ({ storyId }) => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const { deviceType, isMobile } = useDeviceDetection();
   
   const form = useForm<CommentFormValues>({
     resolver: zodResolver(commentSchema),
@@ -111,8 +113,17 @@ const CommentSection: React.FC<CommentSectionProps> = ({ storyId }) => {
     });
   };
 
+  // Responsive classes based on device type
+  const containerClasses = isMobile 
+    ? "mt-6 space-y-4 bg-white px-2" 
+    : "mt-12 space-y-8 bg-white";
+
+  const commentItemClasses = isMobile
+    ? "bg-gray-50 p-3 rounded-lg text-sm"
+    : "bg-gray-50 p-4 rounded-lg";
+
   return (
-    <div className="mt-12 space-y-8 bg-white">
+    <div className={containerClasses}>
       <div className="border-t pt-8">
         <h2 className="text-2xl font-bold text-healing-900 mb-6 flex items-center">
           <MessageCircle className="mr-2 h-5 w-5" />
@@ -144,7 +155,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ storyId }) => {
                   <FormControl>
                     <Textarea 
                       placeholder="Share your thoughts..." 
-                      className="min-h-[100px] bg-white"
+                      className={isMobile ? "min-h-[80px] bg-white" : "min-h-[100px] bg-white"}
                       {...field} 
                     />
                   </FormControl>
@@ -154,7 +165,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ storyId }) => {
             />
             <Button 
               type="submit" 
-              className="bg-healing-600 hover:bg-healing-700"
+              className="bg-healing-600 hover:bg-healing-700 w-full sm:w-auto"
               disabled={isSubmitting}
             >
               {isSubmitting ? (
@@ -181,12 +192,12 @@ const CommentSection: React.FC<CommentSectionProps> = ({ storyId }) => {
             </p>
           ) : (
             comments.map((comment) => (
-              <div key={comment.id} className="bg-gray-50 p-4 rounded-lg">
-                <div className="flex justify-between items-start">
+              <div key={comment.id} className={commentItemClasses}>
+                <div className="flex justify-between items-start flex-wrap">
                   <h3 className="font-medium text-healing-900">{comment.name}</h3>
-                  <span className="text-sm text-gray-500">{formatDate(comment.created_at)}</span>
+                  <span className="text-xs sm:text-sm text-gray-500">{formatDate(comment.created_at)}</span>
                 </div>
-                <p className="mt-2 text-gray-700 whitespace-pre-line">{comment.comment}</p>
+                <p className="mt-2 text-gray-700 whitespace-pre-line break-words">{comment.comment}</p>
               </div>
             ))
           )}
