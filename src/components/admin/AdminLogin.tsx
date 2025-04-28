@@ -10,7 +10,8 @@ import { Lock, LogIn, AlertTriangle, Loader2 } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 
-// Updated admin password as requested
+// Updated admin credentials
+const ADMIN_USERNAME = "Admin";
 const ADMIN_PASSWORD = "1'mLearning!";
 
 interface AdminLoginProps {
@@ -18,6 +19,7 @@ interface AdminLoginProps {
 }
 
 const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess }) => {
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [attempts, setAttempts] = useState(0);
@@ -53,7 +55,7 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess }) => {
       // Add a small delay for security (prevent brute force)
       await new Promise(resolve => setTimeout(resolve, 500));
       
-      if (password === ADMIN_PASSWORD) {
+      if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
         // Store admin authentication in localStorage
         localStorage.setItem("isAdminAuthenticated", "true");
         
@@ -78,12 +80,13 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess }) => {
         
         // Show different messages based on number of attempts
         if (newAttempts >= 3) {
-          setError(`Invalid password. Multiple failed attempts detected (${newAttempts}). Please verify your credentials.`);
+          setError(`Invalid username or password. Multiple failed attempts detected (${newAttempts}). Please verify your credentials.`);
         } else {
-          setError("Invalid admin password");
+          setError("Invalid username or password");
         }
         
         setPassword("");
+        setUsername("");
       }
     } catch (error) {
       setError("An unexpected error occurred. Please try again later.");
@@ -102,7 +105,7 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess }) => {
             Administrator Login
           </CardTitle>
           <CardDescription>
-            Enter the administrator password to access restricted features.
+            Enter your administrator credentials to access restricted features.
           </CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
@@ -114,7 +117,20 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess }) => {
               </Alert>
             )}
             <div className="space-y-2">
-              <Label htmlFor="password">Admin Password</Label>
+              <Label htmlFor="username">Username</Label>
+              <Input 
+                id="username"
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Enter admin username"
+                required
+                autoFocus
+                disabled={isSubmitting}
+              />
+            </div>
+            <div className="space-y-2 mt-4">
+              <Label htmlFor="password">Password</Label>
               <Input 
                 id="password"
                 type="password"
@@ -122,7 +138,6 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess }) => {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter admin password"
                 required
-                autoFocus
                 disabled={isSubmitting}
               />
             </div>
