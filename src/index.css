@@ -3,7 +3,6 @@
 @tailwind utilities;
 
 @layer base {
-  /* Reset and normalize styles for cross-browser compatibility */
   * {
     @apply border-border box-border;
     margin: 0;
@@ -28,7 +27,6 @@
     flex-direction: column;
   }
 
-  /* Improved cross-browser scrollbar and selection */
   ::-webkit-scrollbar {
     width: 8px;
   }
@@ -46,7 +44,6 @@
     background: #555;
   }
 
-  /* Ensure consistent focus states */
   *:focus {
     @apply outline-none ring-2 ring-primary/50;
   }
@@ -181,15 +178,14 @@
   }
   
   .gradient-button {
-    @apply bg-gradient-to-r from-healing-600 to-healing-800 hover:from-healing-700 hover:to-healing-900 transition-all duration-300;
+    @apply bg-gradient-to-r from-msblue-500 to-msblue-700 hover:from-msblue-600 hover:to-msblue-800 transition-all duration-300;
   }
   
   .gradient-button-variant {
-    @apply bg-gradient-to-r from-healing-400 to-healing-600 hover:from-healing-500 hover:to-healing-700;
+    @apply bg-gradient-to-r from-msblue-400 to-msblue-600 hover:from-msblue-500 hover:to-msblue-700;
   }
 }
 
-/* Ensure images are responsive */
 img {
   max-width: 100%;
   height: auto;
