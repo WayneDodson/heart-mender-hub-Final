@@ -23,13 +23,20 @@ const Navbar: React.FC = () => {
     setIsMenuOpen(false);
   };
 
-  const links = [
+  // Only show these links when user is logged in
+  const authenticatedLinks = user ? [
     { text: 'Home', path: '/' },
     { text: 'Stories', path: '/stories' },
     { text: 'Community', path: '/community' },
     { text: 'Resources', path: '/resources' },
+  ] : [];
+
+  // Contact is always visible
+  const publicLinks = [
     { text: 'Contact', path: '/contact' },
   ];
+
+  const links = [...authenticatedLinks, ...publicLinks];
 
   // Only show admin links if user has admin privileges
   const adminLinks = isAdmin ? [
@@ -44,10 +51,7 @@ const Navbar: React.FC = () => {
 
   const handleLogout = async () => {
     try {
-      // Sign out from Supabase
       await supabase.auth.signOut();
-      
-      // Also logout from admin if authenticated
       if (isAdmin) {
         localStorage.removeItem("isAdminAuthenticated");
         await checkUserRole();
@@ -115,17 +119,19 @@ const Navbar: React.FC = () => {
                         </li>
                       ))}
                       
-                      <li>
-                        <Button 
-                          variant="ghost" 
-                          size="sm" 
-                          className="text-white p-0 h-auto hover:bg-transparent hover:text-healing-300 flex items-center w-full justify-start"
-                          onClick={handleLogout}
-                        >
-                          <LogOut className="h-4 w-4 mr-1" />
-                          Sign Out
-                        </Button>
-                      </li>
+                      {user && (
+                        <li>
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            className="text-white p-0 h-auto hover:bg-transparent hover:text-healing-300 flex items-center w-full justify-start"
+                            onClick={handleLogout}
+                          >
+                            <LogOut className="h-4 w-4 mr-1" />
+                            Sign Out
+                          </Button>
+                        </li>
+                      )}
                     </ul>
                   </nav>
                 </div>
@@ -160,17 +166,19 @@ const Navbar: React.FC = () => {
                     </Link>
                   </li>
                 ))}
-                <li>
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    className="text-white p-0 h-auto hover:bg-transparent hover:text-healing-300 flex items-center"
-                    onClick={handleLogout}
-                  >
-                    <LogOut className="h-4 w-4 mr-1" />
-                    Sign Out
-                  </Button>
-                </li>
+                {user && (
+                  <li>
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="text-white p-0 h-auto hover:bg-transparent hover:text-healing-300 flex items-center"
+                      onClick={handleLogout}
+                    >
+                      <LogOut className="h-4 w-4 mr-1" />
+                      Sign Out
+                    </Button>
+                  </li>
+                )}
               </ul>
             </nav>
           )}
