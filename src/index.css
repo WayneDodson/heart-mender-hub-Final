@@ -179,6 +179,14 @@
   .healing-input {
     @apply border-2 border-msblue-100 focus:border-msblue-500 focus:ring-1 focus:ring-msblue-500 rounded-lg px-4 py-2 transition-all duration-300;
   }
+  
+  .gradient-button {
+    @apply bg-gradient-to-r from-healing-600 to-healing-800 hover:from-healing-700 hover:to-healing-900 transition-all duration-300;
+  }
+  
+  .gradient-button-variant {
+    @apply bg-gradient-to-r from-healing-400 to-healing-600 hover:from-healing-500 hover:to-healing-700;
+  }
 }
 
 /* Ensure images are responsive */

@@ -1,10 +1,9 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from '@/contexts/AuthContext';
 import { Heart, Shield } from 'lucide-react';
+import { GradientButton } from '@/components/ui/gradient-button';
 
 const Index = () => {
   const navigate = useNavigate();
@@ -57,13 +56,12 @@ const Index = () => {
             </CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
-            <Button 
+            <GradientButton 
               onClick={() => navigate('/auth')}
-              className="w-full bg-healing-600 hover:bg-healing-700"
-              size="lg"
+              className="w-full"
             >
               Get Started
-            </Button>
+            </GradientButton>
           </CardContent>
         </Card>
       </div>
