@@ -9,6 +9,7 @@ interface AuthContextType {
   isLoading: boolean;
   isAdmin: boolean;
   checkUserRole: () => Promise<boolean>;
+  signOut: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -16,7 +17,8 @@ const AuthContext = createContext<AuthContextType>({
   session: null,
   isLoading: true,
   isAdmin: false,
-  checkUserRole: async () => false
+  checkUserRole: async () => false,
+  signOut: async () => {},
 });
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
@@ -47,27 +49,48 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  // Function to sign out
+  const signOut = async (): Promise<void> => {
+    try {
+      await supabase.auth.signOut();
+      localStorage.removeItem("isAdminAuthenticated");
+      setIsAdmin(false);
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  };
+
   useEffect(() => {
-    // Check active session
+    // Set up auth state listener FIRST
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setSession(session);
+        setUser(session?.user ?? null);
+        
+        // Re-check admin role when auth state changes
+        if (!session) {
+          setIsAdmin(false);
+          localStorage.removeItem("isAdminAuthenticated");
+        } else {
+          // Use setTimeout to prevent supabase auth deadlocks
+          setTimeout(() => {
+            checkUserRole();
+          }, 0);
+        }
+        setIsLoading(false);
+      }
+    );
+
+    // THEN check for existing session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
       // Check admin role on initial load
-      checkUserRole().finally(() => {
-        setIsLoading(false);
-      });
-    });
-
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      // Re-check admin role when auth state changes
-      if (!session) {
-        setIsAdmin(false);
-        localStorage.removeItem("isAdminAuthenticated");
-      } else {
-        checkUserRole();
+      if (session) {
+        // Use setTimeout to prevent supabase auth deadlocks
+        setTimeout(() => {
+          checkUserRole();
+        }, 0);
       }
       setIsLoading(false);
     });
@@ -76,7 +99,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, session, isLoading, isAdmin, checkUserRole }}>
+    <AuthContext.Provider value={{ user, session, isLoading, isAdmin, checkUserRole, signOut }}>
       {children}
     </AuthContext.Provider>
   );
