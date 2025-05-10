@@ -110,23 +110,23 @@ const Auth = () => {
 
   if (signupSuccess) {
     return (
-      <div className="min-h-screen py-12 px-4 flex items-center justify-center bg-healing-50">
+      <div className="min-h-screen py-6 md:py-12 px-3 md:px-4 flex items-center justify-center bg-healing-50">
         <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle className="text-center">Verify Your Email</CardTitle>
+          <CardHeader className="pb-3 md:pb-6">
+            <CardTitle className="text-center text-xl md:text-2xl">Verify Your Email</CardTitle>
             <CardDescription className="text-center">
               We've sent a verification email to <strong>{signupEmail}</strong>
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-3 md:space-y-4 px-3 md:px-6">
             <Alert>
               <InfoIcon className="h-4 w-4" />
               <AlertDescription>
                 Please check your inbox (and spam folder) and click the verification link to complete your registration.
               </AlertDescription>
             </Alert>
-            <div className="text-center mt-6">
-              <p className="text-sm text-gray-600 mb-4">Didn't receive the email?</p>
+            <div className="text-center mt-4 md:mt-6">
+              <p className="text-sm text-gray-600 mb-3 md:mb-4">Didn't receive the email?</p>
               <Button 
                 onClick={handleResendEmail} 
                 variant="outline" 
@@ -138,7 +138,7 @@ const Auth = () => {
               </Button>
             </div>
           </CardContent>
-          <CardFooter className="flex flex-col space-y-4">
+          <CardFooter className="flex flex-col space-y-3 md:space-y-4 pt-0 px-3 md:px-6 pb-4 md:pb-6">
             <Button
               type="button"
               variant="link"
@@ -157,10 +157,10 @@ const Auth = () => {
   }
 
   return (
-    <div className="min-h-screen py-12 px-4 flex items-center justify-center bg-healing-50">
+    <div className="min-h-screen py-6 md:py-12 px-3 md:px-4 flex items-center justify-center bg-healing-50">
       <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle>{isSignUp ? 'Create Account' : 'Welcome Back'}</CardTitle>
+        <CardHeader className="pb-3 md:pb-6">
+          <CardTitle className="text-xl md:text-2xl">{isSignUp ? 'Create Account' : 'Welcome Back'}</CardTitle>
           <CardDescription>
             {isSignUp 
               ? 'Sign up to share your story and join our community'
@@ -169,7 +169,7 @@ const Auth = () => {
           </CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-3 md:space-y-4 px-3 md:px-6">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -193,7 +193,7 @@ const Auth = () => {
               />
             </div>
           </CardContent>
-          <CardFooter className="flex flex-col space-y-4">
+          <CardFooter className="flex flex-col space-y-3 md:space-y-4 pt-0 px-3 md:px-6 pb-4 md:pb-6">
             <Button 
               type="submit" 
               className="w-full bg-healing-600 hover:bg-healing-700"
