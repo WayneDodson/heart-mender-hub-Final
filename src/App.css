@@ -54,4 +54,30 @@
   .card {
     padding: 1em 0.5em;
   }
+  
+  /* Improved spacing for mobile logged-in view */
+  .container {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+  
+  /* Adjust button spacing on mobile */
+  button {
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Improve form spacing on mobile */
+  form {
+    margin-bottom: 1rem;
+  }
+}
+
+/* Auth page specific styles */
+.auth-container {
+  padding: 1rem !important;
+}
+
+/* Authenticated content spacing */
+.authenticated-content {
+  padding: 0.75rem;
 }

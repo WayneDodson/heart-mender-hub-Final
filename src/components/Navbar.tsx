@@ -67,10 +67,10 @@ const Navbar: React.FC = () => {
 
   return (
     <div className="bg-healing-900 text-white">
-      <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center py-4">
+      <div className="container mx-auto px-3">
+        <div className="flex justify-between items-center py-3">
           <div className="flex items-center">
-            <Link to="/" className="text-xl font-bold">Healing Journeys</Link>
+            <Link to="/" className="text-lg md:text-xl font-bold">Healing Journeys</Link>
           </div>
           
           {isMobile ? (
@@ -82,13 +82,13 @@ const Navbar: React.FC = () => {
                 onClick={toggleMenu}
                 aria-label="Toggle menu"
               >
-                {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
               </Button>
               
               {isMenuOpen && (
-                <div className="absolute top-16 left-0 right-0 bg-healing-900 z-50 px-4 py-2 shadow-lg">
+                <div className="absolute top-12 left-0 right-0 bg-healing-900 z-50 px-4 py-2 shadow-lg">
                   <nav>
-                    <ul className="space-y-2">
+                    <ul className="space-y-1">
                       {links.map((link) => (
                         <li key={link.path}>
                           <Link
@@ -105,7 +105,7 @@ const Navbar: React.FC = () => {
                         <li key={link.path}>
                           <Link
                             to={link.path}
-                            className={`block py-2 ${isActive(link.path) ? 'text-healing-300 font-medium' : 'hover:text-healing-300'} flex items-center`}
+                            className={`block py-1.5 ${isActive(link.path) ? 'text-healing-300 font-medium' : 'hover:text-healing-300'} flex items-center`}
                             onClick={closeMenu}
                           >
                             {link.icon}
