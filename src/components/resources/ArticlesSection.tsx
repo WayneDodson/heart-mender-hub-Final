@@ -31,14 +31,16 @@ const ArticlesSection = ({ articles }: ArticlesSectionProps) => {
             </CardContent>
             <CardFooter className={`flex justify-between items-center ${isMobile ? "px-4 py-3" : ""}`}>
               <div className="text-xs md:text-sm text-gray-500">{article.readTime}</div>
-              <Link to={`/resources/article/${article.id}`} className="shimmer-border rounded-md">
-                <Button 
-                  variant="ghost" 
-                  className="text-healing-600 hover:text-healing-700 hover:bg-healing-50 border border-transparent hover:border-healing-200"
-                >
-                  Read More
-                </Button>
-              </Link>
+              <div className="shimmer-border rounded-md overflow-hidden">
+                <Link to={`/resources/article/${article.id}`} className="block">
+                  <Button 
+                    variant="ghost" 
+                    className="text-healing-600 hover:text-healing-700 hover:bg-healing-50 border border-transparent hover:border-healing-200"
+                  >
+                    Read More
+                  </Button>
+                </Link>
+              </div>
             </CardFooter>
           </Card>
         ))}
