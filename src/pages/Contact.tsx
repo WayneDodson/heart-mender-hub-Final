@@ -28,6 +28,7 @@ const Contact = () => {
 
     try {
       // Insert the form data into the contact_submissions table
+      console.log("Sending data to contact_submissions table");
       const { data, error } = await supabase
         .from('contact_submissions')
         .insert([
@@ -43,10 +44,10 @@ const Contact = () => {
         .single();
 
       if (error) {
-        console.error('Error submitting form:', error);
+        console.error('Error submitting form to database:', error);
         toast({
           title: "Submission failed",
-          description: `There was an error submitting your message: ${error.message}`,
+          description: `Database error: ${error.message}`,
           variant: "destructive",
           duration: 5000,
         });
@@ -88,9 +89,11 @@ const Contact = () => {
           description: "Your message was received but there was an issue with sending the notification. Our team will still review your message.",
           duration: 5000,
         });
+        // Since the database entry was successful, we consider this a partial success
+        e.currentTarget.reset();
       }
     } catch (err: any) {
-      console.error('Unexpected error:', err);
+      console.error('Unexpected error during form submission:', err);
       toast({
         title: "Submission failed",
         description: `There was an error submitting your message: ${err.message || "Please try again."}`,

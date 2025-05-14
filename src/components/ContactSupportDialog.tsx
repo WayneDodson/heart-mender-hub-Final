@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import {
@@ -48,9 +47,11 @@ const ContactSupportDialog = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    console.log("Submitting contact dialog form:", formData);
 
     try {
       // Insert the form data into the contact_submissions table
+      console.log("Sending dialog data to contact_submissions table");
       const { data, error } = await supabase
         .from('contact_submissions')
         .insert({
@@ -64,10 +65,10 @@ const ContactSupportDialog = ({
         .single();
 
       if (error) {
-        console.error('Error submitting form:', error);
+        console.error('Error submitting form to database:', error);
         toast({
           title: "Submission failed",
-          description: "There was an error submitting your message. Please try again.",
+          description: `Database error: ${error.message}`,
           variant: "destructive",
           duration: 5000,
         });
@@ -75,21 +76,24 @@ const ContactSupportDialog = ({
         return;
       }
 
+      console.log("Dialog form submission successful, data:", data);
+
       // If submission was successful, trigger the email notification
       try {
+        console.log("Invoking contact-notification function from dialog with data:", { record: data });
         const { data: invokeData, error: invokeError } = await supabase.functions.invoke('contact-notification', {
           body: { record: data }
         });
         
         if (invokeError) {
-          console.error('Error sending email notification:', invokeError);
+          console.error('Error sending email notification from dialog:', invokeError);
           toast({
             title: "Message received but notification failed",
             description: "Your message was saved but we couldn't send a notification. Our team will still review it.",
             duration: 5000,
           });
         } else {
-          console.log('Email notification sent successfully:', invokeData);
+          console.log('Email notification from dialog sent successfully:', invokeData);
           toast({
             title: "Message received",
             description: "Thank you for reaching out. Our support team will respond to you soon.",
@@ -101,18 +105,21 @@ const ContactSupportDialog = ({
         setFormData({ name: '', email: '', message: '' });
         setDialogOpen(false);
       } catch (emailError) {
-        console.error('Error invoking email function:', emailError);
+        console.error('Error invoking email function from dialog:', emailError);
         toast({
           title: "Message received",
           description: "Thank you for reaching out. However, there was an issue sending the notification. Our team will still review your message.",
           duration: 5000,
         });
+        // Since the database entry was successful, we reset and close
+        setFormData({ name: '', email: '', message: '' });
+        setDialogOpen(false);
       }
     } catch (err) {
-      console.error('Unexpected error:', err);
+      console.error('Unexpected error during dialog form submission:', err);
       toast({
         title: "Submission failed",
-        description: "There was an error submitting your message. Please try again.",
+        description: `There was an error submitting your message: ${err instanceof Error ? err.message : "Please try again."}`,
         variant: "destructive",
         duration: 5000,
       });

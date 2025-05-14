@@ -34,12 +34,16 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    const { record } = await req.json();
+    console.log("Function started, parsing request body");
+    const body = await req.json();
+    console.log("Request body parsed:", JSON.stringify(body));
+    
+    const { record } = body;
     
     console.log("Received contact submission:", record);
     
     if (!record || !record.id) {
-      console.error("Missing record information in request:", record);
+      console.error("Missing record information in request:", body);
       return new Response(
         JSON.stringify({ error: "Missing record information" }),
         { 
@@ -49,6 +53,7 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
+    console.log("Fetching submission details for record ID:", record.id);
     // Get the full contact submission details
     const { data, error } = await supabase
       .from('contact_submissions')
@@ -56,12 +61,23 @@ const handler = async (req: Request): Promise<Response> => {
       .eq('id', record.id)
       .single();
 
-    if (error || !data) {
+    if (error) {
       console.error("Error fetching contact submission:", error);
       return new Response(
         JSON.stringify({ error: "Failed to fetch contact submission details", details: error }),
         { 
           status: 500, 
+          headers: { "Content-Type": "application/json", ...corsHeaders } 
+        }
+      );
+    }
+
+    if (!data) {
+      console.error("No data found for record ID:", record.id);
+      return new Response(
+        JSON.stringify({ error: "No contact submission found with the provided ID" }),
+        { 
+          status: 404, 
           headers: { "Content-Type": "application/json", ...corsHeaders } 
         }
       );
@@ -84,34 +100,48 @@ const handler = async (req: Request): Promise<Response> => {
 
     console.log("Attempting to send email to support@heartmenderhub.com");
 
-    // Send the email notification
-    const emailResponse = await resend.emails.send({
-      from: "Heart Mender <notifications@heartmender.com>",
-      to: ["support@heartmenderhub.com"],
-      subject: `New Contact Form: ${submission.subject}`,
-      html: emailContent,
-      reply_to: submission.email
-    });
+    try {
+      // Send the email notification
+      const emailResponse = await resend.emails.send({
+        from: "Heart Mender <notifications@heartmender.com>",
+        to: ["support@heartmenderhub.com"],
+        subject: `New Contact Form: ${submission.subject}`,
+        html: emailContent,
+        reply_to: submission.email
+      });
 
-    console.log("Email notification sent:", emailResponse);
+      console.log("Email notification sent:", emailResponse);
 
-    return new Response(
-      JSON.stringify({ 
-        message: "Email notification sent successfully", 
-        id: emailResponse.id 
-      }),
-      { 
-        status: 200, 
-        headers: { "Content-Type": "application/json", ...corsHeaders } 
-      }
-    );
+      return new Response(
+        JSON.stringify({ 
+          message: "Email notification sent successfully", 
+          id: emailResponse.id 
+        }),
+        { 
+          status: 200, 
+          headers: { "Content-Type": "application/json", ...corsHeaders } 
+        }
+      );
+    } catch (emailError) {
+      console.error("Error sending email:", emailError);
+      return new Response(
+        JSON.stringify({ 
+          error: "Failed to send email notification", 
+          details: emailError instanceof Error ? emailError.message : String(emailError)
+        }),
+        { 
+          status: 500, 
+          headers: { "Content-Type": "application/json", ...corsHeaders } 
+        }
+      );
+    }
     
   } catch (error) {
     console.error("Error in contact-notification function:", error);
     return new Response(
       JSON.stringify({ 
-        error: error.message || "Failed to send email notification",
-        stack: error.stack 
+        error: error instanceof Error ? error.message : "Failed to send email notification",
+        stack: error instanceof Error ? error.stack : undefined 
       }),
       { 
         status: 500, 
