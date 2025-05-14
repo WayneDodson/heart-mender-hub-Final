@@ -3,8 +3,9 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from '@/contexts/AuthContext';
-import { Heart, Shield } from 'lucide-react';
+import { Heart, Shield, ExternalLink } from 'lucide-react';
 import { GradientButton } from '@/components/ui/gradient-button';
+import { HoverPeek } from '@/components/ui/link-preview';
 
 const Index = () => {
   const navigate = useNavigate();
@@ -14,6 +15,24 @@ const Index = () => {
     navigate('/resources');
     return null;
   }
+
+  // Resource links for hover preview
+  const resourceLinks = [
+    {
+      title: "Mindful Healing",
+      description: "Meditation and mindfulness practices for emotional healing",
+      url: "https://www.mindful.org/healing-through-mindfulness/",
+      isStatic: true,
+      imageSrc: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=800"
+    },
+    {
+      title: "Psychology Today",
+      description: "Expert advice on recovery after divorce",
+      url: "https://www.psychologytoday.com/us/basics/divorce",
+      isStatic: true,
+      imageSrc: "https://images.unsplash.com/photo-1517971071642-34a2d3ecc9cd?q=80&w=800"
+    }
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-msblue-50 to-msblue-100">
@@ -36,6 +55,35 @@ const Index = () => {
                 Connect with others who understand your journey and find strength in shared experiences.
               </CardDescription>
             </CardHeader>
+            <CardContent className="p-3 pb-6 md:p-6">
+              <div className="space-y-3">
+                <p className="text-sm md:text-base text-gray-700">Hover over these resources to preview:</p>
+                <ul className="space-y-2 text-sm md:text-base">
+                  {resourceLinks.slice(0, 1).map((resource, index) => (
+                    <li key={index} className="flex items-center">
+                      <ExternalLink className="h-4 w-4 mr-2 text-healing-600" />
+                      <HoverPeek 
+                        url={resource.url}
+                        isStatic={resource.isStatic}
+                        imageSrc={resource.imageSrc}
+                        peekWidth={280}
+                        peekHeight={175}
+                      >
+                        <a 
+                          href={resource.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-healing-600 hover:text-healing-800 hover:underline transition-colors"
+                        >
+                          {resource.title}
+                        </a>
+                      </HoverPeek>
+                      <span className="ml-2 text-gray-500">- {resource.description}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </CardContent>
           </Card>
 
           <Card className="border-msblue-200 shadow-md hover:shadow-lg transition-all duration-300">
@@ -46,6 +94,35 @@ const Index = () => {
                 Access curated content, expert advice, and practical tools for moving forward.
               </CardDescription>
             </CardHeader>
+            <CardContent className="p-3 pb-6 md:p-6">
+              <div className="space-y-3">
+                <p className="text-sm md:text-base text-gray-700">Hover over these resources to preview:</p>
+                <ul className="space-y-2 text-sm md:text-base">
+                  {resourceLinks.slice(1).map((resource, index) => (
+                    <li key={index} className="flex items-center">
+                      <ExternalLink className="h-4 w-4 mr-2 text-healing-600" />
+                      <HoverPeek 
+                        url={resource.url}
+                        isStatic={resource.isStatic}
+                        imageSrc={resource.imageSrc}
+                        peekWidth={280}
+                        peekHeight={175}
+                      >
+                        <a 
+                          href={resource.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-healing-600 hover:text-healing-800 hover:underline transition-colors"
+                        >
+                          {resource.title}
+                        </a>
+                      </HoverPeek>
+                      <span className="ml-2 text-gray-500">- {resource.description}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </CardContent>
           </Card>
         </div>
 
