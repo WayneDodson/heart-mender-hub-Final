@@ -5,6 +5,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter }
 import { useAuth } from '@/contexts/AuthContext';
 import { Heart, Shield, Users, BookOpen, ArrowRight } from 'lucide-react';
 import { GradientButton } from '@/components/ui/gradient-button';
+import { StarBorder } from '@/components/ui/star-border';
+import { Button } from '@/components/ui/button';
 
 const Index = () => {
   const navigate = useNavigate();
@@ -46,6 +48,20 @@ const Index = () => {
           <p className="text-lg md:text-xl text-msblue-700 mb-6 md:mb-10 px-4">
             Join our supportive community and access valuable resources to help you navigate life after divorce.
           </p>
+          <StarBorder 
+            as="div" 
+            color="hsl(var(--primary))" 
+            className="inline-block hover:scale-105 transition-transform duration-300"
+          >
+            <Button 
+              onClick={() => navigate('/auth')}
+              variant="ghost"
+              className="w-full font-medium text-lg flex items-center justify-center gap-2"
+            >
+              Begin Your Journey
+              <ArrowRight className="h-5 w-5" />
+            </Button>
+          </StarBorder>
         </div>
 
         {/* Feature Cards */}
@@ -134,13 +150,21 @@ const Index = () => {
               </CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col gap-3 p-3 md:p-6">
-              <GradientButton 
-                onClick={() => navigate('/auth')}
-                className="w-full flex items-center justify-center"
+              <StarBorder 
+                as="div" 
+                color="hsl(var(--primary))" 
+                speed="5s"
+                className="w-full"
               >
-                Get Started
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </GradientButton>
+                <Button
+                  onClick={() => navigate('/auth')}
+                  variant="ghost"
+                  className="w-full flex items-center justify-center"
+                >
+                  Get Started
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </StarBorder>
             </CardContent>
             <CardFooter className="px-3 pb-4 pt-0 md:px-6 text-center">
               <p className="text-xs text-gray-500 w-full">
