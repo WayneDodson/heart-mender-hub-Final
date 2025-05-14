@@ -45,6 +45,16 @@
   color: #888;
 }
 
+/* Hide scrollbars but keep scrolling functionality */
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari, Opera */
+}
+
 /* Mobile specific adjustments */
 @media (max-width: 768px) {
   #root {
@@ -68,6 +78,20 @@
   
   /* Improve form spacing on mobile */
   form {
+    margin-bottom: 1rem;
+  }
+  
+  /* Resource tabs specific mobile styles */
+  #resource-tabs .grid {
+    grid-template-columns: 1fr;
+  }
+  
+  #resource-tabs h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  #resource-tabs .card {
     margin-bottom: 1rem;
   }
 }

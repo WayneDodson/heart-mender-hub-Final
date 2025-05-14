@@ -1,8 +1,8 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { BookOpen, FileText, HeartHandshake, Film, Lightbulb, Link } from 'lucide-react';
+import { BookOpen, FileText, HeartHandshake, Film, Lightbulb, Link, ChevronRight, ChevronLeft } from 'lucide-react';
 import ArticlesSection from './ArticlesSection';
 import ExercisesSection from './ExercisesSection';
 import BooksSection from './BooksSection';
@@ -11,6 +11,7 @@ import ExternalResources from './ExternalResources';
 import { articles, bookRecommendations } from '../../data/articles';
 import CelebrityStories from '../stories/CelebrityStories';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { Button } from '@/components/ui/button';
 
 const enhancedExercises = [
   {
@@ -143,6 +144,7 @@ const ResourceTabs = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('articles');
+  const tabsListRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -160,79 +162,174 @@ const ResourceTabs = () => {
     searchParams.set('tab', value);
     
     navigate(`/resources?${searchParams.toString()}`, { replace: true });
+
+    // Scroll the active tab into view on mobile
+    if (isMobile) {
+      const activeTabElement = document.querySelector(`[data-state="active"][data-orientation="horizontal"]`);
+      if (activeTabElement) {
+        activeTabElement.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+    }
+  };
+
+  // Functions to scroll the tabs list horizontally on mobile
+  const scrollTabs = (direction: 'left' | 'right') => {
+    if (tabsListRef.current) {
+      const scrollAmount = 150;
+      const currentScroll = tabsListRef.current.scrollLeft;
+      tabsListRef.current.scrollTo({
+        left: direction === 'left' ? currentScroll - scrollAmount : currentScroll + scrollAmount,
+        behavior: 'smooth'
+      });
+    }
   };
   
   return (
-    <section className="min-h-screen w-full bg-white">
-      <div className="w-full">
+    <section id="resource-tabs" className="min-h-screen w-full bg-white py-6 md:py-12">
+      <div className="w-full px-3 md:px-6">
         <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-          <TabsList className={`w-full grid ${isMobile ? 'grid-cols-2 gap-1' : 'md:grid-cols-6'} bg-gray-100/80 rounded-none`}>
-            <TabsTrigger 
-              value="articles" 
-              className="w-full flex items-center gap-1.5 py-2 px-3 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all text-sm md:text-base"
-            >
-              <FileText className="h-4 w-4" /> 
-              <span className="truncate">Articles</span>
-            </TabsTrigger>
-            <TabsTrigger 
-              value="exercises"
-              className="w-full flex items-center gap-1.5 py-2 px-3 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all text-sm md:text-base"
-            >
-              <Lightbulb className="h-4 w-4" />
-              <span className="truncate">Exercises</span>
-            </TabsTrigger>
-            <TabsTrigger 
-              value="books"
-              className="w-full flex items-center gap-1.5 py-2 px-3 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all text-sm md:text-base"
-            >
-              <BookOpen className="h-4 w-4" />
-              <span className="truncate">Books</span>
-            </TabsTrigger>
-            <TabsTrigger 
-              value="videos"
-              className="w-full flex items-center gap-1.5 py-2 px-3 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all text-sm md:text-base"
-            >
-              <Film className="h-4 w-4" />
-              <span className="truncate">Videos</span>
-            </TabsTrigger>
-            <TabsTrigger 
-              value="external"
-              className="w-full flex items-center gap-1.5 py-2 px-3 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all text-sm md:text-base"
-            >
-              <Link className="h-4 w-4" />
-              <span className="truncate">Resources</span>
-            </TabsTrigger>
-            <TabsTrigger 
-              value="stories"
-              className="w-full flex items-center gap-1.5 py-2 px-3 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all text-sm md:text-base"
-            >
-              <HeartHandshake className="h-4 w-4" />
-              <span className="truncate">Stories</span>
-            </TabsTrigger>
-          </TabsList>
+          {isMobile && (
+            <div className="flex items-center justify-between mb-2">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="flex-shrink-0" 
+                onClick={() => scrollTabs('left')}
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+              
+              <div 
+                ref={tabsListRef}
+                className="overflow-x-auto no-scrollbar flex-grow"
+                style={{ scrollBehavior: 'smooth', WebkitOverflowScrolling: 'touch' }}
+              >
+                <TabsList className="w-max flex bg-gray-100/80 rounded-lg">
+                  <TabsTrigger 
+                    value="articles" 
+                    className="flex items-center gap-1 py-1.5 px-3 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all text-sm"
+                  >
+                    <FileText className="h-3.5 w-3.5" /> 
+                    <span className="truncate">Articles</span>
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="exercises"
+                    className="flex items-center gap-1 py-1.5 px-3 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all text-sm"
+                  >
+                    <Lightbulb className="h-3.5 w-3.5" />
+                    <span className="truncate">Exercises</span>
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="books"
+                    className="flex items-center gap-1 py-1.5 px-3 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all text-sm"
+                  >
+                    <BookOpen className="h-3.5 w-3.5" />
+                    <span className="truncate">Books</span>
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="videos"
+                    className="flex items-center gap-1 py-1.5 px-3 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all text-sm"
+                  >
+                    <Film className="h-3.5 w-3.5" />
+                    <span className="truncate">Videos</span>
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="external"
+                    className="flex items-center gap-1 py-1.5 px-3 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all text-sm"
+                  >
+                    <Link className="h-3.5 w-3.5" />
+                    <span className="truncate">Resources</span>
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="stories"
+                    className="flex items-center gap-1 py-1.5 px-3 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all text-sm"
+                  >
+                    <HeartHandshake className="h-3.5 w-3.5" />
+                    <span className="truncate">Stories</span>
+                  </TabsTrigger>
+                </TabsList>
+              </div>
+              
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="flex-shrink-0" 
+                onClick={() => scrollTabs('right')}
+              >
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
+          )}
           
-          <div className="w-full">
-            <TabsContent value="articles" className="mt-0 w-full">
+          {!isMobile && (
+            <TabsList className="w-full grid md:grid-cols-6 bg-gray-100/80 rounded-none">
+              <TabsTrigger 
+                value="articles" 
+                className="w-full flex items-center gap-1.5 py-2 px-3 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all text-sm md:text-base"
+              >
+                <FileText className="h-4 w-4" /> 
+                <span className="truncate">Articles</span>
+              </TabsTrigger>
+              <TabsTrigger 
+                value="exercises"
+                className="w-full flex items-center gap-1.5 py-2 px-3 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all text-sm md:text-base"
+              >
+                <Lightbulb className="h-4 w-4" />
+                <span className="truncate">Exercises</span>
+              </TabsTrigger>
+              <TabsTrigger 
+                value="books"
+                className="w-full flex items-center gap-1.5 py-2 px-3 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all text-sm md:text-base"
+              >
+                <BookOpen className="h-4 w-4" />
+                <span className="truncate">Books</span>
+              </TabsTrigger>
+              <TabsTrigger 
+                value="videos"
+                className="w-full flex items-center gap-1.5 py-2 px-3 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all text-sm md:text-base"
+              >
+                <Film className="h-4 w-4" />
+                <span className="truncate">Videos</span>
+              </TabsTrigger>
+              <TabsTrigger 
+                value="external"
+                className="w-full flex items-center gap-1.5 py-2 px-3 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all text-sm md:text-base"
+              >
+                <Link className="h-4 w-4" />
+                <span className="truncate">Resources</span>
+              </TabsTrigger>
+              <TabsTrigger 
+                value="stories"
+                className="w-full flex items-center gap-1.5 py-2 px-3 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all text-sm md:text-base"
+              >
+                <HeartHandshake className="h-4 w-4" />
+                <span className="truncate">Stories</span>
+              </TabsTrigger>
+            </TabsList>
+          )}
+          
+          <div className="w-full bg-white">
+            <TabsContent value="articles" className="mt-2 md:mt-4 px-2 md:px-4 w-full">
               <ArticlesSection articles={articles} />
             </TabsContent>
             
-            <TabsContent value="exercises" className="mt-0 w-full">
+            <TabsContent value="exercises" className="mt-2 md:mt-4 px-2 md:px-4 w-full">
               <ExercisesSection exercises={enhancedExercises} />
             </TabsContent>
             
-            <TabsContent value="books" className="mt-0 w-full">
+            <TabsContent value="books" className="mt-2 md:mt-4 px-2 md:px-4 w-full">
               <BooksSection books={bookRecommendations} />
             </TabsContent>
             
-            <TabsContent value="videos" className="mt-0 w-full">
+            <TabsContent value="videos" className="mt-2 md:mt-4 px-2 md:px-4 w-full">
               <VideosSection />
             </TabsContent>
 
-            <TabsContent value="external" className="mt-0 w-full">
+            <TabsContent value="external" className="mt-2 md:mt-4 px-2 md:px-4 w-full">
               <ExternalResources />
             </TabsContent>
             
-            <TabsContent value="stories" className="mt-0 w-full">
+            <TabsContent value="stories" className="mt-2 md:mt-4 px-2 md:px-4 w-full">
               <div className="w-full">
                 <CelebrityStories />
               </div>
