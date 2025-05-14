@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -17,6 +18,13 @@ const resources: Resource[] = [
     title: "Psychology Today - Breakup & Divorce",
     description: "Articles, advice, and resources from mental health professionals on coping with breakups and divorce.",
     url: "https://www.psychologytoday.com/us/basics/divorce",
+    category: "website"
+  },
+  {
+    id: "2",
+    title: "19 Truths About Divorce That Will Make You Feel Better",
+    description: "An insightful article sharing honest truths about divorce that can help you feel understood and less alone.",
+    url: "https://www.thedivorcemagazine.co.uk/19-truths-about-divorce-that-will-make-you-feel-better/",
     category: "website"
   },
   {
