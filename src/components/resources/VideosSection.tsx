@@ -110,13 +110,15 @@ const VideosSection = () => {
             </CardContent>
             
             <CardFooter>
-              <Button 
-                variant="outline" 
-                className="w-full flex items-center gap-2"
-                onClick={() => openVideo(video.youtubeId)}
-              >
-                <Youtube className="h-4 w-4" /> Watch Video
-              </Button>
+              <div className="w-full shimmer-border rounded-md">
+                <Button 
+                  variant="outline" 
+                  className="w-full flex items-center gap-2"
+                  onClick={() => openVideo(video.youtubeId)}
+                >
+                  <Youtube className="h-4 w-4" /> Watch Video
+                </Button>
+              </div>
             </CardFooter>
           </Card>
         ))}

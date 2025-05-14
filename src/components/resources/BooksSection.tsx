@@ -35,13 +35,15 @@ const BooksSection = ({ books }: BooksSectionProps) => {
               )}
             </CardContent>
             <CardFooter>
-              <Button 
-                variant="outline" 
-                className="w-full"
-                onClick={() => book.amazonLink ? window.open(book.amazonLink, '_blank') : null}
-              >
-                Find on Amazon
-              </Button>
+              <div className="w-full shimmer-border rounded-md">
+                <Button 
+                  variant="outline" 
+                  className="w-full"
+                  onClick={() => book.amazonLink ? window.open(book.amazonLink, '_blank') : null}
+                >
+                  Find on Amazon
+                </Button>
+              </div>
             </CardFooter>
           </Card>
         ))}

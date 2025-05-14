@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from '@/components/ui/button';
 import { Article } from '../ArticlePage';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { StarBorder } from "../ui/star-border";
 
 interface ArticlesSectionProps {
   articles: Article[];
@@ -30,8 +31,11 @@ const ArticlesSection = ({ articles }: ArticlesSectionProps) => {
             </CardContent>
             <CardFooter className={`flex justify-between items-center ${isMobile ? "px-4 py-3" : ""}`}>
               <div className="text-xs md:text-sm text-gray-500">{article.readTime}</div>
-              <Link to={`/resources/article/${article.id}`}>
-                <Button variant="ghost" className="text-healing-600 hover:text-healing-700 hover:bg-healing-50">
+              <Link to={`/resources/article/${article.id}`} className="shimmer-border rounded-md">
+                <Button 
+                  variant="ghost" 
+                  className="text-healing-600 hover:text-healing-700 hover:bg-healing-50 border border-transparent hover:border-healing-200"
+                >
                   Read More
                 </Button>
               </Link>

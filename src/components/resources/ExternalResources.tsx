@@ -83,12 +83,14 @@ const ExternalResources: React.FC = () => {
                 <p className="text-gray-700">{resource.description}</p>
               </CardContent>
               <CardFooter>
-                <Button asChild className="w-full bg-healing-600 hover:bg-healing-700">
-                  <a href={resource.url} target="_blank" rel="noreferrer" className="flex items-center justify-center">
-                    <Link className="mr-2 h-4 w-4" />
-                    Visit Resource
-                  </a>
-                </Button>
+                <div className="w-full shimmer-border rounded-md">
+                  <Button asChild className="w-full bg-healing-600 hover:bg-healing-700">
+                    <a href={resource.url} target="_blank" rel="noreferrer" className="flex items-center justify-center">
+                      <Link className="mr-2 h-4 w-4" />
+                      Visit Resource
+                    </a>
+                  </Button>
+                </div>
               </CardFooter>
             </Card>
           ))}

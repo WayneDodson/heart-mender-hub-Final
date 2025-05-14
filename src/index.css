@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -183,6 +184,39 @@
   
   .gradient-button-variant {
     @apply bg-gradient-to-r from-msblue-400 to-msblue-600 hover:from-msblue-500 hover:to-msblue-700;
+  }
+
+  /* Shimmer effect for buttons */
+  .shimmer-border {
+    @apply relative overflow-hidden;
+  }
+
+  .shimmer-border::before {
+    content: '';
+    @apply absolute inset-0 opacity-0 transition-opacity rounded-md pointer-events-none;
+    background: linear-gradient(
+      90deg, 
+      rgba(255,255,255,0) 0%,
+      rgba(255,255,255,0.8) 50%,
+      rgba(255,255,255,0) 100%
+    );
+    z-index: 1;
+    background-size: 200% 100%;
+    animation: none;
+  }
+
+  .shimmer-border:hover::before {
+    @apply opacity-100;
+    animation: shimmer-animation 2s infinite;
+  }
+}
+
+@keyframes shimmer-animation {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
   }
 }
 

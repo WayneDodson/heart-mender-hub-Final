@@ -42,13 +42,15 @@ const StoryCard: React.FC<StoryCardProps> = ({ story, onReadMore }) => {
       </CardContent>
       <CardFooter className="flex justify-between items-center">
         <div className="text-sm text-gray-500">{formattedDate}</div>
-        <Button 
-          variant="ghost" 
-          className="text-healing-600 hover:text-healing-700 hover:bg-healing-50"
-          onClick={() => onReadMore(story.id)}
-        >
-          Read More
-        </Button>
+        <div className="shimmer-border rounded-md">
+          <Button 
+            variant="ghost" 
+            className="text-healing-600 hover:text-healing-700 hover:bg-healing-50"
+            onClick={() => onReadMore(story.id)}
+          >
+            Read More
+          </Button>
+        </div>
       </CardFooter>
     </Card>
   );
