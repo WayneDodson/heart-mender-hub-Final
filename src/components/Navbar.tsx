@@ -9,6 +9,31 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import ContactSupportDialog from '@/components/ContactSupportDialog';
 
+// Define types for our navigation links
+type NavLinkWithPath = {
+  text: string;
+  path: string;
+  icon?: React.ReactNode;
+  hasBadge?: boolean;
+  badgeCount?: number;
+};
+
+type NavLinkWithAction = {
+  text: string;
+  action: () => void;
+};
+
+type NavLink = NavLinkWithPath | NavLinkWithAction;
+
+// Type guard functions to check link types
+const isPathLink = (link: NavLink): link is NavLinkWithPath => {
+  return 'path' in link;
+};
+
+const isActionLink = (link: NavLink): link is NavLinkWithAction => {
+  return 'action' in link;
+};
+
 const Navbar: React.FC = () => {
   const isMobile = useIsMobile();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -26,7 +51,7 @@ const Navbar: React.FC = () => {
   };
 
   // Only show these links when user is logged in
-  const authenticatedLinks = user ? [
+  const authenticatedLinks: NavLinkWithPath[] = user ? [
     { text: 'Home', path: '/' },
     { text: 'Stories', path: '/stories' },
     { text: 'Community', path: '/community' },
@@ -34,14 +59,14 @@ const Navbar: React.FC = () => {
   ] : [];
 
   // Contact is now a button to open dialog, not a link
-  const publicLinks = [
+  const publicLinks: NavLinkWithAction[] = [
     { text: 'Contact', action: () => setContactDialogOpen(true) },
   ];
 
-  const links = [...authenticatedLinks, ...publicLinks];
+  const links: NavLink[] = [...authenticatedLinks, ...publicLinks];
 
   // Only show admin links if user has admin privileges
-  const adminLinks = isAdmin ? [
+  const adminLinks: NavLinkWithPath[] = isAdmin ? [
     { 
       text: 'Review Stories', 
       path: '/admin', 
@@ -93,7 +118,7 @@ const Navbar: React.FC = () => {
                     <ul className="space-y-1">
                       {links.map((link, index) => (
                         <li key={index}>
-                          {link.path ? (
+                          {isPathLink(link) ? (
                             <Link
                               to={link.path}
                               className={`block py-2 ${isActive(link.path) ? 'text-healing-300 font-medium' : 'hover:text-healing-300'}`}
@@ -108,7 +133,7 @@ const Navbar: React.FC = () => {
                               className="text-white p-0 h-auto hover:bg-transparent hover:text-healing-300 w-full text-left justify-start"
                               onClick={() => {
                                 closeMenu();
-                                if (link.action) link.action();
+                                if (isActionLink(link)) link.action();
                               }}
                             >
                               {link.text}
@@ -158,7 +183,7 @@ const Navbar: React.FC = () => {
               <ul className="flex space-x-6">
                 {links.map((link, index) => (
                   <li key={index}>
-                    {link.path ? (
+                    {isPathLink(link) ? (
                       <Link
                         to={link.path}
                         className={`${isActive(link.path) ? 'text-healing-300 font-medium' : 'hover:text-healing-300'}`}
@@ -170,7 +195,7 @@ const Navbar: React.FC = () => {
                         variant="ghost"
                         size="sm"
                         className="text-white p-0 h-auto hover:bg-transparent hover:text-healing-300"
-                        onClick={link.action}
+                        onClick={isActionLink(link) ? link.action : undefined}
                       >
                         {link.text}
                       </Button>
