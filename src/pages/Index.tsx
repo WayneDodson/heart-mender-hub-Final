@@ -22,14 +22,14 @@ const Index = () => {
       title: "Mindful Healing",
       description: "Meditation and mindfulness practices for emotional healing",
       url: "https://www.mindful.org/healing-through-mindfulness/",
-      isStatic: true,
+      isStatic: true as const, // Using 'as const' to ensure TypeScript treats this as the literal 'true'
       imageSrc: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=800"
     },
     {
       title: "Psychology Today",
       description: "Expert advice on recovery after divorce",
       url: "https://www.psychologytoday.com/us/basics/divorce",
-      isStatic: true,
+      isStatic: true as const, // Using 'as const' to ensure TypeScript treats this as the literal 'true'
       imageSrc: "https://images.unsplash.com/photo-1517971071642-34a2d3ecc9cd?q=80&w=800"
     }
   ];
