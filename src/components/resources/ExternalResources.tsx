@@ -21,13 +21,6 @@ const resources: Resource[] = [
     category: "website"
   },
   {
-    id: "2",
-    title: "The Divorce Recovery Podcast",
-    description: "Weekly episodes featuring stories, advice, and interviews with experts to help navigate the emotional journey of divorce.",
-    url: "https://podcasts.apple.com/us/podcast/divorce-recovery-podcast/id1599866040",
-    category: "podcast"
-  },
-  {
     id: "3",
     title: "Rebuilding: When Your Relationship Ends",
     description: "A comprehensive guide to recovery after a relationship ends, focusing on the emotional healing process.",
