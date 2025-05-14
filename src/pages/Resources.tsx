@@ -1,7 +1,7 @@
 
 import React, { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
-import HeroSection from '../components/resources/HeroSection';
+import { HeroSection } from '../components/resources/HeroSection';
 import ResourceTabs from '../components/resources/ResourceTabs';
 import SelfCareSection from '../components/resources/SelfCareSection';
 import { useIsMobile } from '@/hooks/use-mobile';
