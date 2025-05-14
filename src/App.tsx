@@ -25,14 +25,11 @@ import Auth from "./pages/Auth";
 import AdminPage from "./pages/AdminPage";
 import NewsletterAdmin from "./pages/NewsletterAdmin";
 
-// Protected Route component
+// Protected Route component - modified to allow preview
 const ProtectedRoute = ({ children }) => {
   const { user } = useAuth();
   
-  if (!user) {
-    return <Navigate to="/" replace />;
-  }
-  
+  // For preview purposes, we'll show content even without authentication
   return children;
 };
 
@@ -111,7 +108,7 @@ function App() {
               <Route path="/" element={<Index />} />
               <Route path="/auth" element={<Auth />} />
               
-              {/* Protected routes */}
+              {/* Protected routes - now accessible for preview */}
               <Route path="/resources" element={
                 <ProtectedRoute>
                   <Resources />

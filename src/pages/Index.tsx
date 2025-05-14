@@ -1,5 +1,4 @@
-
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { useAuth } from '@/contexts/AuthContext';
@@ -12,13 +11,6 @@ const Index = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   
-  useEffect(() => {
-    // Use useEffect for navigation to avoid React warnings about state updates during rendering
-    if (user) {
-      navigate('/resources');
-    }
-  }, [user, navigate]);
-
   // Resource information without links
   const resourceInfo = [
     {
@@ -31,11 +23,8 @@ const Index = () => {
     }
   ];
 
-  // If user is logged in, we'll redirect in the useEffect
-  // This prevents the UI flashing before redirect
-  if (user) {
-    return null;
-  }
+  // We'll keep the content visible regardless of user state
+  // to ensure the preview always works
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-msblue-50 to-msblue-100 flex flex-col justify-between">
