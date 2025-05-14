@@ -36,7 +36,10 @@ const handler = async (req: Request): Promise<Response> => {
   try {
     const { record } = await req.json();
     
+    console.log("Received contact submission:", record);
+    
     if (!record || !record.id) {
+      console.error("Missing record information in request:", record);
       return new Response(
         JSON.stringify({ error: "Missing record information" }),
         { 
@@ -56,7 +59,7 @@ const handler = async (req: Request): Promise<Response> => {
     if (error || !data) {
       console.error("Error fetching contact submission:", error);
       return new Response(
-        JSON.stringify({ error: "Failed to fetch contact submission details" }),
+        JSON.stringify({ error: "Failed to fetch contact submission details", details: error }),
         { 
           status: 500, 
           headers: { "Content-Type": "application/json", ...corsHeaders } 
@@ -65,6 +68,7 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     const submission = data as ContactSubmission;
+    console.log("Successfully fetched submission details:", submission);
     
     // Format the email content
     const emailContent = `
@@ -77,6 +81,8 @@ const handler = async (req: Request): Promise<Response> => {
       <hr/>
       <p>This is an automated notification from Heart Mender.</p>
     `;
+
+    console.log("Attempting to send email to support@heartmenderhub.com");
 
     // Send the email notification
     const emailResponse = await resend.emails.send({
@@ -103,7 +109,10 @@ const handler = async (req: Request): Promise<Response> => {
   } catch (error) {
     console.error("Error in contact-notification function:", error);
     return new Response(
-      JSON.stringify({ error: error.message || "Failed to send email notification" }),
+      JSON.stringify({ 
+        error: error.message || "Failed to send email notification",
+        stack: error.stack 
+      }),
       { 
         status: 500, 
         headers: { "Content-Type": "application/json", ...corsHeaders } 

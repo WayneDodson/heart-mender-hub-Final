@@ -24,6 +24,8 @@ const Contact = () => {
     const subject = formData.get('subject') as string;
     const message = formData.get('message') as string;
 
+    console.log("Submitting contact form:", { firstName, lastName, email, subject });
+
     try {
       // Insert the form data into the contact_submissions table
       const { data, error } = await supabase
@@ -44,35 +46,54 @@ const Contact = () => {
         console.error('Error submitting form:', error);
         toast({
           title: "Submission failed",
-          description: "There was an error submitting your message. Please try again.",
+          description: `There was an error submitting your message: ${error.message}`,
           variant: "destructive",
           duration: 5000,
         });
-      } else {
-        // If submission was successful, trigger the email notification
-        try {
-          await supabase.functions.invoke('contact-notification', {
-            body: { record: data }
-          });
-        } catch (emailError) {
-          console.error('Error sending email notification:', emailError);
-          // We don't show this error to the user since the submission was successful
-        }
+        setIsSubmitting(false);
+        return;
+      }
 
-        toast({
-          title: "Message received",
-          description: "Thank you for reaching out. We'll respond to you soon.",
-          duration: 5000,
+      console.log("Form submission successful, data:", data);
+
+      // If submission was successful, trigger the email notification
+      try {
+        console.log("Invoking contact-notification function with data:", { record: data });
+        const { data: invokeData, error: invokeError } = await supabase.functions.invoke('contact-notification', {
+          body: { record: data }
         });
         
-        // Reset form
-        e.currentTarget.reset();
+        if (invokeError) {
+          console.error('Error sending email notification:', invokeError);
+          toast({
+            title: "Message received but notification failed",
+            description: "Your message was saved but we couldn't send a notification. Our team will still review it.",
+            duration: 5000,
+          });
+        } else {
+          console.log('Email notification sent successfully:', invokeData);
+          toast({
+            title: "Message received",
+            description: "Thank you for reaching out. We'll respond to you soon.",
+            duration: 5000,
+          });
+          
+          // Reset form
+          e.currentTarget.reset();
+        }
+      } catch (emailError) {
+        console.error('Error invoking email function:', emailError);
+        toast({
+          title: "Message saved",
+          description: "Your message was received but there was an issue with sending the notification. Our team will still review your message.",
+          duration: 5000,
+        });
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error('Unexpected error:', err);
       toast({
         title: "Submission failed",
-        description: "There was an error submitting your message. Please try again.",
+        description: `There was an error submitting your message: ${err.message || "Please try again."}`,
         variant: "destructive",
         duration: 5000,
       });

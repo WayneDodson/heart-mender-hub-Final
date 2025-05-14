@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
 interface ContactSupportDialogProps {
@@ -71,26 +71,42 @@ const ContactSupportDialog = ({
           variant: "destructive",
           duration: 5000,
         });
-      } else {
-        // If submission was successful, trigger the email notification
-        try {
-          await supabase.functions.invoke('contact-notification', {
-            body: { record: data }
-          });
-        } catch (emailError) {
-          console.error('Error sending email notification:', emailError);
-          // We don't show this error to the user since the submission was successful
-        }
+        setIsSubmitting(false);
+        return;
+      }
 
-        toast({
-          title: "Message received",
-          description: "Thank you for reaching out. Our support team will respond to you soon.",
-          duration: 5000,
+      // If submission was successful, trigger the email notification
+      try {
+        const { data: invokeData, error: invokeError } = await supabase.functions.invoke('contact-notification', {
+          body: { record: data }
         });
+        
+        if (invokeError) {
+          console.error('Error sending email notification:', invokeError);
+          toast({
+            title: "Message received but notification failed",
+            description: "Your message was saved but we couldn't send a notification. Our team will still review it.",
+            duration: 5000,
+          });
+        } else {
+          console.log('Email notification sent successfully:', invokeData);
+          toast({
+            title: "Message received",
+            description: "Thank you for reaching out. Our support team will respond to you soon.",
+            duration: 5000,
+          });
+        }
         
         // Reset form and close dialog
         setFormData({ name: '', email: '', message: '' });
         setDialogOpen(false);
+      } catch (emailError) {
+        console.error('Error invoking email function:', emailError);
+        toast({
+          title: "Message received",
+          description: "Thank you for reaching out. However, there was an issue sending the notification. Our team will still review your message.",
+          duration: 5000,
+        });
       }
     } catch (err) {
       console.error('Unexpected error:', err);
