@@ -3,7 +3,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from '@/contexts/AuthContext';
-import { Heart, Shield, ExternalLink } from 'lucide-react';
+import { Heart, Shield } from 'lucide-react';
 import { GradientButton } from '@/components/ui/gradient-button';
 
 const Index = () => {
@@ -15,17 +15,15 @@ const Index = () => {
     return null;
   }
 
-  // Resource links without images
-  const resourceLinks = [
+  // Resource information without links
+  const resourceInfo = [
     {
       title: "Mindful Healing",
-      description: "Meditation and mindfulness practices for emotional healing",
-      url: "https://www.mindful.org/healing-through-mindfulness/"
+      description: "Meditation and mindfulness practices for emotional healing"
     },
     {
       title: "Psychology Today",
-      description: "Expert advice on recovery after divorce",
-      url: "https://www.psychologytoday.com/us/basics/divorce"
+      description: "Expert advice on recovery after divorce"
     }
   ];
 
@@ -52,17 +50,9 @@ const Index = () => {
             </CardHeader>
             <CardContent className="p-3 pb-6 md:p-6">
               <ul className="space-y-2 text-sm md:text-base">
-                {resourceLinks.slice(0, 1).map((resource, index) => (
+                {resourceInfo.slice(0, 1).map((resource, index) => (
                   <li key={index} className="flex items-center">
-                    <ExternalLink className="h-4 w-4 mr-2 text-healing-600" />
-                    <a 
-                      href={resource.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-healing-600 hover:text-healing-800 hover:underline transition-colors"
-                    >
-                      {resource.title}
-                    </a>
+                    <span className="text-gray-700 font-medium">{resource.title}</span>
                     <span className="ml-2 text-gray-500">- {resource.description}</span>
                   </li>
                 ))}
@@ -80,17 +70,9 @@ const Index = () => {
             </CardHeader>
             <CardContent className="p-3 pb-6 md:p-6">
               <ul className="space-y-2 text-sm md:text-base">
-                {resourceLinks.slice(1).map((resource, index) => (
+                {resourceInfo.slice(1).map((resource, index) => (
                   <li key={index} className="flex items-center">
-                    <ExternalLink className="h-4 w-4 mr-2 text-healing-600" />
-                    <a 
-                      href={resource.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-healing-600 hover:text-healing-800 hover:underline transition-colors"
-                    >
-                      {resource.title}
-                    </a>
+                    <span className="text-gray-700 font-medium">{resource.title}</span>
                     <span className="ml-2 text-gray-500">- {resource.description}</span>
                   </li>
                 ))}
