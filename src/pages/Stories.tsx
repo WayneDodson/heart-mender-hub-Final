@@ -41,12 +41,14 @@ const Stories = () => {
               <PenLine className="mr-2 h-4 w-4" />
               {user ? 'Share Your Story' : 'Sign in to Share Your Story'}
             </Button>
-            <Button asChild variant="outline" className="border-healing-600 text-healing-600 hover:bg-healing-50">
-              <Link to="/celebrity-stories" className="flex items-center">
-                <Users className="mr-2 h-4 w-4" />
-                Celebrity Journeys
-              </Link>
-            </Button>
+            <div className="shimmer-border rounded-md overflow-hidden">
+              <Button asChild variant="outline" className="border-healing-600 text-healing-600 hover:bg-healing-50">
+                <Link to="/celebrity-stories" className="flex items-center">
+                  <Users className="mr-2 h-4 w-4" />
+                  Celebrity Journeys
+                </Link>
+              </Button>
+            </div>
           </div>
         </div>
         
