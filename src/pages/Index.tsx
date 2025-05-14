@@ -75,8 +75,14 @@ const Index = () => {
                 </Card>
               </div>
             </HoverCardTrigger>
-            <HoverCardContent className="w-80 p-0">
-              <Card>
+            <HoverCardContent 
+              className="w-full p-0" 
+              align="center"
+              side="top"
+              alignOffset={-100}
+              sideOffset={-250}
+            >
+              <Card className="w-full">
                 <CardHeader>
                   <CardTitle>Emotional Support</CardTitle>
                 </CardHeader>
@@ -129,8 +135,14 @@ const Index = () => {
                 </Card>
               </div>
             </HoverCardTrigger>
-            <HoverCardContent className="w-80 p-0">
-              <Card>
+            <HoverCardContent 
+              className="w-full p-0"
+              align="center"
+              side="top"
+              alignOffset={-100}
+              sideOffset={-250}
+            >
+              <Card className="w-full">
                 <CardHeader>
                   <CardTitle>Trusted Resources</CardTitle>
                 </CardHeader>
