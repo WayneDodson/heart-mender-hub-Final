@@ -51,7 +51,7 @@ const ContactSupportDialog = ({
 
     try {
       // Insert the form data into the contact_submissions table
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('contact_submissions')
         .insert({
           first_name: formData.name, 
@@ -59,7 +59,9 @@ const ContactSupportDialog = ({
           email: formData.email,
           subject: 'Support Request from Landing Page',
           message: formData.message
-        });
+        })
+        .select()
+        .single();
 
       if (error) {
         console.error('Error submitting form:', error);
@@ -70,6 +72,16 @@ const ContactSupportDialog = ({
           duration: 5000,
         });
       } else {
+        // If submission was successful, trigger the email notification
+        try {
+          await supabase.functions.invoke('contact-notification', {
+            body: { record: data }
+          });
+        } catch (emailError) {
+          console.error('Error sending email notification:', emailError);
+          // We don't show this error to the user since the submission was successful
+        }
+
         toast({
           title: "Message received",
           description: "Thank you for reaching out. Our support team will respond to you soon.",

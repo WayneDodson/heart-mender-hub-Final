@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -27,7 +26,7 @@ const Contact = () => {
 
     try {
       // Insert the form data into the contact_submissions table
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('contact_submissions')
         .insert([
           {
@@ -37,7 +36,9 @@ const Contact = () => {
             subject,
             message,
           }
-        ]);
+        ])
+        .select()
+        .single();
 
       if (error) {
         console.error('Error submitting form:', error);
@@ -48,6 +49,16 @@ const Contact = () => {
           duration: 5000,
         });
       } else {
+        // If submission was successful, trigger the email notification
+        try {
+          await supabase.functions.invoke('contact-notification', {
+            body: { record: data }
+          });
+        } catch (emailError) {
+          console.error('Error sending email notification:', emailError);
+          // We don't show this error to the user since the submission was successful
+        }
+
         toast({
           title: "Message received",
           description: "Thank you for reaching out. We'll respond to you soon.",
