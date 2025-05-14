@@ -27,13 +27,6 @@ const resources: Resource[] = [
     category: "book"
   },
   {
-    id: "6",
-    title: "MeetUp Divorce & Breakup Groups",
-    description: "Find local meetups for people going through similar relationship challenges.",
-    url: "https://www.meetup.com/topics/divorce/",
-    category: "support-group"
-  },
-  {
     id: "7",
     title: "Wikivorce - Divorce Support",
     description: "A supportive community and information resource for those going through divorce and separation.",
