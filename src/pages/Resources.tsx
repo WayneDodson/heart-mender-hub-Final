@@ -12,6 +12,41 @@ const Resources = () => {
   const tabsRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
 
+  // Define the data needed for HeroSection props
+  const resourcesCategory = {
+    id: "main",
+    name: "Resources",
+    description: "Explore our curated resources to help you in your healing journey.",
+    url: "/resources"
+  };
+  
+  const featuredResource = {
+    title: "Healing Trauma Guide",
+    description: "A comprehensive guide for understanding and healing from trauma.",
+    url: "#healing-trauma-guide"
+  };
+  
+  const resourceCategories = [
+    {
+      id: "articles",
+      name: "Articles",
+      description: "Informative articles on healing and recovery.",
+      url: "/resources?tab=articles"
+    },
+    {
+      id: "videos",
+      name: "Videos",
+      description: "Educational videos and workshops.",
+      url: "/resources?tab=videos"
+    },
+    {
+      id: "books",
+      name: "Books",
+      description: "Recommended readings for your journey.",
+      url: "/resources?tab=books"
+    }
+  ];
+
   useEffect(() => {
     // If we have a tab query parameter, scroll to the tabs section
     if (location.search.includes('tab=')) {
@@ -42,7 +77,11 @@ const Resources = () => {
 
   return (
     <main className="flex-grow bg-white">
-      <HeroSection />
+      <HeroSection 
+        category={resourcesCategory}
+        featuredResource={featuredResource}
+        resourceCategories={resourceCategories}
+      />
       <div id="resource-tabs" ref={tabsRef} className="scroll-mt-16">
         <ResourceTabs />
       </div>
