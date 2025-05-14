@@ -1,9 +1,9 @@
-
 import React, { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { HeroSection } from '../components/resources/HeroSection';
 import ResourceTabs from '../components/resources/ResourceTabs';
 import SelfCareSection from '../components/resources/SelfCareSection';
+import DisclaimerBanner from '../components/resources/DisclaimerBanner';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { toast } from '@/hooks/use-toast';
 
@@ -82,6 +82,7 @@ const Resources = () => {
         featuredResource={featuredResource}
         resourceCategories={resourceCategories}
       />
+      <DisclaimerBanner className="mx-4 md:mx-8 my-6" />
       <div id="resource-tabs" ref={tabsRef} className="scroll-mt-16">
         <ResourceTabs />
       </div>

@@ -1,8 +1,8 @@
-
 import React from 'react';
-import { Youtube } from 'lucide-react';
+import { Youtube, AlertCircle } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from '@/components/ui/button';
+import DisclaimerBanner from './DisclaimerBanner';
 
 interface Video {
   title: string;
@@ -72,6 +72,8 @@ const VideosSection = () => {
   return (
     <div className="animate-fade-in">
       <h2 className="text-2xl font-semibold mb-6 text-healing-800">Healing Video Resources</h2>
+      
+      <DisclaimerBanner className="mb-6" />
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {divorceSupportVideos.map((video, index) => (
