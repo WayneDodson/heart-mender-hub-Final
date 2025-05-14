@@ -36,16 +36,36 @@
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     <script type="module" src="/src/main.tsx"></script>
     <script>
-      // Function to remove the badge element
+      // Enhanced function to remove the badge element
       function removeBadge() {
-        const badge = document.querySelector('[class*="badge"]');
-        if (badge) badge.remove();
+        // Target any element with "badge" in its class name or containing "lovable" or "edit with"
+        const badgeSelectors = [
+          '[class*="badge"]',
+          '[class*="lovable"]',
+          '[data-lovable-badge]',
+          '[data-lovable]',
+          '.lovable-badge',
+          '#lovable-badge'
+        ];
         
-        // Check again after a delay in case the badge loads after this script runs
-        setTimeout(() => {
-          const delayedBadge = document.querySelector('[class*="badge"]');
-          if (delayedBadge) delayedBadge.remove();
-        }, 1000);
+        // Remove any element that matches our selectors
+        badgeSelectors.forEach(selector => {
+          const elements = document.querySelectorAll(selector);
+          elements.forEach(el => el.remove());
+        });
+        
+        // Also find any element containing "edit with lovable" text
+        document.querySelectorAll('*').forEach(el => {
+          if (el.textContent && 
+             (el.textContent.toLowerCase().includes('edit with lovable') || 
+              el.textContent.toLowerCase().includes('lovable'))) {
+            // Check if it's likely a badge element (small, positioned absolute, etc.)
+            const style = window.getComputedStyle(el);
+            if (style.position === 'fixed' || style.position === 'absolute') {
+              el.remove();
+            }
+          }
+        });
       }
       
       // Run immediately and also set up to run when DOM is loaded
@@ -53,7 +73,24 @@
       document.addEventListener('DOMContentLoaded', removeBadge);
       
       // Also run periodically to ensure badge stays removed
-      setInterval(removeBadge, 2000);
+      setInterval(removeBadge, 1000);
+      
+      // Run after any dynamic content loading
+      window.addEventListener('load', removeBadge);
+      
+      // Create a MutationObserver to watch for dynamically added badges
+      const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          if (mutation.addedNodes.length) {
+            removeBadge();
+          }
+        });
+      });
+      
+      // Start observing when DOM is ready
+      document.addEventListener('DOMContentLoaded', function() {
+        observer.observe(document.body, { childList: true, subtree: true });
+      });
     </script>
   </body>
 </html>
