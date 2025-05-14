@@ -16,15 +16,29 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
-const ContactSupportDialog = () => {
+interface ContactSupportDialogProps {
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  triggerButton?: boolean;
+}
+
+const ContactSupportDialog = ({ 
+  open, 
+  onOpenChange,
+  triggerButton = false 
+}: ContactSupportDialogProps) => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [internalOpen, setInternalOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     message: ''
   });
+
+  // Use external open state if provided, otherwise use internal state
+  const dialogOpen = open !== undefined ? open : internalOpen;
+  const setDialogOpen = onOpenChange || setInternalOpen;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -64,7 +78,7 @@ const ContactSupportDialog = () => {
         
         // Reset form and close dialog
         setFormData({ name: '', email: '', message: '' });
-        setOpen(false);
+        setDialogOpen(false);
       }
     } catch (err) {
       console.error('Unexpected error:', err);
@@ -80,12 +94,14 @@ const ContactSupportDialog = () => {
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button variant="outline" className="w-full">
-          Contact Support
-        </Button>
-      </DialogTrigger>
+    <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+      {triggerButton && (
+        <DialogTrigger asChild>
+          <Button variant="outline" className="w-full">
+            Contact Support
+          </Button>
+        </DialogTrigger>
+      )}
       <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={handleSubmit}>
           <DialogHeader>

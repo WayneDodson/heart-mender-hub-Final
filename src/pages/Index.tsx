@@ -5,7 +5,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useAuth } from '@/contexts/AuthContext';
 import { Heart, Shield } from 'lucide-react';
 import { GradientButton } from '@/components/ui/gradient-button';
-import ContactSupportDialog from '@/components/ContactSupportDialog';
 
 const Index = () => {
   const navigate = useNavigate();
@@ -99,8 +98,6 @@ const Index = () => {
               </GradientButton>
             </CardContent>
           </Card>
-          
-          <ContactSupportDialog />
         </div>
       </div>
     </div>

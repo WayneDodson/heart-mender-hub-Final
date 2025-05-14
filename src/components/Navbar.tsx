@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Shield, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -7,10 +7,12 @@ import { usePendingStoriesCount } from '@/hooks/usePendingStoriesCount';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
+import ContactSupportDialog from '@/components/ContactSupportDialog';
 
 const Navbar: React.FC = () => {
   const isMobile = useIsMobile();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [contactDialogOpen, setContactDialogOpen] = useState(false);
   const location = useLocation();
   const { pendingCount } = usePendingStoriesCount();
   const { user, isAdmin, checkUserRole } = useAuth();
@@ -31,9 +33,9 @@ const Navbar: React.FC = () => {
     { text: 'Resources', path: '/resources' },
   ] : [];
 
-  // Contact is always visible
+  // Contact is now a button to open dialog, not a link
   const publicLinks = [
-    { text: 'Contact', path: '/contact' },
+    { text: 'Contact', action: () => setContactDialogOpen(true) },
   ];
 
   const links = [...authenticatedLinks, ...publicLinks];
@@ -89,15 +91,29 @@ const Navbar: React.FC = () => {
                 <div className="absolute top-12 left-0 right-0 bg-healing-900 z-50 px-4 py-2 shadow-lg">
                   <nav>
                     <ul className="space-y-1">
-                      {links.map((link) => (
-                        <li key={link.path}>
-                          <Link
-                            to={link.path}
-                            className={`block py-2 ${isActive(link.path) ? 'text-healing-300 font-medium' : 'hover:text-healing-300'}`}
-                            onClick={closeMenu}
-                          >
-                            {link.text}
-                          </Link>
+                      {links.map((link, index) => (
+                        <li key={index}>
+                          {link.path ? (
+                            <Link
+                              to={link.path}
+                              className={`block py-2 ${isActive(link.path) ? 'text-healing-300 font-medium' : 'hover:text-healing-300'}`}
+                              onClick={closeMenu}
+                            >
+                              {link.text}
+                            </Link>
+                          ) : (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="text-white p-0 h-auto hover:bg-transparent hover:text-healing-300 w-full text-left justify-start"
+                              onClick={() => {
+                                closeMenu();
+                                if (link.action) link.action();
+                              }}
+                            >
+                              {link.text}
+                            </Button>
+                          )}
                         </li>
                       ))}
                       
@@ -140,14 +156,25 @@ const Navbar: React.FC = () => {
           ) : (
             <nav>
               <ul className="flex space-x-6">
-                {links.map((link) => (
-                  <li key={link.path}>
-                    <Link
-                      to={link.path}
-                      className={`${isActive(link.path) ? 'text-healing-300 font-medium' : 'hover:text-healing-300'}`}
-                    >
-                      {link.text}
-                    </Link>
+                {links.map((link, index) => (
+                  <li key={index}>
+                    {link.path ? (
+                      <Link
+                        to={link.path}
+                        className={`${isActive(link.path) ? 'text-healing-300 font-medium' : 'hover:text-healing-300'}`}
+                      >
+                        {link.text}
+                      </Link>
+                    ) : (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="text-white p-0 h-auto hover:bg-transparent hover:text-healing-300"
+                        onClick={link.action}
+                      >
+                        {link.text}
+                      </Button>
+                    )}
                   </li>
                 ))}
                 {isAdmin && adminLinks.map((link) => (
@@ -184,6 +211,8 @@ const Navbar: React.FC = () => {
           )}
         </div>
       </div>
+      
+      <ContactSupportDialog open={contactDialogOpen} onOpenChange={setContactDialogOpen} />
     </div>
   );
 };
