@@ -47,83 +47,77 @@ const Index = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-8 max-w-4xl mx-auto mb-6 md:mb-12">
-          <Card className="border-msblue-200 shadow-md hover:shadow-lg transition-all duration-300">
-            <CardHeader className="p-3 md:p-6">
-              <Heart className="w-8 h-8 md:w-12 md:h-12 text-msblue-600 mb-1 md:mb-4" />
-              <CardTitle>Emotional Support</CardTitle>
-              <CardDescription>
-                Connect with others who understand your journey and find strength in shared experiences.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="p-3 pb-6 md:p-6">
-              <div className="space-y-3">
-                <p className="text-sm md:text-base text-gray-700">Hover over these resources to preview:</p>
+          <HoverPeek 
+            url={resourceLinks[0].url}
+            isStatic={resourceLinks[0].isStatic}
+            imageSrc={resourceLinks[0].imageSrc}
+            peekWidth={280}
+            peekHeight={175}
+          >
+            <Card className="border-msblue-200 shadow-md hover:shadow-lg transition-all duration-300 h-full cursor-pointer">
+              <CardHeader className="p-3 md:p-6">
+                <Heart className="w-8 h-8 md:w-12 md:h-12 text-msblue-600 mb-1 md:mb-4" />
+                <CardTitle>Emotional Support</CardTitle>
+                <CardDescription>
+                  Connect with others who understand your journey and find strength in shared experiences.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="p-3 pb-6 md:p-6">
                 <ul className="space-y-2 text-sm md:text-base">
                   {resourceLinks.slice(0, 1).map((resource, index) => (
                     <li key={index} className="flex items-center">
                       <ExternalLink className="h-4 w-4 mr-2 text-healing-600" />
-                      <HoverPeek 
-                        url={resource.url}
-                        isStatic={resource.isStatic}
-                        imageSrc={resource.imageSrc}
-                        peekWidth={280}
-                        peekHeight={175}
+                      <a 
+                        href={resource.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-healing-600 hover:text-healing-800 hover:underline transition-colors"
                       >
-                        <a 
-                          href={resource.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-healing-600 hover:text-healing-800 hover:underline transition-colors"
-                        >
-                          {resource.title}
-                        </a>
-                      </HoverPeek>
+                        {resource.title}
+                      </a>
                       <span className="ml-2 text-gray-500">- {resource.description}</span>
                     </li>
                   ))}
                 </ul>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          </HoverPeek>
 
-          <Card className="border-msblue-200 shadow-md hover:shadow-lg transition-all duration-300">
-            <CardHeader className="p-3 md:p-6">
-              <Shield className="w-8 h-8 md:w-12 md:h-12 text-msblue-600 mb-1 md:mb-4" />
-              <CardTitle>Trusted Resources</CardTitle>
-              <CardDescription>
-                Access curated content, expert advice, and practical tools for moving forward.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="p-3 pb-6 md:p-6">
-              <div className="space-y-3">
-                <p className="text-sm md:text-base text-gray-700">Hover over these resources to preview:</p>
+          <HoverPeek 
+            url={resourceLinks[1].url}
+            isStatic={resourceLinks[1].isStatic}
+            imageSrc={resourceLinks[1].imageSrc}
+            peekWidth={280}
+            peekHeight={175}
+          >
+            <Card className="border-msblue-200 shadow-md hover:shadow-lg transition-all duration-300 h-full cursor-pointer">
+              <CardHeader className="p-3 md:p-6">
+                <Shield className="w-8 h-8 md:w-12 md:h-12 text-msblue-600 mb-1 md:mb-4" />
+                <CardTitle>Trusted Resources</CardTitle>
+                <CardDescription>
+                  Access curated content, expert advice, and practical tools for moving forward.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="p-3 pb-6 md:p-6">
                 <ul className="space-y-2 text-sm md:text-base">
                   {resourceLinks.slice(1).map((resource, index) => (
                     <li key={index} className="flex items-center">
                       <ExternalLink className="h-4 w-4 mr-2 text-healing-600" />
-                      <HoverPeek 
-                        url={resource.url}
-                        isStatic={resource.isStatic}
-                        imageSrc={resource.imageSrc}
-                        peekWidth={280}
-                        peekHeight={175}
+                      <a 
+                        href={resource.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-healing-600 hover:text-healing-800 hover:underline transition-colors"
                       >
-                        <a 
-                          href={resource.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-healing-600 hover:text-healing-800 hover:underline transition-colors"
-                        >
-                          {resource.title}
-                        </a>
-                      </HoverPeek>
+                        {resource.title}
+                      </a>
                       <span className="ml-2 text-gray-500">- {resource.description}</span>
                     </li>
                   ))}
                 </ul>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          </HoverPeek>
         </div>
 
         <Card className="max-w-md mx-auto border-msblue-200 shadow-md">
