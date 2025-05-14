@@ -28,13 +28,6 @@ const resources: Resource[] = [
     category: "book"
   },
   {
-    id: "4",
-    title: "DivorceCare",
-    description: "A network of support groups meeting worldwide to help people face the challenges of separation and divorce.",
-    url: "https://www.divorcecare.org/",
-    category: "support-group"
-  },
-  {
     id: "5",
     title: "How to Get Past Your Breakup",
     description: "A step-by-step program for moving on from heartbreak and creating a life you love.",
