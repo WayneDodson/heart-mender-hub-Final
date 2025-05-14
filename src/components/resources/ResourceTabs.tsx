@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -9,7 +8,6 @@ import BooksSection from './BooksSection';
 import VideosSection from './VideosSection';
 import ExternalResources from './ExternalResources';
 import { articles, bookRecommendations } from '../../data/articles';
-import CelebrityStories from '../stories/CelebrityStories';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Button } from '@/components/ui/button';
 
@@ -150,7 +148,7 @@ const ResourceTabs = () => {
     const searchParams = new URLSearchParams(location.search);
     const tabParam = searchParams.get('tab');
     
-    if (tabParam && ['articles', 'exercises', 'books', 'videos', 'external', 'stories'].includes(tabParam)) {
+    if (tabParam && ['articles', 'exercises', 'books', 'videos', 'external'].includes(tabParam)) {
       setActiveTab(tabParam);
     }
   }, [location.search]);
@@ -240,13 +238,6 @@ const ResourceTabs = () => {
                     <Link className="h-3.5 w-3.5" />
                     <span className="truncate">Resources</span>
                   </TabsTrigger>
-                  <TabsTrigger 
-                    value="stories"
-                    className="flex items-center gap-1 py-1.5 px-3 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all text-sm"
-                  >
-                    <HeartHandshake className="h-3.5 w-3.5" />
-                    <span className="truncate">Stories</span>
-                  </TabsTrigger>
                 </TabsList>
               </div>
               
@@ -262,7 +253,7 @@ const ResourceTabs = () => {
           )}
           
           {!isMobile && (
-            <TabsList className="w-full grid md:grid-cols-6 bg-gray-100/80 rounded-none">
+            <TabsList className="w-full grid md:grid-cols-5 bg-gray-100/80 rounded-none">
               <TabsTrigger 
                 value="articles" 
                 className="w-full flex items-center gap-1.5 py-2 px-3 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all text-sm md:text-base"
@@ -298,13 +289,6 @@ const ResourceTabs = () => {
                 <Link className="h-4 w-4" />
                 <span className="truncate">Resources</span>
               </TabsTrigger>
-              <TabsTrigger 
-                value="stories"
-                className="w-full flex items-center gap-1.5 py-2 px-3 data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all text-sm md:text-base"
-              >
-                <HeartHandshake className="h-4 w-4" />
-                <span className="truncate">Stories</span>
-              </TabsTrigger>
             </TabsList>
           )}
           
@@ -327,12 +311,6 @@ const ResourceTabs = () => {
 
             <TabsContent value="external" className="mt-2 md:mt-4 px-2 md:px-4 w-full">
               <ExternalResources />
-            </TabsContent>
-            
-            <TabsContent value="stories" className="mt-2 md:mt-4 px-2 md:px-4 w-full">
-              <div className="w-full">
-                <CelebrityStories />
-              </div>
             </TabsContent>
           </div>
         </Tabs>
