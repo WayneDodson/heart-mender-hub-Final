@@ -53,7 +53,6 @@ const Navbar: React.FC = () => {
   // Only show these links when user is logged in
   const authenticatedLinks: NavLinkWithPath[] = user ? [
     { text: 'Home', path: '/' },
-    { text: 'Stories', path: '/stories' },
     { text: 'Community', path: '/community' },
     { text: 'Resources', path: '/resources' },
   ] : [];
