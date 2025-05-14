@@ -113,12 +113,14 @@ const ExercisesSection = ({ exercises }: ExercisesSectionProps) => {
               <CardDescription className="space-y-3">{exercise.description}</CardDescription>
             </CardContent>
             <CardFooter>
-              <Button 
-                className="w-full bg-msblue-500 hover:bg-msblue-600"
-                onClick={() => handleStartExercise(exercise)}
-              >
-                Start Exercise
-              </Button>
+              <div className="shimmer-border rounded-md overflow-hidden w-full">
+                <Button 
+                  className="w-full bg-msblue-500 hover:bg-msblue-600"
+                  onClick={() => handleStartExercise(exercise)}
+                >
+                  Start Exercise
+                </Button>
+              </div>
             </CardFooter>
           </Card>
         ))}
