@@ -39,14 +39,13 @@ const ContactSupportDialog = () => {
       // Insert the form data into the contact_submissions table
       const { error } = await supabase
         .from('contact_submissions')
-        .insert([
-          {
-            first_name: formData.name,
-            email: formData.email,
-            subject: 'Support Request from Landing Page',
-            message: formData.message
-          }
-        ]);
+        .insert({
+          first_name: formData.name, 
+          last_name: '', // Adding empty last_name to satisfy the table requirements
+          email: formData.email,
+          subject: 'Support Request from Landing Page',
+          message: formData.message
+        });
 
       if (error) {
         console.error('Error submitting form:', error);
