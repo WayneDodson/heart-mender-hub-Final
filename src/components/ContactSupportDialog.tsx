@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import {
@@ -78,7 +79,7 @@ const ContactSupportDialog = ({
 
       console.log("Dialog form submission successful, data:", data);
 
-      // If submission was successful, trigger the email notification
+      // If submission was successful, try to trigger the email notification
       try {
         console.log("Invoking contact-notification function from dialog with data:", { record: data });
         const { data: invokeData, error: invokeError } = await supabase.functions.invoke('contact-notification', {

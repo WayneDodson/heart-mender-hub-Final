@@ -7,10 +7,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { Mail, MessageCircle, Heart } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import ContactSupportDialog from '@/components/ContactSupportDialog';
 
 const Contact = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSupportDialog, setShowSupportDialog] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -265,7 +267,10 @@ const Contact = () => {
           </div>
           <div className="mt-10 text-center">
             <p className="text-gray-600 mb-4">Don't see your question answered here?</p>
-            <Button className="bg-healing-500 hover:bg-healing-600">
+            <Button 
+              className="bg-healing-500 hover:bg-healing-600"
+              onClick={() => setShowSupportDialog(true)}
+            >
               Contact Us
             </Button>
           </div>
@@ -294,6 +299,12 @@ const Contact = () => {
           </p>
         </div>
       </section>
+
+      {/* Support Dialog */}
+      <ContactSupportDialog 
+        open={showSupportDialog} 
+        onOpenChange={setShowSupportDialog} 
+      />
     </div>
   );
 };
