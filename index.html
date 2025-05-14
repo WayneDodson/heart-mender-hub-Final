@@ -36,8 +36,24 @@
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     <script type="module" src="/src/main.tsx"></script>
     <script>
-      if (badge) badge.remove();
+      // Function to remove the badge element
+      function removeBadge() {
+        const badge = document.querySelector('[class*="badge"]');
+        if (badge) badge.remove();
+        
+        // Check again after a delay in case the badge loads after this script runs
+        setTimeout(() => {
+          const delayedBadge = document.querySelector('[class*="badge"]');
+          if (delayedBadge) delayedBadge.remove();
+        }, 1000);
+      }
+      
+      // Run immediately and also set up to run when DOM is loaded
+      removeBadge();
+      document.addEventListener('DOMContentLoaded', removeBadge);
+      
+      // Also run periodically to ensure badge stays removed
+      setInterval(removeBadge, 2000);
     </script>
   </body>
 </html>
-
