@@ -41,6 +41,13 @@ const resources: Resource[] = [
     url: "https://www.meetup.com/topics/divorce/",
     category: "support-group"
   },
+  {
+    id: "7",
+    title: "Wikivorce - Divorce Support",
+    description: "A supportive community and information resource for those going through divorce and separation.",
+    url: "https://divorce.wikivorce.com/",
+    category: "website"
+  },
 ];
 
 const ExternalResources: React.FC = () => {
