@@ -4,10 +4,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Plus } from 'lucide-react';
+import { Plus, Users } from 'lucide-react';
 import CommunityGuidelines from '@/components/community/CommunityGuidelines';
 import CategoryChat from '@/components/community/CategoryChat';
 import CreateCategoryForm from '@/components/community/CreateCategoryForm';
+import CelebrityStories from '@/components/stories/CelebrityStories';
 
 interface Category {
   id: string;
@@ -29,7 +30,8 @@ const Community = () => {
     { id: 'co-parenting', name: 'Co-Parenting', description: 'Discuss strategies for effective co-parenting after divorce' },
     { id: 'legal-advice', name: 'Legal Questions', description: 'Ask questions about legal aspects of divorce and separation' },
     { id: 'moving-forward', name: 'Moving Forward', description: 'Share experiences about rebuilding life after divorce' },
-    { id: 'self-care', name: 'Self-Care', description: 'Discuss self-care practices that helped during your healing journey' }
+    { id: 'self-care', name: 'Self-Care', description: 'Discuss self-care practices that helped during your healing journey' },
+    { id: 'celebrity-journeys', name: 'Celebrity Journeys', description: 'Read about famous people who have navigated divorce and healing' }
   ];
   
   const [categories, setCategories] = useState<Category[]>([
@@ -104,7 +106,12 @@ const Community = () => {
                     <CardContent className="p-6">
                       <h2 className="text-xl font-semibold mb-2">{category.name}</h2>
                       <p className="text-gray-600 mb-4">{category.description}</p>
-                      <CategoryChat categoryId={category.id} categoryName={category.name} />
+                      
+                      {category.id === 'celebrity-journeys' ? (
+                        <CelebrityStories />
+                      ) : (
+                        <CategoryChat categoryId={category.id} categoryName={category.name} />
+                      )}
                     </CardContent>
                   </Card>
                 </TabsContent>

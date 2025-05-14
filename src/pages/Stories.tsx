@@ -43,7 +43,7 @@ const Stories = () => {
             </Button>
             <div className="shimmer-border rounded-md overflow-hidden">
               <Button asChild variant="outline" className="border-healing-600 text-healing-600 hover:bg-healing-50">
-                <Link to="/celebrity-stories" className="flex items-center">
+                <Link to="/community?tab=celebrity-journeys" className="flex items-center">
                   <Users className="mr-2 h-4 w-4" />
                   Celebrity Journeys
                 </Link>

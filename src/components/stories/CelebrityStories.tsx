@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Avatar } from "@/components/ui/avatar";
 
 type CelebrityStory = {
   id: string;
@@ -36,21 +37,33 @@ const celebrityStories: CelebrityStory[] = [
 
 const CelebrityStories: React.FC = () => {
   return (
-    <section className="py-12 px-4 bg-white">
-      <div className="container mx-auto max-w-6xl">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-          {celebrityStories.map((story) => (
-            <Card key={story.id} className="overflow-hidden h-full flex flex-col bg-white">
-              <CardHeader>
-                <CardTitle>{story.name}</CardTitle>
-                <CardDescription>{story.title}</CardDescription>
-              </CardHeader>
-              <CardContent className="flex-grow">
-                <p className="text-gray-700">{story.summary}</p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+    <section className="py-8">
+      <h2 className="text-2xl font-semibold text-center mb-6 text-msblue-700">Celebrity Healing Journeys</h2>
+      <p className="text-gray-600 text-center mb-8 max-w-2xl mx-auto">
+        Famous personalities who have navigated breakups and divorces, sharing their experiences, 
+        insights, and paths to healing and personal growth.
+      </p>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {celebrityStories.map((story) => (
+          <Card key={story.id} className="overflow-hidden h-full flex flex-col bg-white">
+            <div className="px-6 pt-6 pb-3">
+              <div className="flex items-center gap-3 mb-3">
+                {story.image && (
+                  <Avatar className="h-10 w-10">
+                    <img src={story.image} alt={story.name} className="object-cover" />
+                  </Avatar>
+                )}
+                <div>
+                  <CardTitle className="text-lg">{story.name}</CardTitle>
+                  <CardDescription>{story.title}</CardDescription>
+                </div>
+              </div>
+            </div>
+            <CardContent className="pt-0 flex-grow">
+              <p className="text-gray-700">{story.summary}</p>
+            </CardContent>
+          </Card>
+        ))}
       </div>
     </section>
   );

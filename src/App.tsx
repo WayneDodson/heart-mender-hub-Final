@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import "./App.css";
@@ -15,7 +14,6 @@ import Resources from "./pages/Resources";
 import Stories from "./pages/Stories";
 import SubmitStory from "./pages/SubmitStory";
 import StoryDetail from "./pages/StoryDetail";
-import CelebrityStories from "./pages/CelebrityStories";
 import Contact from "./pages/Contact";
 import Community from "./pages/Community";
 import ArticlePage from "./components/ArticlePage";
@@ -132,11 +130,6 @@ function App() {
               <Route path="/stories/:id" element={
                 <ProtectedRoute>
                   <StoryDetail />
-                </ProtectedRoute>
-              } />
-              <Route path="/celebrity-stories" element={
-                <ProtectedRoute>
-                  <CelebrityStories />
                 </ProtectedRoute>
               } />
               <Route path="/contact" element={
