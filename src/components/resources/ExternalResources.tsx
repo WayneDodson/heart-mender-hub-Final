@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -19,13 +18,6 @@ const resources: Resource[] = [
     description: "Articles, advice, and resources from mental health professionals on coping with breakups and divorce.",
     url: "https://www.psychologytoday.com/us/basics/divorce",
     category: "website"
-  },
-  {
-    id: "3",
-    title: "Rebuilding: When Your Relationship Ends",
-    description: "A comprehensive guide to recovery after a relationship ends, focusing on the emotional healing process.",
-    url: "https://www.amazon.com/Rebuilding-Relationships-Rebuilding-Extended-Anniversary/dp/1732980225/",
-    category: "book"
   },
   {
     id: "5",
