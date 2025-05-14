@@ -54,9 +54,17 @@ const ContactSupportForm = ({ onSuccess }: ContactSupportFormProps) => {
 
       if (error) {
         console.error('Error submitting form to database:', error);
+        // More detailed error message
+        let errorMessage = `Database error: ${error.message}`;
+        if (error.code === '42501') {
+          errorMessage = "Permission denied. This appears to be an issue with our database permissions.";
+        } else if (error.message.includes('violates row-level security policy')) {
+          errorMessage = "Security policy error. Our team has been notified of this issue.";
+        }
+        
         toast({
           title: "Submission failed",
-          description: `Database error: ${error.message}`,
+          description: errorMessage,
           variant: "destructive",
           duration: 5000,
         });
