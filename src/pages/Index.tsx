@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useAuth } from '@/contexts/AuthContext';
 import { Heart, Shield } from 'lucide-react';
 import { GradientButton } from '@/components/ui/gradient-button';
+import ContactSupportDialog from '@/components/ContactSupportDialog';
 
 const Index = () => {
   const navigate = useNavigate();
@@ -81,22 +82,26 @@ const Index = () => {
           </Card>
         </div>
 
-        <Card className="max-w-md mx-auto border-msblue-200 shadow-md">
-          <CardHeader className="px-3 py-3 md:p-6">
-            <CardTitle className="text-center">Join Our Community</CardTitle>
-            <CardDescription className="text-center">
-              Sign in or create an account to access all resources
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="flex flex-col gap-3 p-3 md:p-6">
-            <GradientButton 
-              onClick={() => navigate('/auth')}
-              className="w-full"
-            >
-              Get Started
-            </GradientButton>
-          </CardContent>
-        </Card>
+        <div className="max-w-md mx-auto flex flex-col gap-4">
+          <Card className="border-msblue-200 shadow-md">
+            <CardHeader className="px-3 py-3 md:p-6">
+              <CardTitle className="text-center">Join Our Community</CardTitle>
+              <CardDescription className="text-center">
+                Sign in or create an account to access all resources
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-3 p-3 md:p-6">
+              <GradientButton 
+                onClick={() => navigate('/auth')}
+                className="w-full"
+              >
+                Get Started
+              </GradientButton>
+            </CardContent>
+          </Card>
+          
+          <ContactSupportDialog />
+        </div>
       </div>
     </div>
   );
