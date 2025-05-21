@@ -15,7 +15,7 @@
     @apply w-full h-full min-h-screen;
     margin: 0;
     padding: 0;
-    overflow-x: hidden;
+    overflow-x-hidden;
   }
 
   #root {
@@ -52,83 +52,84 @@
 
 @layer base {
   :root {
-    --background: 250 30% 98%;
-    --foreground: 270 15% 20%;
+    /* Updated colors based on your requirements */
+    --background: 39 38% 94%; /* Light Beige #FAF3E0 */
+    --foreground: 0 0% 20%; /* Charcoal #333333 */
 
-    --card: 0 0% 100%;
-    --card-foreground: 270 15% 20%;
+    --card: 39 38% 97%;
+    --card-foreground: 0 0% 20%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 270 15% 20%;
+    --popover: 39 38% 97%;
+    --popover-foreground: 0 0% 20%;
 
-    --primary: 210 100% 45%; /* Microsoft blue */
-    --primary-foreground: 210 40% 98%;
+    --primary: 262 59% 58%; /* Slate Blue #6A5ACD */
+    --primary-foreground: 39 38% 94%;
 
-    --secondary: 210 15% 95%;
-    --secondary-foreground: 270 15% 20%;
+    --secondary: 120 25% 65%; /* Soft Green #8FBC8F */
+    --secondary-foreground: 0 0% 20%;
 
-    --muted: 210 15% 95%;
-    --muted-foreground: 270 5% 40%;
+    --muted: 39 15% 85%;
+    --muted-foreground: 0 0% 40%;
 
-    --accent: 210 20% 85%;
-    --accent-foreground: 270 15% 20%;
+    --accent: 174 100% 25%; /* Teal #008080 */
+    --accent-foreground: 39 38% 94%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 39 38% 94%;
 
-    --border: 210 10% 90%;
-    --input: 210 10% 90%;
-    --ring: 210 100% 45%; /* Microsoft blue */
+    --border: 39 20% 80%;
+    --input: 39 20% 80%;
+    --ring: 262 59% 58%; /* Slate Blue #6A5ACD */
 
     --radius: 0.75rem;
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 39 38% 94%;
+    --sidebar-foreground: 0 0% 20%;
+    --sidebar-primary: 262 59% 58%;
+    --sidebar-primary-foreground: 39 38% 94%;
+    --sidebar-accent: 174 100% 25%;
+    --sidebar-accent-foreground: 39 38% 94%;
+    --sidebar-border: 39 20% 80%;
+    --sidebar-ring: 262 59% 58%;
   }
 
   .dark {
-    --background: 270 15% 95%; /* Changed from dark to light */
-    --foreground: 210 40% 30%; /* Darker text for contrast */
+    --background: 39 38% 94%; /* Light Beige #FAF3E0 */
+    --foreground: 0 0% 20%; /* Charcoal #333333 */
 
-    --card: 270 15% 98%; /* Changed from dark to light */
-    --card-foreground: 210 40% 30%;
+    --card: 39 38% 97%;
+    --card-foreground: 0 0% 20%;
 
-    --popover: 270 15% 98%; /* Changed from dark to light */
-    --popover-foreground: 210 40% 30%;
+    --popover: 39 38% 97%;
+    --popover-foreground: 0 0% 20%;
 
-    --primary: 210 100% 55%; /* Microsoft blue */
-    --primary-foreground: 270 15% 98%;
+    --primary: 262 59% 58%; /* Slate Blue #6A5ACD */
+    --primary-foreground: 39 38% 94%;
 
-    --secondary: 210 15% 90%; /* Lighter */
-    --secondary-foreground: 210 40% 30%;
+    --secondary: 120 25% 65%; /* Soft Green #8FBC8F */
+    --secondary-foreground: 0 0% 20%;
 
-    --muted: 210 15% 90%; /* Lighter */
-    --muted-foreground: 270 5% 40%;
+    --muted: 39 15% 85%;
+    --muted-foreground: 0 0% 40%;
 
-    --accent: 210 15% 90%; /* Lighter */
-    --accent-foreground: 210 40% 30%;
+    --accent: 174 100% 25%; /* Teal #008080 */
+    --accent-foreground: 39 38% 94%;
 
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 39 38% 94%;
 
-    --border: 210 15% 85%;
-    --input: 210 15% 85%;
-    --ring: 210 100% 55%; /* Microsoft blue */
+    --border: 39 20% 80%;
+    --input: 39 20% 80%;
+    --ring: 262 59% 58%; /* Slate Blue #6A5ACD */
 
-    --sidebar-background: 240 5.9% 95%;
-    --sidebar-foreground: 240 4.8% 30%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 90%;
-    --sidebar-accent-foreground: 240 4.8% 30%;
-    --sidebar-border: 240 3.7% 90%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 39 38% 94%;
+    --sidebar-foreground: 0 0% 20%;
+    --sidebar-primary: 262 59% 58%;
+    --sidebar-primary-foreground: 39 38% 94%;
+    --sidebar-accent: 174 100% 25%;
+    --sidebar-accent-foreground: 39 38% 94%;
+    --sidebar-border: 39 20% 80%;
+    --sidebar-ring: 262 59% 58%;
   }
 }
 
@@ -157,13 +158,17 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply tracking-tight;
+    @apply tracking-tight text-[#6A5ACD];
+  }
+
+  a {
+    @apply text-[#008080] hover:text-[#006666];
   }
 }
 
 @layer components {
   .healing-gradient {
-    @apply bg-gradient-to-r from-msblue-300 to-msblue-500;
+    @apply bg-gradient-to-r from-[#6A5ACD]/70 to-[#6A5ACD];
   }
   
   .healing-card {
@@ -171,19 +176,19 @@
   }
   
   .healing-button {
-    @apply bg-msblue-500 hover:bg-msblue-600 text-white px-6 py-2 rounded-full transition-all duration-300 transform hover:scale-105;
+    @apply bg-[#8FBC8F] hover:bg-[#7CAD7C] text-white px-6 py-2 rounded-full transition-all duration-300 transform hover:scale-105;
   }
   
   .healing-input {
-    @apply border-2 border-msblue-100 focus:border-msblue-500 focus:ring-1 focus:ring-msblue-500 rounded-lg px-4 py-2 transition-all duration-300;
+    @apply border-2 border-[#FAF3E0] focus:border-[#6A5ACD] focus:ring-1 focus:ring-[#6A5ACD] rounded-lg px-4 py-2 transition-all duration-300;
   }
   
   .gradient-button {
-    @apply bg-gradient-to-r from-msblue-500 to-msblue-700 hover:from-msblue-600 hover:to-msblue-800 transition-all duration-300;
+    @apply bg-gradient-to-r from-[#8FBC8F] to-[#6A9A6A] hover:from-[#7CAD7C] hover:to-[#5C8A5C] transition-all duration-300;
   }
   
   .gradient-button-variant {
-    @apply bg-gradient-to-r from-msblue-400 to-msblue-600 hover:from-msblue-500 hover:to-msblue-700;
+    @apply bg-gradient-to-r from-[#FF6F61] to-[#E55A4D] hover:from-[#E55A4D] hover:to-[#D44A3D];
   }
 
   /* Shimmer effect for buttons */
