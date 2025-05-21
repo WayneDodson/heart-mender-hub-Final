@@ -46,7 +46,7 @@ const ContactSupportForm = ({ onSuccess }: ContactSupportFormProps) => {
           first_name: formData.name, 
           last_name: '', // Adding empty last_name to satisfy the table requirements
           email: formData.email,
-          subject: 'Support Request from Landing Page',
+          subject: 'Support Request from Dialog',
           message: formData.message
         })
         .select()
