@@ -24,6 +24,7 @@ export function useAdminAuth() {
   }, []);
 
   const loginAdmin = () => {
+    localStorage.setItem("isAdminAuthenticated", "true");
     setIsAdmin(true);
   };
 
