@@ -37,12 +37,16 @@ const ResourceTabs = () => {
   };
   
   return (
-    <section id="resource-tabs" className="min-h-screen w-full bg-white py-6 md:py-12" aria-label="Resource Categories">
+    <section 
+      id="resource-tabs" 
+      className="min-h-screen w-full bg-[#FAF3E0] py-6 md:py-12" 
+      aria-label="Resource Categories"
+    >
       <div className="w-full px-3 md:px-6">
         <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
           <TabHeader activeTab={activeTab} onTabChange={handleTabChange} />
           
-          <div className="w-full bg-white">
+          <div className="w-full bg-[#FAF3E0]">
             <TabsContent value="articles" className="mt-2 md:mt-4 px-2 md:px-4 w-full">
               <ArticlesSection articles={articles} />
             </TabsContent>
