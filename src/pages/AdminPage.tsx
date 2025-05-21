@@ -10,7 +10,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 
 const AdminPage = () => {
-  const { isAdmin, isLoading, checkUserRole } = useAuth();
+  const { isAdmin, isLoading, checkUserRole, signOut } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -48,10 +48,9 @@ const AdminPage = () => {
     verifyAdminAccess();
   }, []);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     try {
-      localStorage.removeItem("isAdminAuthenticated");
-      checkUserRole();
+      await signOut();
       
       toast({
         title: "Logged Out",

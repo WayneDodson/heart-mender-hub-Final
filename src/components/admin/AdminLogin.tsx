@@ -8,11 +8,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { useToast } from "@/hooks/use-toast";
 import { Lock, LogIn, AlertTriangle, Loader2 } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
-
-// Updated admin credentials
-const ADMIN_USERNAME = "Admin";
-const ADMIN_PASSWORD = "1'mLearning!";
+import { useAdminAuth } from '@/hooks/useAdminAuth';
 
 interface AdminLoginProps {
   onLoginSuccess: () => void;
@@ -25,26 +21,21 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess }) => {
   const [attempts, setAttempts] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
-  const { isAdmin, checkUserRole } = useAuth();
+  const { isAdmin, loginAdmin } = useAdminAuth();
   const navigate = useNavigate();
   
   // Check if already authenticated as admin
   useEffect(() => {
-    const checkAdminStatus = async () => {
-      const adminStatus = await checkUserRole();
-      if (adminStatus) {
-        toast({
-          title: "Already Authenticated",
-          description: "You are already logged in as administrator.",
-          duration: 3000,
-        });
-        onLoginSuccess();
-        navigate('/admin');
-      }
-    };
-    
-    checkAdminStatus();
-  }, []);
+    if (isAdmin) {
+      toast({
+        title: "Already Authenticated",
+        description: "You are already logged in as administrator.",
+        duration: 3000,
+      });
+      onLoginSuccess();
+      navigate('/admin');
+    }
+  }, [isAdmin, navigate, onLoginSuccess, toast]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,23 +43,9 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess }) => {
     setError("");
     
     try {
-      // Add a small delay for security (prevent brute force)
-      await new Promise(resolve => setTimeout(resolve, 500));
+      const success = await loginAdmin(username, password);
       
-      if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
-        // Store admin authentication in localStorage
-        localStorage.setItem("isAdminAuthenticated", "true");
-        
-        // Update the authentication context
-        await checkUserRole();
-        
-        // Notify user about successful login
-        toast({
-          title: "Admin Access Granted",
-          description: "You now have administrator privileges.",
-          duration: 3000,
-        });
-        
+      if (success) {
         // Reset attempts
         setAttempts(0);
         
@@ -86,9 +63,8 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess }) => {
         }
         
         setPassword("");
-        setUsername("");
       }
-    } catch (error) {
+    } catch (error: any) {
       setError("An unexpected error occurred. Please try again later.");
       console.error("Admin login error:", error);
     } finally {
@@ -123,7 +99,7 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess }) => {
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder="Enter admin username"
+                placeholder="Enter admin email"
                 required
                 autoFocus
                 disabled={isSubmitting}

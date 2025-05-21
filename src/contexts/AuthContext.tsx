@@ -27,23 +27,30 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
 
-  // Function to check if the current user is an admin
+  // Function to check if the current user is an admin using the database role system
   const checkUserRole = async (): Promise<boolean> => {
     try {
-      // First check local storage for admin status
-      const adminStatus = localStorage.getItem("isAdminAuthenticated") === "true";
-      
-      // Update state if admin authenticated
-      if (adminStatus) {
-        setIsAdmin(true);
-        return true;
+      // First check if we have a valid session
+      if (!session?.user) {
+        setIsAdmin(false);
+        return false;
       }
       
-      // Reset admin status if not authenticated
-      setIsAdmin(false);
-      return false;
+      // Query the database to check if user has admin role
+      const { data, error } = await supabase
+        .rpc('has_role', { _role: 'admin' });
+      
+      if (error) {
+        console.error("Error checking role:", error);
+        setIsAdmin(false);
+        return false;
+      }
+      
+      // Update admin status based on database result
+      setIsAdmin(!!data);
+      return !!data;
     } catch (error) {
-      console.error("Error checking admin status:", error);
+      console.error("Error checking admin role:", error);
       setIsAdmin(false);
       return false;
     }
@@ -53,7 +60,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const signOut = async (): Promise<void> => {
     try {
       await supabase.auth.signOut();
-      localStorage.removeItem("isAdminAuthenticated");
       setIsAdmin(false);
     } catch (error) {
       console.error("Error signing out:", error);
@@ -70,7 +76,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         // Re-check admin role when auth state changes
         if (!session) {
           setIsAdmin(false);
-          localStorage.removeItem("isAdminAuthenticated");
         } else {
           // Use setTimeout to prevent supabase auth deadlocks
           setTimeout(() => {

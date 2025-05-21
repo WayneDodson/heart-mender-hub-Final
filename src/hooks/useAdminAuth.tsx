@@ -2,107 +2,85 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
 
 export function useAdminAuth() {
-  const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { toast } = useToast();
+  const { user, isAdmin, checkUserRole } = useAuth();
 
-  // Enhanced admin check with session validation
-  const checkAdminStatus = async () => {
-    try {
-      // First check if we have a valid Supabase session
-      const { data: { session } } = await supabase.auth.getSession();
-      
-      if (!session) {
-        // No session, definitely not admin
-        setIsAdmin(false);
-        localStorage.removeItem("isAdminAuthenticated");
+  // Check admin status when component mounts
+  useEffect(() => {
+    const verifyAdminStatus = async () => {
+      setIsLoading(true);
+      try {
+        await checkUserRole();
+      } catch (error) {
+        console.error("Error verifying admin status:", error);
+      } finally {
         setIsLoading(false);
-        return false;
+      }
+    };
+    
+    verifyAdminStatus();
+  }, []);
+
+  const loginAdmin = async (username: string, password: string) => {
+    try {
+      // First, log in the user with email/password
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: username,
+        password: password,
+      });
+      
+      if (error) throw error;
+      
+      // Then check if the user has admin role
+      const isAdminUser = await checkUserRole();
+      
+      if (!isAdminUser) {
+        throw new Error("You do not have administrator privileges.");
       }
       
-      // Get cached admin status
-      const cachedAdminStatus = localStorage.getItem("isAdminAuthenticated") === "true";
+      toast({
+        title: "Admin Access Granted",
+        description: "You now have administrator privileges.",
+        duration: 3000,
+      });
       
-      // In a real implementation, you'd verify against a database table
-      // This is a placeholder for a proper implementation
-      // const { data: adminData, error } = await supabase
-      //   .from('admin_users')
-      //   .select('is_admin')
-      //   .eq('user_id', session.user.id)
-      //   .single();
-      
-      // if (error || !adminData?.is_admin) {
-      //   setIsAdmin(false);
-      //   localStorage.removeItem("isAdminAuthenticated");
-      // } else {
-      //   setIsAdmin(true);
-      //   localStorage.setItem("isAdminAuthenticated", "true");
-      // }
-      
-      // Using cached value for now
-      setIsAdmin(cachedAdminStatus);
-      
-      setIsLoading(false);
-      return cachedAdminStatus;
-    } catch (error) {
-      console.error("Error checking admin status:", error);
-      setIsAdmin(false);
-      setIsLoading(false);
+      return true;
+    } catch (error: any) {
+      toast({
+        title: "Authentication Failed",
+        description: error.message || "Could not authenticate as admin. Please check your credentials.",
+        variant: "destructive",
+      });
+      console.error("Admin login error:", error);
       return false;
     }
   };
 
-  useEffect(() => {
-    // Check admin status on component mount
-    checkAdminStatus();
-    
-    // Listen for auth changes (in case admin logs in/out)
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(() => {
-      checkAdminStatus();
-    });
-    
-    // Also listen for storage events (in case admin logs in/out in another tab)
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === "isAdminAuthenticated") {
-        checkAdminStatus();
-      }
-    };
-    
-    window.addEventListener("storage", handleStorageChange);
-    
-    return () => {
-      subscription.unsubscribe();
-      window.removeEventListener("storage", handleStorageChange);
-    };
-  }, []);
-
-  const loginAdmin = async () => {
-    localStorage.setItem("isAdminAuthenticated", "true");
-    setIsAdmin(true);
-    
-    toast({
-      title: "Admin Access Granted",
-      description: "You now have administrator privileges.",
-      duration: 3000,
-    });
-    
-    return true;
+  const logoutAdmin = async () => {
+    try {
+      await supabase.auth.signOut();
+      
+      toast({
+        title: "Admin Logout",
+        description: "You have been logged out of admin mode.",
+        duration: 3000,
+      });
+      
+      return true;
+    } catch (error) {
+      console.error("Logout error:", error);
+      toast({
+        title: "Logout Failed",
+        description: "There was a problem during logout. Please try again.",
+        variant: "destructive",
+      });
+      return false;
+    }
   };
 
-  const logoutAdmin = () => {
-    localStorage.removeItem("isAdminAuthenticated");
-    setIsAdmin(false);
-    
-    toast({
-      title: "Admin Logout",
-      description: "You have been logged out of admin mode.",
-      duration: 3000,
-    });
-    
-    return true;
-  };
-
-  return { isAdmin, isLoading, loginAdmin, logoutAdmin, checkAdminStatus };
+  return { isAdmin, isLoading, loginAdmin, logoutAdmin, checkUserRole };
 }
