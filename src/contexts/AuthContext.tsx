@@ -8,7 +8,9 @@ interface AuthContextType {
   session: Session | null;
   isLoading: boolean;
   isAdmin: boolean;
+  mfaEnabled: boolean;
   checkUserRole: () => Promise<boolean>;
+  checkMFAStatus: () => Promise<boolean>;
   signOut: () => Promise<void>;
 }
 
@@ -17,7 +19,9 @@ const AuthContext = createContext<AuthContextType>({
   session: null,
   isLoading: true,
   isAdmin: false,
+  mfaEnabled: false,
   checkUserRole: async () => false,
+  checkMFAStatus: async () => false,
   signOut: async () => {},
 });
 
@@ -26,6 +30,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [mfaEnabled, setMfaEnabled] = useState(false);
 
   // Function to check if the current user is an admin using the database role system
   const checkUserRole = async (): Promise<boolean> => {
@@ -56,11 +61,39 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  // Function to check if MFA is enabled for the current user
+  const checkMFAStatus = async (): Promise<boolean> => {
+    try {
+      if (!session?.user) {
+        setMfaEnabled(false);
+        return false;
+      }
+
+      const { data, error } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+      
+      if (error) {
+        console.error("Error checking MFA status:", error);
+        setMfaEnabled(false);
+        return false;
+      }
+      
+      // Set MFA status based on the current level
+      const isMfaEnabled = data.currentLevel === 'aal2';
+      setMfaEnabled(isMfaEnabled);
+      return isMfaEnabled;
+    } catch (error) {
+      console.error("Error checking MFA status:", error);
+      setMfaEnabled(false);
+      return false;
+    }
+  };
+
   // Function to sign out
   const signOut = async (): Promise<void> => {
     try {
       await supabase.auth.signOut();
       setIsAdmin(false);
+      setMfaEnabled(false);
     } catch (error) {
       console.error("Error signing out:", error);
     }
@@ -73,13 +106,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setSession(session);
         setUser(session?.user ?? null);
         
-        // Re-check admin role when auth state changes
+        // Re-check admin role and MFA status when auth state changes
         if (!session) {
           setIsAdmin(false);
+          setMfaEnabled(false);
         } else {
           // Use setTimeout to prevent supabase auth deadlocks
           setTimeout(() => {
             checkUserRole();
+            checkMFAStatus();
           }, 0);
         }
         setIsLoading(false);
@@ -90,11 +125,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
-      // Check admin role on initial load
+      // Check admin role and MFA status on initial load
       if (session) {
         // Use setTimeout to prevent supabase auth deadlocks
         setTimeout(() => {
           checkUserRole();
+          checkMFAStatus();
         }, 0);
       }
       setIsLoading(false);
@@ -104,7 +140,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, session, isLoading, isAdmin, checkUserRole, signOut }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      session, 
+      isLoading, 
+      isAdmin, 
+      mfaEnabled,
+      checkUserRole, 
+      checkMFAStatus,
+      signOut 
+    }}>
       {children}
     </AuthContext.Provider>
   );

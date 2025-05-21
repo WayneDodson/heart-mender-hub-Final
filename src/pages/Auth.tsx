@@ -8,7 +8,12 @@ import { useToast } from '@/hooks/use-toast';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { InfoIcon, Loader2, Mail } from 'lucide-react';
+import { InfoIcon, Loader2, Mail, Lock } from 'lucide-react';
+import { 
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot
+} from "@/components/ui/input-otp"
 
 const Auth = () => {
   const [email, setEmail] = useState('');
@@ -18,6 +23,12 @@ const Auth = () => {
   const [signupSuccess, setSignupSuccess] = useState(false);
   const [signupEmail, setSignupEmail] = useState('');
   const [resendLoading, setResendLoading] = useState(false);
+  const [showMFASetup, setShowMFASetup] = useState(false);
+  const [showMFAVerify, setShowMFAVerify] = useState(false);
+  const [factorId, setFactorId] = useState<string | null>(null);
+  const [qrCode, setQrCode] = useState<string | null>(null);
+  const [otpCode, setOtpCode] = useState('');
+  const [mfaSetupComplete, setMfaSetupComplete] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -56,18 +67,31 @@ const Auth = () => {
           description: "Please check your email to verify your account.",
         });
       } else {
-        const { error } = await supabase.auth.signInWithPassword({
+        const { error, data } = await supabase.auth.signInWithPassword({
           email,
           password,
         });
         
         if (error) throw error;
         
-        toast({
-          title: "Login successful",
-          description: "Welcome back!",
-        });
-        navigate('/');
+        // Check if MFA is already enabled for user
+        const { data: mfaData, error: mfaError } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+        
+        if (mfaError) {
+          console.error("Error checking MFA status:", mfaError);
+        }
+        
+        if (mfaData?.currentLevel === 'aal2') {
+          // MFA is already setup and verified
+          toast({
+            title: "Login successful",
+            description: "Welcome back!",
+          });
+          navigate('/');
+        } else {
+          // Show MFA setup screen
+          setShowMFASetup(true);
+        }
       }
     } catch (error: any) {
       toast({
@@ -106,6 +130,88 @@ const Auth = () => {
     } finally {
       setResendLoading(false);
     }
+  };
+
+  const setupMFA = async () => {
+    setIsLoading(true);
+    try {
+      const { data, error } = await supabase.auth.mfa.enroll({
+        factorType: 'totp',
+      });
+      
+      if (error) throw error;
+      
+      setFactorId(data.id);
+      setQrCode(data.totp.qr_code);
+      toast({
+        title: "MFA Setup",
+        description: "Scan the QR code with your authenticator app.",
+      });
+    } catch (error: any) {
+      toast({
+        title: "MFA Setup Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+      setShowMFAVerify(true);
+    }
+  };
+
+  const verifyMFA = async () => {
+    if (!factorId || otpCode.length !== 6) {
+      toast({
+        title: "Verification Failed",
+        description: "Please enter a valid 6-digit code.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const { error } = await supabase.auth.mfa.challenge({
+        factorId,
+      });
+      
+      if (error) throw error;
+      
+      const { error: verifyError } = await supabase.auth.mfa.verify({
+        factorId,
+        code: otpCode,
+      });
+      
+      if (verifyError) throw verifyError;
+      
+      toast({
+        title: "MFA Enabled",
+        description: "Multi-factor authentication has been set up successfully.",
+      });
+      
+      setMfaSetupComplete(true);
+      
+      // Navigate to home after short delay
+      setTimeout(() => {
+        navigate('/');
+      }, 2000);
+    } catch (error: any) {
+      toast({
+        title: "Verification Failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const skipMFA = () => {
+    toast({
+      title: "Login successful",
+      description: "Welcome back! (MFA setup skipped)",
+    });
+    navigate('/');
   };
 
   if (signupSuccess) {
@@ -151,6 +257,124 @@ const Auth = () => {
               Return to Login
             </Button>
           </CardFooter>
+        </Card>
+      </div>
+    );
+  }
+
+  if (showMFASetup) {
+    return (
+      <div className="min-h-screen py-6 md:py-12 px-3 md:px-4 flex items-center justify-center bg-healing-50">
+        <Card className="w-full max-w-md">
+          <CardHeader className="pb-3 md:pb-6">
+            <CardTitle className="text-xl md:text-2xl">Secure Your Account</CardTitle>
+            <CardDescription>
+              Set up two-factor authentication to add an extra layer of security
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-3 md:space-y-4 px-3 md:px-6">
+            {!showMFAVerify ? (
+              <div className="space-y-4">
+                <Alert>
+                  <InfoIcon className="h-4 w-4" />
+                  <AlertDescription>
+                    Two-factor authentication requires you to verify your identity with an authenticator app each time you sign in.
+                  </AlertDescription>
+                </Alert>
+                <div className="flex flex-col items-center gap-4 mt-6">
+                  <Button 
+                    onClick={setupMFA} 
+                    className="w-full bg-healing-600 hover:bg-healing-700"
+                    disabled={isLoading}
+                  >
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Setting up...
+                      </>
+                    ) : (
+                      <>
+                        <Lock className="mr-2 h-4 w-4" />
+                        Set up two-factor authentication
+                      </>
+                    )}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={skipMFA}
+                    className="w-full"
+                    disabled={isLoading}
+                  >
+                    Skip for now
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-6">
+                {qrCode && (
+                  <div className="flex flex-col items-center gap-4">
+                    <p className="text-sm text-center font-medium">Scan this QR code with your authenticator app</p>
+                    <div className="border border-gray-200 p-2 rounded-md mx-auto">
+                      <img src={qrCode} alt="QR Code for MFA" className="h-48 w-48" />
+                    </div>
+                  </div>
+                )}
+                
+                <div className="space-y-2">
+                  <Label htmlFor="otp">Enter verification code</Label>
+                  <div className="flex justify-center">
+                    <InputOTP 
+                      maxLength={6} 
+                      onChange={(value) => setOtpCode(value)}
+                      value={otpCode}
+                    >
+                      <InputOTPGroup>
+                        <InputOTPSlot index={0} />
+                        <InputOTPSlot index={1} />
+                        <InputOTPSlot index={2} />
+                        <InputOTPSlot index={3} />
+                        <InputOTPSlot index={4} />
+                        <InputOTPSlot index={5} />
+                      </InputOTPGroup>
+                    </InputOTP>
+                  </div>
+                </div>
+
+                {mfaSetupComplete && (
+                  <Alert className="bg-green-50 text-green-800 border-green-200">
+                    <AlertDescription>
+                      Two-factor authentication successfully set up. You will be redirected shortly.
+                    </AlertDescription>
+                  </Alert>
+                )}
+
+                <div className="flex flex-col items-center gap-4 mt-6">
+                  <Button 
+                    onClick={verifyMFA} 
+                    className="w-full bg-healing-600 hover:bg-healing-700"
+                    disabled={isLoading || mfaSetupComplete || otpCode.length !== 6}
+                  >
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Verifying...
+                      </>
+                    ) : (
+                      "Verify and enable"
+                    )}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={skipMFA}
+                    className="w-full"
+                    disabled={isLoading || mfaSetupComplete}
+                  >
+                    Skip for now
+                  </Button>
+                </div>
+              </div>
+            )}
+          </CardContent>
         </Card>
       </div>
     );
