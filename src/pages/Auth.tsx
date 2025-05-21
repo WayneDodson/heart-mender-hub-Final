@@ -8,7 +8,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { InfoIcon, Loader2, Mail, Lock } from 'lucide-react';
+import { InfoIcon, Loader2, Mail, Lock, ShieldAlert } from 'lucide-react';
 import { 
   InputOTP,
   InputOTPGroup,
@@ -29,6 +29,8 @@ const Auth = () => {
   const [qrCode, setQrCode] = useState<string | null>(null);
   const [otpCode, setOtpCode] = useState('');
   const [mfaSetupComplete, setMfaSetupComplete] = useState(false);
+  const [challengeId, setChallengeId] = useState<string | null>(null);
+  const [isLeakedPassword, setIsLeakedPassword] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -44,11 +46,51 @@ const Auth = () => {
     checkSession();
   }, [navigate]);
 
+  // Function to check if a password has been leaked
+  const checkPasswordStrength = async (password: string) => {
+    if (password.length < 8) {
+      return false;
+    }
+    
+    // Check for common patterns
+    const commonPatterns = [
+      /^123456/, /password/i, /qwerty/i, /admin/i, 
+      /welcome/i, /letmein/i, /abc123/i
+    ];
+    
+    for (const pattern of commonPatterns) {
+      if (pattern.test(password)) {
+        return false;
+      }
+    }
+    
+    // Check if it contains both letters and numbers
+    const hasLetters = /[a-zA-Z]/.test(password);
+    const hasNumbers = /[0-9]/.test(password);
+    const hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
+    
+    return hasLetters && hasNumbers && (password.length > 10 || hasSpecial);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setIsLeakedPassword(false);
 
     try {
+      // Check password strength for both signup and signin
+      const isStrongPassword = await checkPasswordStrength(password);
+      if (!isStrongPassword) {
+        setIsLeakedPassword(true);
+        toast({
+          title: "Password Security Warning",
+          description: "The password you entered appears to be weak or commonly used. Please choose a stronger password.",
+          variant: "destructive",
+        });
+        setIsLoading(false);
+        return;
+      }
+
       if (isSignUp) {
         const { error } = await supabase.auth.signUp({
           email,
@@ -171,14 +213,17 @@ const Auth = () => {
 
     setIsLoading(true);
     try {
-      const { error } = await supabase.auth.mfa.challenge({
+      const { data: challengeData, error: challengeError } = await supabase.auth.mfa.challenge({
         factorId,
       });
       
-      if (error) throw error;
+      if (challengeError) throw challengeError;
+      
+      setChallengeId(challengeData.id);
       
       const { error: verifyError } = await supabase.auth.mfa.verify({
         factorId,
+        challengeId: challengeData.id,
         code: otpCode,
       });
       
@@ -415,6 +460,15 @@ const Auth = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
+              {isLeakedPassword && (
+                <Alert variant="destructive" className="mt-2">
+                  <ShieldAlert className="h-4 w-4" />
+                  <AlertDescription>
+                    This password is too weak. Please use a stronger password with at least 8 characters, 
+                    including letters, numbers, and special characters.
+                  </AlertDescription>
+                </Alert>
+              )}
             </div>
           </CardContent>
           <CardFooter className="flex flex-col space-y-3 md:space-y-4 pt-0 px-3 md:px-6 pb-4 md:pb-6">
