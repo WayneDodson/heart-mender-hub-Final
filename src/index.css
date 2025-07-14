@@ -43,8 +43,36 @@
     background: #555;
   }
 
+  
   *:focus {
     @apply outline-none ring-2 ring-primary/50;
+  }
+
+  /* Mobile-specific optimizations */
+  @media (max-width: 768px) {
+    html {
+      -webkit-text-size-adjust: 100%;
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    }
+    
+    /* Improve touch targets */
+    button, a, input, textarea, select {
+      min-height: 44px;
+      min-width: 44px;
+    }
+    
+    /* Prevent zoom on input focus */
+    input, textarea, select {
+      font-size: 16px;
+    }
+  }
+  
+  /* Tablet optimizations */
+  @media (min-width: 768px) and (max-width: 1024px) {
+    /* Optimize for tablet touch targets */
+    button, a {
+      min-height: 48px;
+    }
   }
 }
 
