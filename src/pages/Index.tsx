@@ -6,6 +6,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Heart, Shield, Users, BookOpen, ArrowRight } from 'lucide-react';
 import { StarBorder } from '@/components/ui/star-border';
 import { Button } from '@/components/ui/button';
+import SEO from '@/components/SEO';
+import FAQ from '@/components/FAQ';
 
 const Index = () => {
   const navigate = useNavigate();
@@ -27,6 +29,13 @@ const Index = () => {
   // to ensure the preview always works
 
   return (
+    <>
+      <SEO 
+        title="Heart Mender - Healing After Divorce | Support & Resources"
+        description="Find support, resources, and community for healing after divorce. Join Heart Mender for stories, expert advice, self-care tips, and emotional support on your journey to recovery."
+        keywords="divorce support, healing after divorce, divorce recovery, emotional support, divorce community, self-care after divorce, moving on after divorce, divorce resources, life after divorce, divorce help"
+        url="https://www.heartmenderhub.com/"
+      />
     <div className="min-h-screen bg-gradient-to-b from-[#FAF3E0] to-[#F7F0DD] flex flex-col justify-between">
       <div className="container mx-auto px-3 py-4 md:px-4 md:py-16 flex-grow flex flex-col">
         {/* Hero Section */}
@@ -169,8 +178,14 @@ const Index = () => {
             </CardFooter>
           </Card>
         </div>
+
+        {/* FAQ Section for SEO */}
+        <div className="max-w-4xl mx-auto mb-8 md:mb-16 animate-fade-up" style={{animationDelay: '0.7s'}}>
+          <FAQ />
+        </div>
       </div>
     </div>
+    </>
   );
 };
 
