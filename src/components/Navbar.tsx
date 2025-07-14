@@ -57,9 +57,12 @@ const Navbar: React.FC = () => {
     { text: 'Resources', path: '/resources' },
   ] : [];
 
-  // Contact is now a button to open dialog, not a link
-  const publicLinks: NavLinkWithAction[] = [
+  // Contact and Sign In are public links (shown when not authenticated)
+  const publicLinks: (NavLinkWithAction | NavLinkWithPath)[] = user ? [
     { text: 'Contact', action: () => setContactDialogOpen(true) },
+  ] : [
+    { text: 'Contact', action: () => setContactDialogOpen(true) },
+    { text: 'Sign In', path: '/auth?tab=signin' },
   ];
 
   const links: NavLink[] = [...authenticatedLinks, ...publicLinks];
