@@ -123,7 +123,13 @@ const Navbar: React.FC = () => {
                           {isPathLink(link) ? (
                             <Link
                               to={link.path}
-                              className={`block py-2 ${isActive(link.path) ? 'text-healing-300 font-medium' : 'hover:text-healing-300'}`}
+                              className={`block py-2 ${
+                                isActive(link.path) 
+                                  ? 'text-healing-300 font-medium' 
+                                  : link.text === 'Sign In' 
+                                    ? 'text-white bg-healing-700 hover:bg-healing-600 px-3 py-1.5 rounded-md font-medium transition-colors inline-block' 
+                                    : 'hover:text-healing-300'
+                              }`}
                               onClick={closeMenu}
                             >
                               {link.text}
@@ -188,7 +194,13 @@ const Navbar: React.FC = () => {
                     {isPathLink(link) ? (
                       <Link
                         to={link.path}
-                        className={`${isActive(link.path) ? 'text-healing-300 font-medium' : 'hover:text-healing-300'}`}
+                        className={`${
+                          isActive(link.path) 
+                            ? 'text-healing-300 font-medium' 
+                            : link.text === 'Sign In' 
+                              ? 'text-white bg-healing-700 hover:bg-healing-600 px-3 py-1.5 rounded-md font-medium transition-colors' 
+                              : 'hover:text-healing-300'
+                        }`}
                       >
                         {link.text}
                       </Link>
