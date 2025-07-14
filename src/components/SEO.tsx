@@ -1,5 +1,4 @@
-import React from 'react';
-import { Helmet } from 'react-helmet-async';
+import { useEffect } from 'react';
 
 interface SEOProps {
   title?: string;
@@ -20,56 +19,62 @@ const SEO: React.FC<SEOProps> = ({
   image = "https://www.heartmenderhub.com/og-image.jpg",
   schemaData
 }) => {
-  const defaultSchema = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "Heart Mender",
-    "url": url,
-    "description": description,
-    "publisher": {
-      "@type": "Organization",
-      "name": "Heart Mender",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://www.heartmenderhub.com/logo.png"
+  useEffect(() => {
+    // Update title
+    document.title = title;
+    
+    // Update or create meta tags
+    const updateMetaTag = (name: string, content: string, property?: boolean) => {
+      const selector = property ? `meta[property="${name}"]` : `meta[name="${name}"]`;
+      let meta = document.querySelector(selector) as HTMLMetaElement;
+      if (!meta) {
+        meta = document.createElement('meta');
+        if (property) {
+          meta.setAttribute('property', name);
+        } else {
+          meta.setAttribute('name', name);
+        }
+        document.head.appendChild(meta);
       }
-    },
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": `${url}/search?q={search_term_string}`,
-      "query-input": "required name=search_term_string"
+      meta.setAttribute('content', content);
+    };
+
+    // Update canonical link
+    let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
+    if (!canonical) {
+      canonical = document.createElement('link');
+      canonical.setAttribute('rel', 'canonical');
+      document.head.appendChild(canonical);
     }
-  };
+    canonical.setAttribute('href', url);
 
-  const schema = schemaData || defaultSchema;
+    // Update meta tags
+    updateMetaTag('description', description);
+    updateMetaTag('keywords', keywords);
+    updateMetaTag('og:title', title, true);
+    updateMetaTag('og:description', description, true);
+    updateMetaTag('og:type', type, true);
+    updateMetaTag('og:url', url, true);
+    updateMetaTag('og:image', image, true);
+    updateMetaTag('og:site_name', 'Heart Mender', true);
+    updateMetaTag('twitter:card', 'summary_large_image');
+    updateMetaTag('twitter:title', title);
+    updateMetaTag('twitter:description', description);
+    updateMetaTag('twitter:image', image);
 
-  return (
-    <Helmet>
-      <title>{title}</title>
-      <meta name="description" content={description} />
-      <meta name="keywords" content={keywords} />
-      <link rel="canonical" href={url} />
-      
-      {/* Open Graph */}
-      <meta property="og:title" content={title} />
-      <meta property="og:description" content={description} />
-      <meta property="og:type" content={type} />
-      <meta property="og:url" content={url} />
-      <meta property="og:image" content={image} />
-      <meta property="og:site_name" content="Heart Mender" />
-      
-      {/* Twitter */}
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content={title} />
-      <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content={image} />
-      
-      {/* Schema.org */}
-      <script type="application/ld+json">
-        {JSON.stringify(schema)}
-      </script>
-    </Helmet>
-  );
+    // Update or create schema
+    if (schemaData) {
+      let script = document.querySelector('script[type="application/ld+json"]');
+      if (!script) {
+        script = document.createElement('script');
+        script.setAttribute('type', 'application/ld+json');
+        document.head.appendChild(script);
+      }
+      script.textContent = JSON.stringify(schemaData);
+    }
+  }, [title, description, keywords, url, type, image, schemaData]);
+
+  return null;
 };
 
 export default SEO;
