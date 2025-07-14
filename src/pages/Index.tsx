@@ -146,7 +146,7 @@ const Index = () => {
                 className="w-full"
               >
                 <Button
-                  onClick={() => navigate('/auth')}
+                  onClick={() => navigate('/auth?tab=signup')}
                   variant="ghost"
                   className="w-full flex items-center justify-center text-[#333333]"
                 >
@@ -154,6 +154,13 @@ const Index = () => {
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </StarBorder>
+              <Button
+                onClick={() => navigate('/auth?tab=signin')}
+                variant="outline"
+                className="w-full border-[#6A5ACD] text-[#6A5ACD] hover:bg-[#6A5ACD] hover:text-white"
+              >
+                Sign In
+              </Button>
             </CardContent>
             <CardFooter className="px-3 pb-4 pt-0 md:px-6 text-center">
               <p className="text-xs text-[#333333] w-full">

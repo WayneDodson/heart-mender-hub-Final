@@ -33,6 +33,17 @@ const Auth = () => {
   const [isLeakedPassword, setIsLeakedPassword] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
+  
+  // Check URL parameters to set initial tab
+  React.useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const tab = urlParams.get('tab');
+    if (tab === 'signin') {
+      setIsSignUp(false);
+    } else if (tab === 'signup') {
+      setIsSignUp(true);
+    }
+  }, []);
 
   // Check if user is already logged in
   useEffect(() => {
