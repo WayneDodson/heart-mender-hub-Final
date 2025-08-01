@@ -8,6 +8,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import ContactSupportDialog from '@/components/ContactSupportDialog';
+import logo from '@/assets/heart-hands-logo.jpg';
 
 // Define types for our navigation links
 type NavLinkWithPath = {
@@ -99,7 +100,10 @@ const Navbar: React.FC = () => {
       <div className="container mx-auto px-3">
         <div className="flex justify-between items-center py-3">
           <div className="flex items-center">
-            <Link to="/" className="text-lg md:text-xl font-bold">Healing Journeys</Link>
+            <Link to="/" className="flex items-center space-x-2">
+              <img src={logo} alt="Heart Mender Logo" className="h-8 w-8 object-contain" />
+              <span className="text-lg md:text-xl font-bold">Heart Mender</span>
+            </Link>
           </div>
           
           {isMobile ? (
