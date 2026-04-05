@@ -1,100 +1,115 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Heart, Instagram, Facebook, Mail } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import { toast } from 'sonner';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
-  const { toast } = useToast();
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
     setIsSubmitting(true);
-    await new Promise((resolve) => setTimeout(resolve, 600));
-    toast({
-      title: 'Subscription successful',
-      description: 'Thank you for subscribing to our newsletter.',
-      duration: 5000,
-    });
+    await new Promise(resolve => setTimeout(resolve, 600));
+    toast.success('Thank you for subscribing to our newsletter.');
     setEmail('');
     setIsSubmitting(false);
   };
 
   return (
-    <footer className="bg-msblue-50 pt-12 pb-8">
+    <footer className="bg-[#1a1a3e] text-gray-300 pt-12 pb-8">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
+
+          {/* Brand */}
           <div>
-            <div className="flex items-center space-x-2 mb-4">
-              <Heart className="h-6 w-6 text-msblue-500" />
-              <span className="font-bold text-xl text-msblue-800">Heart Mender</span>
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-8 h-8 bg-gradient-to-br from-[#FF6F61] to-[#6A5ACD] rounded-lg flex items-center justify-center">
+                <Heart className="w-4 h-4 text-white" fill="white" />
+              </div>
+              <span className="font-bold text-xl text-white">Heart Mender</span>
             </div>
-            <p className="text-gray-600 mb-4">
-              Supporting you through your healing journey after divorce, one step at a time.
+            <p className="text-gray-400 text-sm leading-relaxed mb-4">
+              Supporting you through grief, loss, divorce, and life's hardest moments. A safe space for healing — for everyone.
             </p>
-            <div className="flex space-x-4">
-              <a href="#" aria-label="Instagram" className="text-gray-500 hover:text-msblue-600">
-                <Instagram className="h-5 w-5" />
+            <div className="flex gap-3">
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"
+                className="w-9 h-9 bg-white/10 hover:bg-[#6A5ACD] rounded-lg flex items-center justify-center transition-colors"
+                aria-label="Instagram">
+                <Instagram className="w-4 h-4 text-white" />
               </a>
-              <a href="#" aria-label="Facebook" className="text-gray-500 hover:text-msblue-600">
-                <Facebook className="h-5 w-5" />
+              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"
+                className="w-9 h-9 bg-white/10 hover:bg-[#6A5ACD] rounded-lg flex items-center justify-center transition-colors"
+                aria-label="Facebook">
+                <Facebook className="w-4 h-4 text-white" />
               </a>
-              <a href="mailto:contact@heartmender.com" aria-label="Email" className="text-gray-500 hover:text-msblue-600">
-                <Mail className="h-5 w-5" />
+              <a href="mailto:hello@heartmenderhub.com"
+                className="w-9 h-9 bg-white/10 hover:bg-[#008080] rounded-lg flex items-center justify-center transition-colors"
+                aria-label="Email">
+                <Mail className="w-4 h-4 text-white" />
               </a>
             </div>
           </div>
 
+          {/* Quick Links */}
           <div>
-            <h3 className="font-semibold text-lg mb-4">Quick Links</h3>
+            <h3 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Quick Links</h3>
             <ul className="space-y-2">
               {[
-                { to: '/', label: 'Home' },
-                { to: '/resources', label: 'Resources' },
-                { to: '/stories', label: 'Stories' },
-                { to: '/contact', label: 'Contact' },
-              ].map(({ to, label }) => (
-                <li key={to}>
-                  <Link to={to} className="text-gray-600 hover:text-msblue-600 transition-colors" onClick={scrollToTop}>
-                    {label}
+                { label: 'Home', href: '/' },
+                { label: 'Community', href: '/community' },
+                { label: 'Resources', href: '/resources' },
+                { label: 'Stories', href: '/stories' },
+                { label: 'Contact', href: '/contact' },
+              ].map(link => (
+                <li key={link.href}>
+                  <Link to={link.href} className="text-gray-400 hover:text-[#008080] text-sm transition-colors">
+                    {link.label}
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
 
+          {/* Newsletter */}
           <div>
-            <h3 className="font-semibold text-lg mb-4">Newsletter</h3>
-            <p className="text-gray-600 mb-4">Subscribe to receive healing insights and updates.</p>
-            <form onSubmit={handleSubscribe} className="flex">
+            <h3 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Stay Connected</h3>
+            <p className="text-gray-400 text-sm mb-4 leading-relaxed">
+              Get weekly resources, community updates, and healing insights delivered to your inbox.
+            </p>
+            <form onSubmit={handleSubscribe} className="flex gap-2">
               <input
                 type="email"
                 placeholder="Your email"
-                className="healing-input rounded-r-none"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={e => setEmail(e.target.value)}
                 required
-                disabled={isSubmitting}
+                className="flex-1 bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#6A5ACD] transition-colors"
               />
               <button
                 type="submit"
-                className="bg-msblue-500 text-white px-4 py-2 rounded-r-lg hover:bg-msblue-600 transition-colors disabled:opacity-50"
                 disabled={isSubmitting}
+                className="bg-[#6A5ACD] hover:bg-[#5949ab] text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors disabled:opacity-60 shimmer-border"
               >
-                {isSubmitting ? 'Subscribing...' : 'Subscribe'}
+                {isSubmitting ? '...' : 'Subscribe'}
               </button>
             </form>
           </div>
         </div>
 
-        <div className="border-t border-gray-200 mt-8 pt-8 text-center text-gray-600">
-          <p>© {currentYear} Heart Mender. All rights reserved.</p>
+        {/* Bottom bar */}
+        <div className="border-t border-white/10 pt-6 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-gray-500">
+          <span>&copy; {currentYear} Heart Mender Hub. All rights reserved.</span>
+          <div className="flex gap-4">
+            <span className="hover:text-gray-300 cursor-pointer transition-colors">Privacy Policy</span>
+            <span className="hover:text-gray-300 cursor-pointer transition-colors">Terms of Use</span>
+            <span className="hover:text-gray-300 cursor-pointer transition-colors">Safeguarding</span>
+          </div>
+          <div className="flex items-center gap-1">
+            Made with <Heart className="w-3 h-3 text-[#FF6F61] mx-0.5" fill="currentColor" /> for healing
+          </div>
         </div>
       </div>
     </footer>

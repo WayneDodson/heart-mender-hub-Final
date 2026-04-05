@@ -1,343 +1,304 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
+import { Heart, Users, BookOpen, Shield, Star, ArrowRight, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import {
-  Heart, Users, BookOpen, Shield, ArrowRight, Star,
-  Anchor, Scissors, UserX, Activity, Briefcase, MessageCircle
-} from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 import SEO from '@/components/SEO';
 
-const griefCategories = [
+const FEATURED_RESOURCES = [
   {
-    icon: Scissors,
-    title: 'Divorce & Separation',
-    description: 'Navigating the end of a marriage, co-parenting challenges, and rebuilding your identity.',
-    color: 'from-blue-500 to-blue-700',
-    bg: 'bg-blue-50',
-    count: '2.4k members',
-    path: '/community',
+    source: 'Psychology Today',
+    title: 'The Five Stages of Grief: What They Really Mean',
+    excerpt: "Understanding Kübler-Ross's model and how it applies to modern grief experiences.",
+    url: 'https://www.psychologytoday.com/us/basics/grief',
+    category: 'Grief',
   },
   {
-    icon: Anchor,
-    title: 'Bereavement & Loss',
-    description: 'Processing the loss of a loved one, finding meaning, and moving forward with grief.',
-    color: 'from-purple-500 to-purple-700',
-    bg: 'bg-purple-50',
-    count: '1.8k members',
-    path: '/community',
+    source: 'Psychology Today',
+    title: 'How to Rebuild Your Identity After Divorce',
+    excerpt: 'Practical strategies for rediscovering who you are when a major relationship ends.',
+    url: 'https://www.psychologytoday.com/us/basics/divorce',
+    category: 'Divorce',
   },
   {
-    icon: UserX,
-    title: 'Family Estrangement',
-    description: 'Dealing with estrangement from parents, siblings, or children and the unique pain it brings.',
-    color: 'from-orange-500 to-orange-700',
-    bg: 'bg-orange-50',
-    count: '1.2k members',
-    path: '/community',
+    source: 'Mind.org.uk',
+    title: 'Coping With Bereavement',
+    excerpt: 'Guidance on processing loss and finding support when someone you love dies.',
+    url: 'https://www.mind.org.uk/information-support/guides-to-support-and-services/bereavement/',
+    category: 'Bereavement',
   },
   {
-    icon: Activity,
-    title: 'Health Diagnosis',
-    description: 'Facing a serious health diagnosis, chronic illness, and the emotional weight that comes with it.',
-    color: 'from-red-500 to-red-700',
-    bg: 'bg-red-50',
-    count: '980 members',
-    path: '/community',
+    source: 'Verywell Mind',
+    title: 'Understanding Complicated Grief',
+    excerpt: 'When grief becomes prolonged — signs to watch for and how to seek help.',
+    url: 'https://www.verywellmind.com/complicated-grief-4688671',
+    category: 'Mental Health',
+  },
+];
+
+const GRIEF_CATEGORIES = [
+  {
+    icon: 'heart',
+    color: 'text-[#FF6F61]',
+    title: 'Emotional Support',
+    description: 'Connect with others who understand your journey and find strength in shared experiences.',
+    sources: [
+      { name: 'Mindful Healing', desc: 'Meditation and mindfulness practices for emotional healing' },
+      { name: 'Psychology Today', desc: 'Expert advice on recovery after divorce' },
+    ],
+    href: '/community',
   },
   {
-    icon: Briefcase,
-    title: 'Loss of Identity',
-    description: 'Redundancy, retirement, or career loss — when your sense of purpose feels stripped away.',
-    color: 'from-teal-500 to-teal-700',
-    bg: 'bg-teal-50',
-    count: '750 members',
-    path: '/community',
+    icon: 'shield',
+    color: 'text-[#8FBC8F]',
+    title: 'Trusted Resources',
+    description: 'Access curated content, expert advice, and practical tools for moving forward.',
+    sources: [
+      { name: 'Mind.org.uk', desc: 'Mental health support and guidance' },
+      { name: 'Verywell Mind', desc: 'Evidence-based mental health information' },
+    ],
+    href: '/resources',
   },
   {
-    icon: MessageCircle,
+    icon: 'users',
+    color: 'text-[#6A5ACD]',
+    title: 'Community',
+    description: 'A safe, moderated space to share, listen, and grow alongside others on similar journeys.',
+    sources: [
+      { name: 'Peer Support', desc: 'Connect with community members who understand' },
+      { name: 'Group Discussions', desc: 'Topic-focused conversations and shared experiences' },
+    ],
+    href: '/community',
+  },
+  {
+    icon: 'book',
+    color: 'text-[#008080]',
+    title: 'Stories',
+    description: 'Real stories of healing and hope — submitted by community members and vetted for safety.',
+    sources: [
+      { name: 'Member Stories', desc: 'Authentic journeys of grief and recovery' },
+      { name: 'Expert Columns', desc: 'Guidance from therapists and counsellors' },
+    ],
+    href: '/stories',
+  },
+  {
+    icon: 'heart',
+    color: 'text-[#FF6F61]',
+    title: 'Self-Care',
+    description: 'Practical tools, exercises, and routines to support your wellbeing during difficult times.',
+    sources: [
+      { name: 'Headspace', desc: 'Guided meditation and sleep support' },
+      { name: 'NHS Every Mind Matters', desc: 'Free mental health tools and resources' },
+    ],
+    href: '/resources',
+  },
+  {
+    icon: 'star',
+    color: 'text-[#6A5ACD]',
     title: 'General Support',
-    description: 'A space for anything that doesn\'t fit neatly into a category. All grief is valid here.',
-    color: 'from-healing-500 to-healing-700',
-    bg: 'bg-healing-50',
-    count: '3.1k members',
-    path: '/community',
+    description: "A space for anything that doesn't fit neatly into a category. All grief is valid here.",
+    sources: [
+      { name: 'Cruse Bereavement', desc: "UK's leading bereavement charity" },
+      { name: 'Samaritans', desc: '24/7 emotional support — call 116 123' },
+    ],
+    href: '/community',
   },
 ];
 
-const stats = [
-  { value: '10,000+', label: 'Men Supported' },
-  { value: '50,000+', label: 'Stories Shared' },
-  { value: '24/7', label: 'Community Access' },
-  { value: '100%', label: 'Safe & Moderated' },
-];
-
-const testimonials = [
-  {
-    quote: "I thought I had to deal with my divorce alone. Finding this community changed everything. These men actually get it.",
-    name: "James, 42",
-    category: "Divorce",
-  },
-  {
-    quote: "After losing my dad, I didn't know how to grieve as a man. The resources here helped me understand it's okay to feel.",
-    name: "Marcus, 38",
-    category: "Bereavement",
-  },
-  {
-    quote: "My health diagnosis left me feeling isolated. This community reminded me I'm not defined by my illness.",
-    name: "David, 55",
-    category: "Health",
-  },
-];
+const IconMap: Record<string, React.FC<{ className?: string }>> = {
+  heart: ({ className }) => <Heart className={className} />,
+  shield: ({ className }) => <Shield className={className} />,
+  users: ({ className }) => <Users className={className} />,
+  book: ({ className }) => <BookOpen className={className} />,
+  star: ({ className }) => <Star className={className} />,
+};
 
 const Index: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [visibleCards, setVisibleCards] = useState<number[]>([]);
+
+  useEffect(() => {
+    GRIEF_CATEGORIES.forEach((_, i) => {
+      setTimeout(() => setVisibleCards(prev => [...prev, i]), i * 120);
+    });
+  }, []);
 
   return (
     <>
       <SEO
-        title="Heart Mender Hub — Men's Grief & Healing Community"
-        description="A safe, supportive community for men navigating divorce, bereavement, estrangement, health challenges and more. Real stories, expert resources, and men who understand."
+        title="Heart Mender Hub — Healing After Grief, Divorce & Loss"
+        description="A safe, supportive community for anyone navigating grief, divorce, bereavement, estrangement, or life's hardest moments. Real support. Real stories. Real healing."
+        url="https://heartmenderhub.com"
       />
-      <div className="min-h-screen bg-white">
 
-        {/* Hero Section */}
-        <section className="relative bg-gradient-to-br from-healing-900 via-healing-800 to-healing-700 text-white overflow-hidden">
-          <div className="absolute inset-0">
-            <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-healing-600/20 to-transparent" />
-            <div className="absolute bottom-0 left-0 w-96 h-96 bg-white/5 rounded-full blur-3xl -translate-x-1/2 translate-y-1/2" />
-            <div className="absolute top-20 right-20 w-64 h-64 bg-healing-400/10 rounded-full blur-2xl" />
+      {/* Hero */}
+      <section className="w-full bg-background py-20 px-4 text-center">
+        <div className="max-w-3xl mx-auto">
+          <h1 className="text-4xl md:text-5xl font-bold text-[#6A5ACD] mb-5 leading-tight animate-fade-up">
+            Your Journey to Healing Starts Here
+          </h1>
+          <p className="text-lg text-gray-600 mb-8 animate-fade-up">
+            Join our supportive community and access valuable resources to help you navigate grief, divorce, loss, and life's most challenging moments.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center animate-fade-up">
+            <Button
+              className="healing-button text-base px-8 py-3 shimmer-border"
+              onClick={() => navigate(user ? '/community' : '/auth?tab=signup')}
+            >
+              Begin Your Journey →
+            </Button>
+            {!user && (
+              <Button
+                variant="outline"
+                className="border-[#6A5ACD] text-[#6A5ACD] hover:bg-[#6A5ACD]/5 text-base px-8 py-3"
+                onClick={() => navigate('/auth')}
+              >
+                Sign In
+              </Button>
+            )}
           </div>
+        </div>
+      </section>
 
-          <div className="container mx-auto px-4 py-20 md:py-32 relative z-10">
-            <div className="max-w-3xl">
-              <Badge className="bg-white/20 text-white border-white/30 mb-6 text-sm px-4 py-1">
-                Men's Grief & Healing Community
-              </Badge>
-              <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6">
-                You don't have to carry this
-                <span className="text-healing-300"> alone.</span>
-              </h1>
-              <p className="text-xl md:text-2xl text-healing-100 mb-8 leading-relaxed max-w-2xl">
-                A safe space built for men navigating divorce, loss, estrangement, and life's hardest moments. Real support. Real stories. Real healing.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                {user ? (
-                  <>
-                    <Button
-                      size="lg"
-                      className="bg-white text-healing-900 hover:bg-healing-50 font-bold text-lg px-8"
-                      onClick={() => navigate('/community')}
-                    >
-                      Join the Community <ArrowRight className="ml-2 w-5 h-5" />
-                    </Button>
-                    <Button
-                      size="lg"
-                      variant="outline"
-                      className="border-white/50 text-white hover:bg-white/10 font-semibold text-lg px-8"
-                      onClick={() => navigate('/stories')}
-                    >
-                      Read Stories
-                    </Button>
-                  </>
-                ) : (
-                  <>
-                    <Button
-                      size="lg"
-                      className="bg-white text-healing-900 hover:bg-healing-50 font-bold text-lg px-8"
-                      onClick={() => navigate('/auth?tab=signup')}
-                    >
-                      Join Free Today <ArrowRight className="ml-2 w-5 h-5" />
-                    </Button>
-                    <Button
-                      size="lg"
-                      variant="outline"
-                      className="border-white/50 text-white hover:bg-white/10 font-semibold text-lg px-8"
-                      onClick={() => navigate('/auth?tab=signin')}
-                    >
-                      Sign In
-                    </Button>
-                  </>
-                )}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Stats Bar */}
-        <section className="bg-healing-800 text-white py-8">
-          <div className="container mx-auto px-4">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-              {stats.map(({ value, label }) => (
-                <div key={label}>
-                  <div className="text-3xl font-bold text-healing-200">{value}</div>
-                  <div className="text-sm text-healing-400 mt-1">{label}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Grief Categories */}
-        <section className="py-20 bg-gray-50">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <Badge className="bg-healing-100 text-healing-700 border-healing-200 mb-4">Community Areas</Badge>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Find Your Community
-              </h2>
-              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                Every man's grief is different. Find the space that speaks to your experience.
-              </p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {griefCategories.map(({ icon: Icon, title, description, color, bg, count, path }) => (
-                <Link key={title} to={path}>
-                  <Card className="h-full hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-0 shadow-md overflow-hidden group cursor-pointer">
-                    <CardContent className="p-0">
-                      <div className={`h-2 bg-gradient-to-r ${color}`} />
-                      <div className="p-6">
-                        <div className={`w-12 h-12 ${bg} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
-                          <Icon className={`w-6 h-6 bg-gradient-to-r ${color} bg-clip-text`} style={{ color: color.includes('blue') ? '#3b82f6' : color.includes('purple') ? '#a855f7' : color.includes('orange') ? '#f97316' : color.includes('red') ? '#ef4444' : color.includes('teal') ? '#14b8a6' : '#6A5ACD' }} />
-                        </div>
-                        <h3 className="text-lg font-bold text-gray-900 mb-2">{title}</h3>
-                        <p className="text-gray-600 text-sm leading-relaxed mb-4">{description}</p>
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs text-gray-400 flex items-center gap-1">
-                            <Users className="w-3 h-3" /> {count}
-                          </span>
-                          <span className="text-sm text-healing-600 font-medium flex items-center gap-1 group-hover:gap-2 transition-all">
-                            Join <ArrowRight className="w-3 h-3" />
-                          </span>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Why Heart Mender */}
-        <section className="py-20 bg-white">
-          <div className="container mx-auto px-4">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-              <div>
-                <Badge className="bg-healing-100 text-healing-700 border-healing-200 mb-4">Why Heart Mender</Badge>
-                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-                  Built for men, by someone who understands.
-                </h2>
-                <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-                  Heart Mender Hub was born from a personal experience of going through divorce without adequate support. Men are often expected to "just get on with it" — but grief doesn't work that way. This is a space where vulnerability is strength.
-                </p>
-                <div className="space-y-4">
-                  {[
-                    { icon: Shield, title: 'Safe & Moderated', desc: 'Every post is reviewed by AI and our moderation team to keep this a genuine safe space.' },
-                    { icon: Users, title: 'Men Who Understand', desc: 'Connect with others who have walked similar paths and come out the other side.' },
-                    { icon: BookOpen, title: 'Expert Resources', desc: 'Curated articles, books, exercises, and professional guidance tailored for men.' },
-                    { icon: Heart, title: 'No Judgement', desc: 'Whether you\'re in crisis or just need to talk — all emotions are welcome here.' },
-                  ].map(({ icon: Icon, title, desc }) => (
-                    <div key={title} className="flex gap-4">
-                      <div className="w-10 h-10 bg-healing-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <Icon className="w-5 h-5 text-healing-600" />
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-gray-900">{title}</h4>
-                        <p className="text-gray-600 text-sm">{desc}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div className="bg-gradient-to-br from-healing-50 to-healing-100 rounded-3xl p-8 lg:p-12">
-                <div className="text-center mb-8">
-                  <div className="w-20 h-20 bg-healing-600 rounded-3xl flex items-center justify-center mx-auto mb-4">
-                    <Heart className="w-10 h-10 text-white" fill="white" />
+      {/* Feature Cards */}
+      <section className="w-full bg-background px-4 pb-16">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {GRIEF_CATEGORIES.map((cat, i) => {
+              const IconComp = IconMap[cat.icon];
+              return (
+                <Link
+                  key={cat.title}
+                  to={cat.href}
+                  className={`animated-card p-6 block transition-all duration-500 ${
+                    visibleCards.includes(i) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+                  }`}
+                  style={{ transitionDelay: `${i * 80}ms` }}
+                >
+                  <div className="mb-4">
+                    <IconComp className={`w-8 h-8 ${cat.color}`} />
                   </div>
-                  <h3 className="text-2xl font-bold text-healing-900">Start Your Journey</h3>
-                  <p className="text-healing-700 mt-2">Join thousands of men who have found their footing again.</p>
-                </div>
-                <div className="space-y-3">
-                  <Button className="w-full bg-healing-600 hover:bg-healing-700 text-white font-semibold py-3" onClick={() => navigate(user ? '/community' : '/auth?tab=signup')}>
-                    {user ? 'Go to Community' : 'Create Free Account'} <ArrowRight className="ml-2 w-4 h-4" />
-                  </Button>
-                  <Button variant="outline" className="w-full border-healing-300 text-healing-700 hover:bg-healing-50" onClick={() => navigate('/stories')}>
-                    Read Healing Stories
-                  </Button>
-                  <Button variant="ghost" className="w-full text-healing-600 hover:bg-healing-50" onClick={() => navigate('/resources')}>
-                    Browse Resources
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Testimonials */}
-        <section className="py-20 bg-healing-900 text-white">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <Badge className="bg-white/20 text-white border-white/30 mb-4">Real Stories</Badge>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Men Who Found Their Way</h2>
-              <p className="text-healing-200 text-xl max-w-2xl mx-auto">
-                Healing is possible. These men are proof.
-              </p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {testimonials.map(({ quote, name, category }) => (
-                <div key={name} className="bg-white/10 backdrop-blur rounded-2xl p-6 border border-white/20">
-                  <div className="flex gap-1 mb-4">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 text-yellow-400" fill="currentColor" />
+                  <h3 className="text-lg font-semibold text-[#6A5ACD] mb-2">{cat.title}</h3>
+                  <p className="text-gray-600 text-sm mb-4 leading-relaxed">{cat.description}</p>
+                  <div className="space-y-2 border-t border-gray-100 pt-4">
+                    {cat.sources.map(s => (
+                      <div key={s.name} className="flex items-start gap-2 text-sm">
+                        <span className="font-semibold text-gray-800 whitespace-nowrap">{s.name}</span>
+                        <span className="text-gray-500">- {s.desc}</span>
+                      </div>
                     ))}
                   </div>
-                  <p className="text-healing-100 leading-relaxed mb-6 italic">"{quote}"</p>
-                  <div className="flex items-center justify-between">
-                    <span className="font-semibold text-white">{name}</span>
-                    <Badge className="bg-healing-600/50 text-healing-200 border-healing-500/50 text-xs">{category}</Badge>
-                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Trusted Sources */}
+      <section className="w-full bg-white/60 py-16 px-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-10">
+            <span className="text-xs font-semibold uppercase tracking-widest text-[#008080] bg-[#008080]/10 px-3 py-1 rounded-full">
+              Trusted Sources
+            </span>
+            <h2 className="text-3xl font-bold text-[#6A5ACD] mt-4 mb-2">
+              Insights from Leading Experts
+            </h2>
+            <p className="text-gray-600 max-w-xl mx-auto">
+              Curated content from Psychology Today, Mind.org.uk, Verywell Mind, and other trusted mental health authorities.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {FEATURED_RESOURCES.map((res, i) => (
+              <a
+                key={i}
+                href={res.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="animated-card p-6 flex flex-col gap-3 group"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold uppercase tracking-wider text-[#6A5ACD]">{res.source}</span>
+                  <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded">{res.category}</span>
                 </div>
-              ))}
-            </div>
+                <h4 className="font-semibold text-gray-800 group-hover:text-[#6A5ACD] transition-colors leading-snug">
+                  {res.title}
+                </h4>
+                <p className="text-sm text-gray-500 leading-relaxed">{res.excerpt}</p>
+                <div className="flex items-center gap-1 text-[#008080] text-xs font-medium mt-auto">
+                  Read article <ExternalLink className="w-3 h-3" />
+                </div>
+              </a>
+            ))}
           </div>
-        </section>
-
-        {/* CTA Section */}
-        <section className="py-20 bg-white">
-          <div className="container mx-auto px-4 text-center">
-            <div className="max-w-2xl mx-auto">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-                Ready to take the first step?
-              </h2>
-              <p className="text-xl text-gray-600 mb-8">
-                Joining is free. Your privacy is protected. And you'll never have to explain yourself — because the men here already understand.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button
-                  size="lg"
-                  className="bg-healing-600 hover:bg-healing-700 text-white font-bold text-lg px-10"
-                  onClick={() => navigate(user ? '/community' : '/auth?tab=signup')}
-                >
-                  {user ? 'Go to Community' : 'Join Heart Mender Free'} <ArrowRight className="ml-2 w-5 h-5" />
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-healing-300 text-healing-700 hover:bg-healing-50 font-semibold text-lg px-10"
-                  onClick={() => navigate('/contact')}
-                >
-                  Get in Touch
-                </Button>
-              </div>
-            </div>
+          <div className="text-center mt-8">
+            <Link to="/resources">
+              <Button variant="outline" className="border-[#6A5ACD] text-[#6A5ACD] hover:bg-[#6A5ACD]/5">
+                Browse All Resources <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </Link>
           </div>
-        </section>
+        </div>
+      </section>
 
-      </div>
+      {/* Why Heart Mender */}
+      <section className="w-full bg-background py-16 px-4">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-10">
+            <span className="text-xs font-semibold uppercase tracking-widest text-[#6A5ACD] bg-[#6A5ACD]/10 px-3 py-1 rounded-full">
+              Why Heart Mender
+            </span>
+            <h2 className="text-3xl font-bold text-[#6A5ACD] mt-4 mb-2">Built from personal experience.</h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Heart Mender Hub was born from going through divorce without adequate support. We believe no one should face grief alone — whatever form it takes.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {[
+              { icon: 'shield', color: 'text-[#8FBC8F]', title: 'Safe & Moderated', desc: 'Every post is reviewed by AI and our team to keep this a genuine safe space.' },
+              { icon: 'users', color: 'text-[#6A5ACD]', title: 'Real Community', desc: 'Connect with others who have walked similar paths and come out the other side.' },
+              { icon: 'book', color: 'text-[#008080]', title: 'Expert Resources', desc: 'Curated articles, books, exercises, and professional guidance.' },
+              { icon: 'heart', color: 'text-[#FF6F61]', title: 'No Judgement', desc: "Whether you're in crisis or just need to talk — all emotions are welcome here." },
+            ].map((item, i) => {
+              const IC = IconMap[item.icon];
+              return (
+                <div key={i} className="animated-card p-5 text-center">
+                  <div className="flex justify-center mb-3"><IC className={`w-6 h-6 ${item.color}`} /></div>
+                  <h4 className="font-semibold text-gray-800 mb-2">{item.title}</h4>
+                  <p className="text-sm text-gray-500 leading-relaxed">{item.desc}</p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="w-full bg-gradient-to-r from-[#6A5ACD]/10 via-[#008080]/10 to-[#8FBC8F]/10 py-16 px-4 text-center">
+        <div className="max-w-2xl mx-auto">
+          <h2 className="text-3xl font-bold text-[#6A5ACD] mb-4">Ready to take the first step?</h2>
+          <p className="text-gray-600 mb-8">
+            Joining is free. Your privacy is protected. And you'll never have to explain yourself — because the community here already understands.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Button
+              className="healing-button text-base px-8 py-3 shimmer-border"
+              onClick={() => navigate(user ? '/community' : '/auth?tab=signup')}
+            >
+              {user ? 'Go to Community' : 'Join Heart Mender Free'}
+            </Button>
+            <Button
+              variant="outline"
+              className="border-[#6A5ACD] text-[#6A5ACD] hover:bg-[#6A5ACD]/5 text-base px-8 py-3"
+              onClick={() => navigate('/contact')}
+            >
+              Get in Touch
+            </Button>
+          </div>
+        </div>
+      </section>
     </>
   );
 };

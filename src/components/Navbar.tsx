@@ -1,143 +1,174 @@
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
+import { Heart, Menu, X, User, LogOut, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu, DropdownMenuContent, DropdownMenuItem,
-  DropdownMenuSeparator, DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Menu, X, Heart, User, LogOut, Shield, ChevronDown } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import logo from '@/assets/heart-hands-logo.jpg';
+
+const NAV_LINKS = [
+  { label: 'Home', href: '/' },
+  { label: 'Community', href: '/community' },
+  { label: 'Resources', href: '/resources' },
+  { label: 'Stories', href: '/stories' },
+  { label: 'Contact', href: '/contact' },
+];
 
 const Navbar: React.FC = () => {
-  const { user, profile, isAdmin, signOut } = useAuth();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-
-  const navLinks = [
-    { text: 'Home', path: '/' },
-    { text: 'Community', path: '/community' },
-    { text: 'Resources', path: '/resources' },
-    { text: 'Stories', path: '/stories' },
-    { text: 'Contact', path: '/contact' },
-  ];
-
-  const isActive = (path: string) => location.pathname === path;
+  const { user } = useAuth();
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
 
   const handleSignOut = async () => {
-    await signOut();
+    await supabase.auth.signOut();
     toast.success('Signed out successfully');
     navigate('/');
+    setUserMenuOpen(false);
   };
 
-  const getInitials = () => {
-    if (profile?.display_name) return profile.display_name.slice(0, 2).toUpperCase();
-    if (profile?.username) return profile.username.slice(0, 2).toUpperCase();
-    if (user?.email) return user.email.slice(0, 2).toUpperCase();
-    return 'HM';
-  };
+  const displayName = user?.user_metadata?.display_name || user?.email?.split('@')[0] || 'Account';
 
   return (
-    <nav className="bg-healing-900 text-white sticky top-0 z-50 shadow-lg">
-      <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center h-16">
-          <Link to="/" className="flex items-center space-x-2 flex-shrink-0">
-            <img src={logo} alt="Heart Mender Logo" className="h-9 w-9 object-contain rounded-lg" />
-            <div className="hidden sm:block">
-              <span className="text-lg font-bold text-white">Heart Mender</span>
-              <span className="block text-xs text-healing-300 -mt-1">Men's Healing Community</span>
-            </div>
-            <span className="sm:hidden text-lg font-bold text-white">Heart Mender</span>
-          </Link>
-
-          <div className="hidden md:flex items-center space-x-1">
-            {navLinks.map((link) => (
-              <Link key={link.path} to={link.path}
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  isActive(link.path) ? 'bg-healing-700 text-white' : 'text-healing-200 hover:bg-healing-800 hover:text-white'
-                }`}
-              >{link.text}</Link>
-            ))}
+    <nav className="w-full bg-[#1a1a3e] shadow-lg sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-16">
+        {/* Logo */}
+        <Link to="/" className="flex items-center gap-2 group">
+          <div className="w-8 h-8 bg-gradient-to-br from-[#FF6F61] to-[#6A5ACD] rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
+            <Heart className="w-4 h-4 text-white" fill="white" />
           </div>
+          <div className="flex flex-col leading-none">
+            <span className="text-[#008080] font-bold text-base tracking-tight">Heart Mender</span>
+            <span className="text-gray-400 text-[10px] tracking-widest uppercase">Healing Community</span>
+          </div>
+        </Link>
 
-          <div className="hidden md:flex items-center gap-3">
-            {user ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button className="flex items-center gap-2 px-2 py-1 rounded-lg hover:bg-healing-800 transition-colors">
-                    <Avatar className="h-8 w-8">
-                      <AvatarImage src={profile?.avatar_url || undefined} />
-                      <AvatarFallback className="bg-healing-600 text-white text-xs">{getInitials()}</AvatarFallback>
-                    </Avatar>
-                    <span className="text-sm text-healing-100 max-w-[100px] truncate">
-                      {profile?.display_name || profile?.username || 'Member'}
-                    </span>
-                    <ChevronDown className="w-3 h-3 text-healing-300" />
+        {/* Desktop Nav */}
+        <div className="hidden md:flex items-center gap-1">
+          {NAV_LINKS.map(link => {
+            const isActive = location.pathname === link.href;
+            return (
+              <Link
+                key={link.href}
+                to={link.href}
+                className={`nav-shimmer px-4 py-2 rounded text-sm font-medium transition-colors relative ${
+                  isActive
+                    ? 'text-[#008080] bg-white/5'
+                    : 'text-gray-300 hover:text-[#008080] hover:bg-white/5'
+                }`}
+              >
+                {link.label}
+                {isActive && (
+                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-[#6A5ACD] via-[#008080] to-[#8FBC8F] rounded-full" />
+                )}
+              </Link>
+            );
+          })}
+        </div>
+
+        {/* Auth Buttons */}
+        <div className="hidden md:flex items-center gap-2">
+          {user ? (
+            <div className="relative">
+              <button
+                onClick={() => setUserMenuOpen(!userMenuOpen)}
+                className="flex items-center gap-2 text-gray-300 hover:text-white px-3 py-1.5 rounded-lg hover:bg-white/10 transition-colors text-sm"
+              >
+                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#6A5ACD] to-[#008080] flex items-center justify-center text-white text-xs font-bold">
+                  {displayName.charAt(0).toUpperCase()}
+                </div>
+                <span className="max-w-[100px] truncate">{displayName}</span>
+                <ChevronDown className="w-3 h-3" />
+              </button>
+              {userMenuOpen && (
+                <div className="absolute right-0 top-full mt-1 w-48 bg-white rounded-xl shadow-xl border border-gray-100 py-1 z-50">
+                  <Link
+                    to="/profile"
+                    onClick={() => setUserMenuOpen(false)}
+                    className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                  >
+                    <User className="w-4 h-4" /> My Profile
+                  </Link>
+                  <hr className="my-1 border-gray-100" />
+                  <button
+                    onClick={handleSignOut}
+                    className="flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors w-full text-left"
+                  >
+                    <LogOut className="w-4 h-4" /> Sign Out
                   </button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
-                  <DropdownMenuItem asChild>
-                    <Link to="/profile" className="flex items-center gap-2"><User className="w-4 h-4" />My Profile</Link>
-                  </DropdownMenuItem>
-                  {isAdmin && (
-                    <>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem asChild>
-                        <Link to="/admin" className="flex items-center gap-2 text-healing-600"><Shield className="w-4 h-4" />Admin Panel</Link>
-                      </DropdownMenuItem>
-                    </>
-                  )}
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleSignOut} className="flex items-center gap-2 text-red-600">
-                    <LogOut className="w-4 h-4" />Sign Out
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+                </div>
+              )}
+            </div>
+          ) : (
+            <>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-gray-300 hover:text-white hover:bg-white/10"
+                onClick={() => navigate('/auth')}
+              >
+                Sign In
+              </Button>
+              <Button
+                size="sm"
+                className="bg-gradient-to-r from-[#6A5ACD] to-[#008080] hover:opacity-90 text-white font-semibold shimmer-border"
+                onClick={() => navigate('/auth?tab=signup')}
+              >
+                Join Free
+              </Button>
+            </>
+          )}
+        </div>
+
+        {/* Mobile toggle */}
+        <button
+          className="md:hidden text-gray-300 hover:text-white p-2"
+          onClick={() => setMobileOpen(!mobileOpen)}
+          aria-label="Toggle menu"
+        >
+          {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+        </button>
+      </div>
+
+      {/* Mobile Menu */}
+      {mobileOpen && (
+        <div className="md:hidden bg-[#12122e] border-t border-white/10 px-4 pb-4 pt-2">
+          {NAV_LINKS.map(link => (
+            <Link
+              key={link.href}
+              to={link.href}
+              onClick={() => setMobileOpen(false)}
+              className={`block py-2.5 text-sm font-medium border-b border-white/5 ${
+                location.pathname === link.href ? 'text-[#008080]' : 'text-gray-300'
+              }`}
+            >
+              {link.label}
+            </Link>
+          ))}
+          <div className="flex gap-2 mt-4">
+            {user ? (
+              <>
+                <Button variant="outline" size="sm" className="flex-1 border-white/20 text-white" onClick={() => { navigate('/profile'); setMobileOpen(false); }}>
+                  Profile
+                </Button>
+                <Button size="sm" className="flex-1 bg-red-600 hover:bg-red-700 text-white" onClick={handleSignOut}>
+                  Sign Out
+                </Button>
+              </>
             ) : (
               <>
-                <Button variant="ghost" size="sm" className="text-healing-200 hover:text-white hover:bg-healing-800" onClick={() => navigate('/auth?tab=signin')}>Sign In</Button>
-                <Button size="sm" className="bg-white text-healing-900 hover:bg-healing-100 font-semibold" onClick={() => navigate('/auth?tab=signup')}>Join Free</Button>
+                <Button variant="outline" size="sm" className="flex-1 border-white/20 text-white" onClick={() => { navigate('/auth'); setMobileOpen(false); }}>
+                  Sign In
+                </Button>
+                <Button size="sm" className="flex-1 bg-[#6A5ACD] hover:bg-[#5949ab] text-white" onClick={() => { navigate('/auth?tab=signup'); setMobileOpen(false); }}>
+                  Join Free
+                </Button>
               </>
             )}
           </div>
-
-          <button className="md:hidden text-white p-2 rounded-lg hover:bg-healing-800" onClick={() => setIsMenuOpen(!isMenuOpen)} aria-label="Toggle menu">
-            {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
         </div>
-
-        {isMenuOpen && (
-          <div className="md:hidden pb-4 border-t border-healing-800 mt-2 pt-4">
-            <div className="space-y-1 mb-4">
-              {navLinks.map((link) => (
-                <Link key={link.path} to={link.path}
-                  className={`block px-3 py-2 rounded-lg text-sm font-medium ${isActive(link.path) ? 'bg-healing-700 text-white' : 'text-healing-200 hover:bg-healing-800 hover:text-white'}`}
-                  onClick={() => setIsMenuOpen(false)}
-                >{link.text}</Link>
-              ))}
-            </div>
-            {user ? (
-              <div className="border-t border-healing-800 pt-4 space-y-2">
-                <div className="flex items-center gap-3 px-3 py-2">
-                  <Avatar className="h-8 w-8"><AvatarImage src={profile?.avatar_url || undefined} /><AvatarFallback className="bg-healing-600 text-white text-xs">{getInitials()}</AvatarFallback></Avatar>
-                  <span className="text-sm text-healing-100">{profile?.display_name || profile?.username || 'Member'}</span>
-                </div>
-                <Link to="/profile" className="flex items-center gap-2 px-3 py-2 text-sm text-healing-200 hover:text-white" onClick={() => setIsMenuOpen(false)}><User className="w-4 h-4" /> My Profile</Link>
-                {isAdmin && <Link to="/admin" className="flex items-center gap-2 px-3 py-2 text-sm text-healing-300 hover:text-white" onClick={() => setIsMenuOpen(false)}><Shield className="w-4 h-4" /> Admin Panel</Link>}
-                <button onClick={() => { handleSignOut(); setIsMenuOpen(false); }} className="flex items-center gap-2 px-3 py-2 text-sm text-red-400 hover:text-red-300 w-full"><LogOut className="w-4 h-4" /> Sign Out</button>
-              </div>
-            ) : (
-              <div className="border-t border-healing-800 pt-4 flex flex-col gap-2">
-                <Button variant="ghost" className="text-healing-200 justify-start" onClick={() => { navigate('/auth?tab=signin'); setIsMenuOpen(false); }}>Sign In</Button>
-                <Button className="bg-white text-healing-900 hover:bg-healing-100 font-semibold" onClick={() => { navigate('/auth?tab=signup'); setIsMenuOpen(false); }}>Join Free</Button>
-              </div>
-            )}
-          </div>
-        )}
-      </div>
+      )}
     </nav>
   );
 };
