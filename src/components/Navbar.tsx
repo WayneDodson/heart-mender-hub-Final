@@ -1,99 +1,29 @@
 
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Shield, LogOut } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { usePendingStoriesCount } from '@/hooks/usePendingStoriesCount';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/integrations/supabase/client';
 import ContactSupportDialog from '@/components/ContactSupportDialog';
 import logo from '@/assets/heart-hands-logo.jpg';
-
-// Define types for our navigation links
-type NavLinkWithPath = {
-  text: string;
-  path: string;
-  icon?: React.ReactNode;
-  hasBadge?: boolean;
-  badgeCount?: number;
-};
-
-type NavLinkWithAction = {
-  text: string;
-  action: () => void;
-};
-
-type NavLink = NavLinkWithPath | NavLinkWithAction;
-
-// Type guard functions to check link types
-const isPathLink = (link: NavLink): link is NavLinkWithPath => {
-  return 'path' in link;
-};
-
-const isActionLink = (link: NavLink): link is NavLinkWithAction => {
-  return 'action' in link;
-};
 
 const Navbar: React.FC = () => {
   const isMobile = useIsMobile();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [contactDialogOpen, setContactDialogOpen] = useState(false);
   const location = useLocation();
-  const { pendingCount } = usePendingStoriesCount();
-  const { user, isAdmin, checkUserRole } = useAuth();
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const closeMenu = () => setIsMenuOpen(false);
 
-  const closeMenu = () => {
-    setIsMenuOpen(false);
-  };
-
-  // Only show these links when user is logged in
-  const authenticatedLinks: NavLinkWithPath[] = user ? [
+  const navLinks = [
     { text: 'Home', path: '/' },
     { text: 'Community', path: '/community' },
     { text: 'Resources', path: '/resources' },
-  ] : [];
-
-  // Contact and Sign In are public links (shown when not authenticated)
-  const publicLinks: (NavLinkWithAction | NavLinkWithPath)[] = user ? [
-    { text: 'Contact', action: () => setContactDialogOpen(true) },
-  ] : [
-    { text: 'Contact', action: () => setContactDialogOpen(true) },
-    { text: 'Sign In', path: '/auth?tab=signin' },
+    { text: 'Stories', path: '/stories' },
   ];
 
-  const links: NavLink[] = [...authenticatedLinks, ...publicLinks];
-
-  // Only show admin links if user has admin privileges
-  const adminLinks: NavLinkWithPath[] = isAdmin ? [
-    { 
-      text: 'Review Stories', 
-      path: '/admin', 
-      hasBadge: pendingCount > 0,
-      badgeCount: pendingCount,
-      icon: <Shield className="h-4 w-4 mr-1" />
-    }
-  ] : [];
-
-  const handleLogout = async () => {
-    try {
-      await supabase.auth.signOut();
-      if (isAdmin) {
-        localStorage.removeItem("isAdminAuthenticated");
-        await checkUserRole();
-      }
-    } catch (error) {
-      console.error("Error during logout:", error);
-    }
-  };
-
-  const isActive = (path: string) => {
-    return location.pathname === path;
-  };
+  const isActive = (path: string) => location.pathname === path;
 
   return (
     <div className="bg-healing-900 text-white">
@@ -105,156 +35,67 @@ const Navbar: React.FC = () => {
               <span className="text-lg md:text-xl font-bold">Heart Mender</span>
             </Link>
           </div>
-          
+
           {isMobile ? (
-            <>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="text-white"
-                onClick={toggleMenu}
-                aria-label="Toggle menu"
-              >
-                {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
-              </Button>
-              
-              {isMenuOpen && (
-                <div className="absolute top-12 left-0 right-0 bg-healing-900 z-50 px-4 py-2 shadow-lg">
-                  <nav>
-                    <ul className="space-y-1">
-                      {links.map((link, index) => (
-                        <li key={index}>
-                          {isPathLink(link) ? (
-                            <Link
-                              to={link.path}
-                              className={`block py-2 ${
-                                isActive(link.path) 
-                                  ? 'text-healing-300 font-medium' 
-                                  : link.text === 'Sign In' 
-                                    ? 'text-white bg-healing-700 hover:bg-healing-600 px-3 py-1.5 rounded-md font-medium transition-colors inline-block' 
-                                    : 'hover:text-healing-300'
-                              }`}
-                              onClick={closeMenu}
-                            >
-                              {link.text}
-                            </Link>
-                          ) : (
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="text-white p-0 h-auto hover:bg-transparent hover:text-healing-300 w-full text-left justify-start"
-                              onClick={() => {
-                                closeMenu();
-                                if (isActionLink(link)) link.action();
-                              }}
-                            >
-                              {link.text}
-                            </Button>
-                          )}
-                        </li>
-                      ))}
-                      
-                      {isAdmin && adminLinks.map((link) => (
-                        <li key={link.path}>
-                          <Link
-                            to={link.path}
-                            className={`block py-1.5 ${isActive(link.path) ? 'text-healing-300 font-medium' : 'hover:text-healing-300'} flex items-center`}
-                            onClick={closeMenu}
-                          >
-                            {link.icon}
-                            {link.text}
-                            {link.hasBadge && (
-                              <span className="ml-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                                {link.badgeCount}
-                              </span>
-                            )}
-                          </Link>
-                        </li>
-                      ))}
-                      
-                      {user && (
-                        <li>
-                          <Button 
-                            variant="ghost" 
-                            size="sm" 
-                            className="text-white p-0 h-auto hover:bg-transparent hover:text-healing-300 flex items-center w-full justify-start"
-                            onClick={handleLogout}
-                          >
-                            <LogOut className="h-4 w-4 mr-1" />
-                            Sign Out
-                          </Button>
-                        </li>
-                      )}
-                    </ul>
-                  </nav>
-                </div>
-              )}
-            </>
+            <button onClick={toggleMenu} className="text-white focus:outline-none" aria-label="Toggle menu">
+              {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </button>
           ) : (
             <nav>
-              <ul className="flex space-x-6">
-                {links.map((link, index) => (
-                  <li key={index}>
-                    {isPathLink(link) ? (
-                      <Link
-                        to={link.path}
-                        className={`${
-                          isActive(link.path) 
-                            ? 'text-healing-300 font-medium' 
-                            : link.text === 'Sign In' 
-                              ? 'text-white bg-healing-700 hover:bg-healing-600 px-3 py-1.5 rounded-md font-medium transition-colors' 
-                              : 'hover:text-healing-300'
-                        }`}
-                      >
-                        {link.text}
-                      </Link>
-                    ) : (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-white p-0 h-auto hover:bg-transparent hover:text-healing-300"
-                        onClick={isActionLink(link) ? link.action : undefined}
-                      >
-                        {link.text}
-                      </Button>
-                    )}
-                  </li>
-                ))}
-                {isAdmin && adminLinks.map((link) => (
+              <ul className="flex items-center space-x-6">
+                {navLinks.map((link) => (
                   <li key={link.path}>
                     <Link
                       to={link.path}
-                      className={`${isActive(link.path) ? 'text-healing-300 font-medium' : 'hover:text-healing-300'} flex items-center`}
+                      className={`${isActive(link.path) ? 'text-healing-300 font-medium' : 'hover:text-healing-300'}`}
                     >
-                      {link.icon}
                       {link.text}
-                      {link.hasBadge && (
-                        <span className="ml-1.5 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                          {link.badgeCount}
-                        </span>
-                      )}
                     </Link>
                   </li>
                 ))}
-                {user && (
-                  <li>
-                    <Button 
-                      variant="ghost" 
-                      size="sm" 
-                      className="text-white p-0 h-auto hover:bg-transparent hover:text-healing-300 flex items-center"
-                      onClick={handleLogout}
-                    >
-                      <LogOut className="h-4 w-4 mr-1" />
-                      Sign Out
-                    </Button>
-                  </li>
-                )}
+                <li>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-white p-0 h-auto hover:bg-transparent hover:text-healing-300"
+                    onClick={() => setContactDialogOpen(true)}
+                  >
+                    Contact
+                  </Button>
+                </li>
               </ul>
             </nav>
           )}
         </div>
+
+        {isMobile && isMenuOpen && (
+          <div className="pb-4">
+            <ul className="flex flex-col space-y-3">
+              {navLinks.map((link) => (
+                <li key={link.path}>
+                  <Link
+                    to={link.path}
+                    className={`block py-2 ${isActive(link.path) ? 'text-healing-300 font-medium' : 'hover:text-healing-300'}`}
+                    onClick={closeMenu}
+                  >
+                    {link.text}
+                  </Link>
+                </li>
+              ))}
+              <li>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-white p-0 h-auto hover:bg-transparent hover:text-healing-300"
+                  onClick={() => { setContactDialogOpen(true); closeMenu(); }}
+                >
+                  Contact
+                </Button>
+              </li>
+            </ul>
+          </div>
+        )}
       </div>
-      
       <ContactSupportDialog open={contactDialogOpen} onOpenChange={setContactDialogOpen} />
     </div>
   );

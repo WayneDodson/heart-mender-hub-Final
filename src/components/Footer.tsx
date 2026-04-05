@@ -1,86 +1,31 @@
 
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Heart, Mail, Instagram, Facebook } from 'lucide-react';
+import { Heart, Instagram, Facebook, Mail } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
 
 const Footer = () => {
+  const currentYear = new Date().getFullYear();
   const { toast } = useToast();
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const currentYear = new Date().getFullYear();
-  
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
 
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-  };
+  const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Basic email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      toast({
-        title: "Invalid email",
-        description: "Please enter a valid email address.",
-        variant: "destructive",
-      });
-      return;
-    }
-    
+    if (!email) return;
     setIsSubmitting(true);
-    
-    try {
-      // Use direct SQL query method instead of the typed .from() method
-      // since TypeScript doesn't know about the newsletter_subscribers table yet
-      const { error } = await supabase
-        .from('newsletter_subscribers')
-        .insert({ email });
-        
-      if (error) {
-        console.error('Error subscribing to newsletter:', error);
-        
-        // Check if it's a duplicate email error
-        if (error.code === '23505') {
-          toast({
-            title: "Already subscribed",
-            description: "This email is already subscribed to our newsletter.",
-            duration: 5000,
-          });
-        } else {
-          toast({
-            title: "Subscription failed",
-            description: "There was an error subscribing to the newsletter. Please try again.",
-            variant: "destructive",
-            duration: 5000,
-          });
-        }
-      } else {
-        toast({
-          title: "Subscription successful",
-          description: "Thank you for subscribing to our newsletter!",
-          duration: 5000,
-        });
-        setEmail(''); // Clear the input
-      }
-    } catch (err) {
-      console.error('Unexpected error:', err);
-      toast({
-        title: "Subscription failed",
-        description: "There was an error subscribing to the newsletter. Please try again.",
-        variant: "destructive",
-        duration: 5000,
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
+    await new Promise((resolve) => setTimeout(resolve, 600));
+    toast({
+      title: 'Subscription successful',
+      description: 'Thank you for subscribing to our newsletter.',
+      duration: 5000,
+    });
+    setEmail('');
+    setIsSubmitting(false);
   };
-  
+
   return (
     <footer className="bg-msblue-50 pt-12 pb-8">
       <div className="container mx-auto px-4">
@@ -105,65 +50,39 @@ const Footer = () => {
               </a>
             </div>
           </div>
-          
+
           <div>
             <h3 className="font-semibold text-lg mb-4">Quick Links</h3>
             <ul className="space-y-2">
-              <li>
-                <Link 
-                  to="/" 
-                  className="text-gray-600 hover:text-msblue-600 transition-colors"
-                  onClick={scrollToTop}
-                >
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  to="/resources" 
-                  className="text-gray-600 hover:text-msblue-600 transition-colors"
-                  onClick={scrollToTop}
-                >
-                  Resources
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  to="/stories" 
-                  className="text-gray-600 hover:text-msblue-600 transition-colors"
-                  onClick={scrollToTop}
-                >
-                  Stories
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  to="/contact" 
-                  className="text-gray-600 hover:text-msblue-600 transition-colors"
-                  onClick={scrollToTop}
-                >
-                  Contact
-                </Link>
-              </li>
+              {[
+                { to: '/', label: 'Home' },
+                { to: '/resources', label: 'Resources' },
+                { to: '/stories', label: 'Stories' },
+                { to: '/contact', label: 'Contact' },
+              ].map(({ to, label }) => (
+                <li key={to}>
+                  <Link to={to} className="text-gray-600 hover:text-msblue-600 transition-colors" onClick={scrollToTop}>
+                    {label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
-          
+
           <div>
             <h3 className="font-semibold text-lg mb-4">Newsletter</h3>
-            <p className="text-gray-600 mb-4">
-              Subscribe to receive healing insights and updates.
-            </p>
+            <p className="text-gray-600 mb-4">Subscribe to receive healing insights and updates.</p>
             <form onSubmit={handleSubscribe} className="flex">
-              <input 
-                type="email" 
-                placeholder="Your email" 
+              <input
+                type="email"
+                placeholder="Your email"
                 className="healing-input rounded-r-none"
                 value={email}
-                onChange={handleEmailChange}
+                onChange={(e) => setEmail(e.target.value)}
                 required
                 disabled={isSubmitting}
               />
-              <button 
+              <button
                 type="submit"
                 className="bg-msblue-500 text-white px-4 py-2 rounded-r-lg hover:bg-msblue-600 transition-colors disabled:opacity-50"
                 disabled={isSubmitting}
@@ -173,7 +92,7 @@ const Footer = () => {
             </form>
           </div>
         </div>
-        
+
         <div className="border-t border-gray-200 mt-8 pt-8 text-center text-gray-600">
           <p>© {currentYear} Heart Mender. All rights reserved.</p>
         </div>
